@@ -39,7 +39,7 @@ def init_db():
     """Creates the database tables."""
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql') as f:
-            db.cursor().executescript(f.read())
+            db.cursor().executescript(f.read().decode("utf-8"))
         db.commit()
 
 
@@ -248,5 +248,6 @@ app.debug = DEBUG
 
 
 if __name__ == '__main__':
+    init_db()
     app.run(host="0.0.0.0")
     
