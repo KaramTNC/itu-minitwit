@@ -1,0 +1,11 @@
+@using Infrastructure
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+<ul class="navbar-nav">
+        
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+    }
+</ul>

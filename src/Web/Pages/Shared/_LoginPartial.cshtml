@@ -1,0 +1,34 @@
+<!-- login partial loaded -->
+@using Infrastructure
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+<ul class="navbar-nav">
+    
+    
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="/@(User.Identity!.Name)">my timeline</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="/info"> About Me</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="/Identity/Account/Logout">
+                <button class="nav-link btn btn-link text-dark" type="submit">
+                    Logout
+                </button>
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="/Identity/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="/Identity/Account/Login">Login</a>
+        </li>
+    }
+</ul>

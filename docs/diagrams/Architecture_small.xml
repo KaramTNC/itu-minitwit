@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project Author="Karam" CommentTableSortAscending="false" CommentTableSortColumn="Date Time" DocumentationType="html" ExportedFromDifferentName="false" ExporterVersion="16.1.1" Name="onionmodel" TextualAnalysisHighlightOptionCaseSensitive="false" UmlVersion="2.x" Xml_structure="simple">
+	<ProjectInfo>
+		<LogicalView/>
+		<ProjectOptions>
+			<DiagramOptions ActivityDiagramControlFlowDisplayOption="\u0000" ActivityDiagramShowActionCallBehaviorOption="\u0000" ActivityDiagramShowActivityEdgeWeight="true" ActivityDiagramShowDiagramFrame="true" ActivityDiagramShowObjectNodeType="true" ActivityDiagramShowPartitionHandle="\u0000" AddDataStoresExtEntitiesToDecomposedDFD="\u0002" AlignColumnProperties="true" AllowConfigShowInOutFlowButtonsInDataFlowDiagram="false" AutoGenerateRoleName="false" AutoSetAttributeType="true" AutoSetColumnType="true" AutoSyncRoleName="true" BlockDefinitionDiagramShowDiagramFrame="true" BpPoolLaneDefaultOrientation="\u0000" BpdAutoStretchPools="true" BpdConnectGatewayWithFlowObjectInDifferentPool="\u0000" BpdDefaultConnectionPointStyle="\u0001" BpdDefaultConnectorStyle="\u0005" BpdDhowIdOption="\u0000" BpdShowActivitiesTypeIcon="true" BusinessProcessDiagramDefaultLanguage="English" ClassVisibilityStyle="\u0001" ConnectorLabelOrientation="\u0000" CreateOneMessagePerDirection="true" DecisionMergeNodeConnectionPointStyle="\u0000" DefaultAssociationEndNavigable="\u0001" DefaultAssociationEndVisibility="\u0000" DefaultAssociationShowFromMultiplicity="true" DefaultAssociationShowFromRoleName="true" DefaultAssociationShowFromRoleVisibility="true" DefaultAssociationShowStereotypes="true" DefaultAssociationShowToMultiplicity="true" DefaultAssociationShowToRoleName="true" DefaultAssociationShowToRoleVisibility="true" DefaultAttributeMultiplicity="false" DefaultAttributeType="" DefaultAttributeVisibility="\u0001" DefaultClassAttributeMultiplicity="" DefaultClassAttributeMultiplicityOrdered="false" DefaultClassAttributeMultiplicityUnique="true" DefaultClassInterfaceBall="false" DefaultClassVisibility="\u0004" DefaultColumnType="integer(10)" DefaultConnectionPointStyle="\u0000" DefaultConnectorStyle="\u0001" DefaultDiagramBackground="rgb(255, 255, 255)" DefaultDisplayAsRobustnessAnalysisIcon="true" DefaultDisplayAsRobustnessAnalysisIconInSequenceDiagram="true" DefaultDisplayAsStereotypeIcon="false" DefaultFontColor="rgb(0, 0, 0)" DefaultGenDiagramTypeFromScenario="\u0000" DefaultHtmlDocFontColor="rgb(0, 0, 0)" DefaultLineJumps="\u0000" DefaultOperationVisibility="\u0004" DefaultParameterDirection="\u0002" DefaultShowAttributeInitialValue="true" DefaultShowAttributeOption="\u0001" DefaultShowClassMemberStereotype="true" DefaultShowDirection="false" DefaultShowMultiplicityConstraints="false" DefaultShowOperationOption="\u0001" DefaultShowOperationSignature="true" DefaultShowOrderedMultiplicityConstraint="true" DefaultShowOwnedAssociationEndAsAttribute="true" DefaultShowOwner="false" DefaultShowOwnerSkipModelInFullyQualifiedOwnerSignature="true" DefaultShowReceptionOption="\u0001" DefaultShowTemplateParameter="true" DefaultShowTypeOption="\u0001" DefaultShowUniqueMultiplicityConstraint="true" DefaultTypeOfSubProcess="\u0000" DefaultWrapClassMember="false" DrawTextAnnotationOpenRectangleFollowConnectorEnd="true" EnableMinimumSize="true" EntityColumnConstraintsPresentation="\u0002" ErdIndexNumOfDigits="-1" ErdIndexPattern="{table_name}" ErdIndexPatternSyncAutomatically="true" ErdManyToManyJoinTableDelimiter="_" EtlTableDiagramFontSize="14" ExpandedSubProcessDiagramContent="\u0001" ForeignKeyArrowHeadSize="\u0002" ForeignKeyConnectorEndPointAssociatedColumn="false" ForeignKeyNamePattern="{reference_table_name}{reference_column_name}" ForeignKeyNamePatternCaseHandling="0" ForeignKeyRelationshipPattern="{association_name}" FractionalMetrics="true" GeneralizationSetNotation="\u0001" GraphicAntiAliasing="true" GridDiagramFontSize="14" InteractionDiagramShowDiagramFrame="true" InternalBlockDiagramShowDiagramFrame="true" LineJumpSize="\u0000" ModelElementNameAlignment="\u0004" MultipleLineClassName="\u0001" PackageDiagramShowDiagramFrame="true" PaintConnectorThroughLabel="false" ParametricDiagramShowDiagramFrame="true" PointConnectorEndToCompartmentMember="true" PrimaryKeyConstraintPattern="" PrimaryKeyNamePattern="ID" RenameConstructorAfterRenameClass="\u0000" RenameExtensionPointToFollowExtendUseCase="\u0000" RequirementDiagramShowDiagramFrame="true" ShapeAutoFitSize="false" ShowActivationsInSequenceDiagram="true" ShowActivityStateNodeCaption="524287" ShowArtifactOption="\u0002" ShowAssociatedDiagramNameOfInteraction="false" ShowAssociationRoleStereotypes="true" ShowAttributeGetterSetter="false" ShowBSElementCode="true" ShowClassEmptyCompartments="false" ShowColumnDefaultValue="false" ShowColumnNullable="true" ShowColumnType="true" ShowColumnUniqueConstraintName="false" ShowColumnUserType="false" ShowComponentOption="\u0002" ShowExtraColumnProperties="true" ShowInOutFlowButtonsInDataFlowDiagram="false" ShowInOutFlowsInSubLevelDiagram="true" ShowMessageOperationSignatureForSequenceAndCommunicationDiagram="true" ShowMessageStereotypeInSequenceAndCommunicationDiagram="true" ShowNumberInCollaborationDiagram="true" ShowNumberInSequenceDiagram="true" ShowPackageNameStyle="\u0000" ShowParameterNameInOperationSignature="true" ShowRowGridLineWithinCompClassDiagram="false" ShowRowGridLineWithinCompERD="true" ShowRowGridLineWithinORMDiagram="true" ShowSchemaNameInERD="true" ShowTransitionTrigger="\u0000" ShowUseCaseExtensionPoint="true" ShowUseCaseID="false" SnapConnectorsAfterZoom="false" StateDiagramShowDiagramFrame="true" StateShowParametersOfInternalActivities="false" StateShowPrePostConditionAndBodyOfInternalActivities="true" StopTargetLifelineOnCreateDestroyMessage="\u0002" SupportHtmlTaggedValue="true" SupportMultipleLineAttribute="true" SuppressImpliedMultiplicityForAttributeAssociationEnd="false" SyncAssociationNameWithAssociationClass="\u0000" SyncAssociationRoleNameWithReferencedAttributeName="true" SyncDocOfInterfaceToSubClass="\u0000" TextAntiAliasing="true" TextualAnalysisGenerateRequirementTextOption="\u0001" TextualAnalysisHighlightOption="\u0000" UnnamedIndexPattern="{table_name}_{column_name}" UseCaseDiagramShowDiagramFrame="true" UseStateNameTab="false" WireflowDiagramDevice="0" WireflowDiagramShowActiveFlowLabel="true" WireflowDiagramTheme="0" WireflowDiagramWireflowShowPreview="true" WireflowDiagramWireflowShowScreenId="true">
+				<DefaultHtmlDocFont Family="Dialog" Size="12" Style="0"/>
+			</DiagramOptions>
+			<GeneralOptions ConfirmSubLevelIdWithDot="true" QuickAddGlossaryTermParentModelId="default"/>
+			<InstantReverseOptions CalculateGeneralizationAndRealization="false" CreateShapeForParentModelOfDraggedClassPackage="false" ReverseGetterSetter="\u0000" ReverseOperationImplementation="false" ShowPackageForNewDiagram="\u0001" ShowPackageOwner="\u0000"/>
+			<ModelQualityOptions EnableModelQualityChecking="false"/>
+			<ORMOptions AlterColumnUserType="true" DecimalPrecision="19" DecimalScale="0" ExportCommentToDatabase="true" FormattedSQL="false" GenerateAssociationWithAttribute="false" GenerateDiagramFromORMWizards="true" GetterSetterVisibility="\u0000" IdGeneratorType="native" MappingFileColumnOrder="\u0000" NumericToClassType="\u0000" QuoteSQLIdentifier="\u0000" RecreateShapeWhenSync="false" SyncToClassDiagramAttributeName="\u0001" SyncToClassDiagramAttributeNamePrefix="" SyncToClassDiagramAttributeNameSuffix="" SyncToClassDiagramClassName="\u0000" SyncToClassDiagramClassNamePrefix="" SyncToClassDiagramClassNameSuffix="" SyncToERDColumnName="\u0000" SyncToERDColumnNamePrefix="" SyncToERDColumnNameSuffix="" SyncToERDTableName="\u0004" SyncToERDTableNamePrefix="" SyncToERDTableNameSuffix="" SynchronizeDefaultValueToColumn="false" SynchronizeName="\u0002" TablePerSubclassFKMapping="\u0000" UpperCaseSQL="true" UseDefaultDecimal="true" WrappingServletRequest="\u0001"/>
+			<RequirementDiagramOptions DefaultWrapMember="true" ShowAttributes="\u0001" SupportHTMLAttribute="false"/>
+			<StateCodeEngineOptions AutoCreateInitialStateInStateDiagram="true" AutoCreateTransitionMethods="true" DefaultInitialStateLocationX="-1" DefaultInitialStateLocationY="-1" GenerateDebugMessage="false" GenerateSample="true" GenerateTryCatch="true" Language="\u0000" RegenerateTransitionMethods="false" SyncTransitionMethods="true"/>
+			<WarningOptions CreateORMClassInDefaultPackage="true"/>
+			<PORepository>
+				<POUserIDFormats>
+					<POUserIDFormat Digits="2" Guid="false" Id="bhxubNmAUHQAbAW1" LastNumericValue="0" ModelType="BPMNElement" Prefix="BP" Suffix=""/>
+					<POUserIDFormat Digits="2" Guid="false" Id="nhxubNmAUHQAbAW2" LastNumericValue="0" ModelType="Actor" Prefix="AC" Suffix=""/>
+					<POUserIDFormat Digits="2" Guid="false" Id="nhxubNmAUHQAbAW3" LastNumericValue="0" ModelType="UseCase" Prefix="UC" Suffix=""/>
+					<POUserIDFormat Digits="3" Guid="false" Id="nhxubNmAUHQAbAW4" LastNumericValue="0" ModelType="Requirement" Prefix="REQ" Suffix=""/>
+					<POUserIDFormat Digits="3" Guid="false" Id="nhxubNmAUHQAbAW5" LastNumericValue="0" ModelType="BusinessRule" Prefix="BR" Suffix=""/>
+					<POUserIDFormat Digits="-1" Guid="false" Id="nhxubNmAUHQAbAW6" LastNumericValue="0" ModelType="BusinessProcessDiagram" Prefix="" Suffix=""/>
+				</POUserIDFormats>
+			</PORepository>
+		</ProjectOptions>
+	</ProjectInfo>
+	<Models>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="ikxubNmAUHQAbABQ" Name="boolean" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.452" PmLastModified="2025-12-19T12:54:51.442" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="3kxubNmAUHQAbABR" Name="byte" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.491" PmLastModified="2025-12-19T12:54:51.440" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="3kxubNmAUHQAbABS" Name="char" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.491" PmLastModified="2025-12-19T12:54:51.439" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="PkxubNmAUHQAbABT" Name="double" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.492" PmLastModified="2025-12-19T12:54:51.442" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="PkxubNmAUHQAbABU" Name="float" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.492" PmLastModified="2025-12-19T12:54:51.442" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="PkxubNmAUHQAbABV" Name="int" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.492" PmLastModified="2025-12-19T12:54:51.442" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="vkxubNmAUHQAbABW" Name="long" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.493" PmLastModified="2025-12-19T12:54:51.432" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="vkxubNmAUHQAbABX" Name="short" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.493" PmLastModified="2025-12-19T12:54:51.432" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="vkxubNmAUHQAbABY" Name="void" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.493" PmLastModified="2025-12-19T12:54:51.431" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<DataType BacklogActivityId="0" Documentation_plain="" Id="fkxubNmAUHQAbABZ" Name="string" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:54:34.494" PmLastModified="2025-12-19T12:54:51.453" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true"/>
+		<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="XYDebNmAUHQAbAZX" Leaf="false" Name="2" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:59:49.690" PmLastModified="2025-12-19T15:39:39.908" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+			<MasterView>
+				<Package Idref="XYDebNmAUHQAbAZW" Name="2"/>
+			</MasterView>
+			<ModelChildren>
+				<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="v1NebNmAUHQAbAY4" Leaf="false" Name="" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:59:35.677" PmLastModified="2025-12-19T16:00:23.434" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+					<MasterView>
+						<Package Idref="v1NebNmAUHQAbAY3" Name=""/>
+					</MasterView>
+					<ModelChildren>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="3qJxbNmAUHQAbApO" Leaf="false" Name="Program" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:20:52.219" PmLastModified="2025-12-19T15:39:39.908" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="3qJxbNmAUHQAbApN" Name="Program"/>
+							</MasterView>
+						</Class>
+						<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="OvrDbNmAUHQAbA2Y" Leaf="false" Name="End2EndTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:18:52.252" PmLastModified="2025-12-19T15:39:39.905" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<Package Idref="OvrDbNmAUHQAbA2X" Name="End2EndTests"/>
+							</MasterView>
+							<ModelChildren>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="_SGHbNmAUHQAbBEn" Leaf="false" Name="GlobalTestServer" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:51:47.903" PmLastModified="2025-12-19T15:39:39.906" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="_SGHbNmAUHQAbBEm" Name="GlobalTestServer"/>
+									</MasterView>
+								</Class>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="OkOHbNmAUHQAbBEy" Leaf="false" Name="TestServerFixture" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:52:03.676" PmLastModified="2025-12-19T15:39:39.901" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="OkOHbNmAUHQAbBEx" Name="TestServerFixture"/>
+									</MasterView>
+								</Class>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="41BHbNmAUHQAbBE7" Leaf="false" Name="PlaywrightTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:52:22.215" PmLastModified="2025-12-19T15:39:39.904" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="41BHbNmAUHQAbBE6" Name="PlaywrightTests"/>
+									</MasterView>
+								</Class>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="udxHbNmAUHQAbBFE" Leaf="false" Name="InteractiveButtonTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:52:34.717" PmLastModified="2025-12-19T15:39:39.903" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="udxHbNmAUHQAbBFD" Name="InteractiveButtonTests"/>
+									</MasterView>
+								</Class>
+							</ModelChildren>
+						</Package>
+						<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="X97DbNmAUHQAbA2h" Leaf="false" Name="IntegrationTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:18:59.578" PmLastModified="2025-12-19T15:39:39.907" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<Package Idref="n97DbNmAUHQAbA2g" Name="IntegrationTests"/>
+							</MasterView>
+							<ModelChildren>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="kE0HbNmAUHQAbBEA" Leaf="false" Name="IntegrationTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:50:53.961" PmLastModified="2025-12-19T15:39:39.907" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="kE0HbNmAUHQAbBD_" Name="IntegrationTests"/>
+									</MasterView>
+								</Class>
+							</ModelChildren>
+						</Package>
+						<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="1V3DbNmAUHQAbA2q" Leaf="false" Name="UnitTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:19:15.627" PmLastModified="2025-12-19T15:39:39.904" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<Package Idref="VV3DbNmAUHQAbA2p" Name="UnitTests"/>
+							</MasterView>
+							<ModelChildren>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="Cq67bNmAUHQAbBAP" Leaf="false" Name="QueryTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:47:21.808" PmLastModified="2025-12-19T15:39:39.907" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="Cq67bNmAUHQAbBAO" Name="QueryTests"/>
+									</MasterView>
+								</Class>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="7im7bNmAUHQAbBAY" Leaf="false" Name="CheepRepositoryTests" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:47:29.783" PmLastModified="2025-12-19T15:39:39.908" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="7im7bNmAUHQAbBAX" Name="CheepRepositoryTests"/>
+									</MasterView>
+								</Class>
+							</ModelChildren>
+						</Package>
+						<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="zsl7bNmAUHQAbBB3" Leaf="false" Name="SupportScripts" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:48:35.059" PmLastModified="2025-12-19T15:39:39.904" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<Package Idref="zsl7bNmAUHQAbBB2" Name="SupportScripts"/>
+							</MasterView>
+							<ModelChildren>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="XB97bNmAUHQAbBCC" Leaf="false" Name="MemoryDbFactory" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:49:00.858" PmLastModified="2025-12-19T15:39:39.901" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="XB97bNmAUHQAbBCB" Name="MemoryDbFactory"/>
+									</MasterView>
+								</Class>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="vej7bNmAUHQAbBCL" Leaf="false" Name="CustomWebApplicationFactory" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:49:08.925" PmLastModified="2025-12-19T15:39:39.906" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="Pej7bNmAUHQAbBCK" Name="CustomWebApplicationFactory"/>
+									</MasterView>
+								</Class>
+							</ModelChildren>
+						</Package>
+						<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="QPZjbNmAUHQAbA3T" Leaf="false" Name="" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:22:12.866" PmLastModified="2025-12-19T15:49:34.838" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<Package Idref="QPZjbNmAUHQAbA3S" Name=""/>
+							</MasterView>
+							<ModelChildren>
+								<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="AWpebNmAUHQAbAYt" Leaf="false" Name="" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:59:05.856" PmLastModified="2025-12-19T15:39:39.908" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<Package Idref="_mpebNmAUHQAbAYs" Name=""/>
+									</MasterView>
+									<ModelChildren>
+										<Package Abstract="false" BacklogActivityId="0" ConnectToCodeModel="1" DefaultDiagramId_IsNull="true" Documentation_plain="" Id="ZHLdbNmAUHQAbA0G" Leaf="false" Name="" PmAuthor="Karam" PmCreateDateTime="2025-12-19T14:10:03.558" PmLastModified="2025-12-19T15:53:45.554" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+											<MasterView>
+												<Package Idref="ZHLdbNmAUHQAbA0F" Name=""/>
+											</MasterView>
+											<ModelChildren>
+												<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="pCJo7NmAUHQAbBYn" Name="Model" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:49:24.773" PmLastModified="2025-12-19T15:51:35.485" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+													<MasterView>
+														<DiagramOverview Idref="pCJo7NmAUHQAbBYm" Name="Model"/>
+													</MasterView>
+												</DiagramOverview>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="I7GBbNmAUHQAbAdu" Leaf="false" Name="Cheep" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:06:58.756" PmLastModified="2025-12-19T15:51:35.485" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="I7GBbNmAUHQAbAdt" Name="Cheep"/>
+													</MasterView>
+												</Class>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="45uhbNmAUHQAbAhg" Leaf="false" Name="Author" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:11:40.359" PmLastModified="2025-12-19T15:51:35.485" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="45uhbNmAUHQAbAhf" Name="Author"/>
+													</MasterView>
+												</Class>
+												<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="WH7o7NmAUHQAbBZ2" Name="DTO" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:50:45.146" PmLastModified="2025-12-19T15:51:35.485" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+													<MasterView>
+														<DiagramOverview Idref="WH7o7NmAUHQAbBZ1" Name="DTO"/>
+													</MasterView>
+												</DiagramOverview>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="NZFhbNmAUHQAbAiL" Leaf="false" Name="AuthorViewModel" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:12:25.388" PmLastModified="2025-12-19T15:51:35.466" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="NZFhbNmAUHQAbAiK" Name="AuthorViewModel"/>
+													</MasterView>
+												</Class>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="zoZhbNmAUHQAbAiC" Leaf="false" Name="CheepViewModel" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:12:15.091" PmLastModified="2025-12-19T15:51:35.484" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="zoZhbNmAUHQAbAiB" Name="CheepViewModel"/>
+													</MasterView>
+												</Class>
+												<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="LY0Y7NmAUHQAbBay" Name="Interface" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:52:03.892" PmLastModified="2025-12-19T15:53:45.538" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+													<MasterView>
+														<DiagramOverview Idref="LY0Y7NmAUHQAbBax" Name="Interface"/>
+													</MasterView>
+												</DiagramOverview>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="NN.BbNmAUHQAbAd8" Leaf="false" Name="ICheepRepository" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:07:26.764" PmLastModified="2025-12-19T15:53:45.555" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="NN.BbNmAUHQAbAd7" Name="ICheepRepository"/>
+													</MasterView>
+												</Class>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="4eUhbNmAUHQAbAgU" Leaf="false" Name="IAuthorRepository" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:10:21.959" PmLastModified="2025-12-19T15:53:45.555" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="4eUhbNmAUHQAbAgT" Name="IAuthorRepository"/>
+													</MasterView>
+												</Class>
+												<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="Ma8hbNmAUHQAbAgt" Leaf="false" Name="ICheepService" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:10:41.932" PmLastModified="2025-12-19T15:53:45.555" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+													<MasterView>
+														<StructuredClass Idref="Ma8hbNmAUHQAbAgs" Name="ICheepService"/>
+													</MasterView>
+												</Class>
+											</ModelChildren>
+										</Package>
+									</ModelChildren>
+								</Package>
+								<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="_gko7NmAUHQAbBWw" Name="Services" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:47:33.247" PmLastModified="2025-12-19T15:48:39.362" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<DiagramOverview Idref="fgko7NmAUHQAbBWv" Name="Services"/>
+									</MasterView>
+								</DiagramOverview>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="4tqRbNmAUHQAbAku" Leaf="false" Name="CheepService" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:15:30.119" PmLastModified="2025-12-19T15:48:39.380" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="YtqRbNmAUHQAbAkt" Name="CheepService"/>
+									</MasterView>
+								</Class>
+								<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="gimo7NmAUHQAbBXu" Name="Repositories" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:48:39.745" PmLastModified="2025-12-19T15:49:34.837" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+									<MasterView>
+										<DiagramOverview Idref="gimo7NmAUHQAbBXt" Name="Repositories"/>
+									</MasterView>
+								</DiagramOverview>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="d9CRbNmAUHQAbAkU" Leaf="false" Name="AuthorRepository" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:15:09.806" PmLastModified="2025-12-19T15:49:34.837" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="t9CRbNmAUHQAbAkT" Name="AuthorRepository"/>
+									</MasterView>
+								</Class>
+								<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="cJSRbNmAUHQAbAkd" Leaf="false" Name="CheepRepository" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:15:17.262" PmLastModified="2025-12-19T15:49:34.817" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+									<MasterView>
+										<StructuredClass Idref="cJSRbNmAUHQAbAkc" Name="CheepRepository"/>
+									</MasterView>
+								</Class>
+							</ModelChildren>
+						</Package>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="3TeRbNmAUHQAbAlQ" Leaf="false" Name="ChatDbContext" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:16:07.355" PmLastModified="2025-12-19T15:39:39.907" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="3TeRbNmAUHQAbAlP" Name="ChatDbContext"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="tQWRbNmAUHQAbAk9" Leaf="false" Name="ApplicationUser" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:15:47.885" PmLastModified="2025-12-19T15:39:39.883" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="tQWRbNmAUHQAbAk8" Name="ApplicationUser"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="WNhRbNmAUHQAbAlZ" Leaf="false" Name="DbInitializer" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:16:19.226" PmLastModified="2025-12-19T15:39:39.908" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="WNhRbNmAUHQAbAlY" Name="DbInitializer"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="npXJbNmAUHQAbAqg" Leaf="false" Name="_Layout" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:26:45.497" PmLastModified="2025-12-19T15:58:43.012" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="npXJbNmAUHQAbAqf" Name="_Layout"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="bWPJbNmAUHQAbAqp" Leaf="false" Name="_LoginPartial" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:26:52.982" PmLastModified="2025-12-19T15:58:43.012" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="bWPJbNmAUHQAbAqo" Name="_LoginPartial"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="ayfJbNmAUHQAbAqy" Leaf="false" Name="_CheepPartial" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:27:00.694" PmLastModified="2025-12-19T15:58:43.010" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="qyfJbNmAUHQAbAqx" Name="_CheepPartial"/>
+							</MasterView>
+						</Class>
+						<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="VW047NmAUHQAbBeX" Name="Shared" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:56:27.306" PmLastModified="2025-12-19T15:58:43.012" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<MasterView>
+								<DiagramOverview Idref="VW047NmAUHQAbBeW" Name="Shared"/>
+							</MasterView>
+						</DiagramOverview>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="C_qpbNmAUHQAbAsN" Leaf="false" Name="UserTimeline" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:28:37.712" PmLastModified="2025-12-19T15:58:43.012" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="C_qpbNmAUHQAbAsM" Name="UserTimeline"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="Q8MpbNmAUHQAbArj" Leaf="false" Name="_ViewImport" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:27:57.762" PmLastModified="2025-12-19T15:58:42.992" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="Q8MpbNmAUHQAbAri" Name="_ViewImport"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="ST8pbNmAUHQAbArs" Leaf="false" Name="_ViewStart" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:28:12.306" PmLastModified="2025-12-19T15:58:43.010" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="iT8pbNmAUHQAbArr" Name="_ViewStart"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id=".yKpbNmAUHQAbAsA" Leaf="false" Name="Public" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:28:30.815" PmLastModified="2025-12-19T15:58:43.012" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref=".yKpbNmAUHQAbAr_" Name="Public"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="BtipbNmAUHQAbAr1" Leaf="false" Name="AboutMe" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:28:20.192" PmLastModified="2025-12-19T15:58:43.010" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="BtipbNmAUHQAbAr0" Name="AboutMe"/>
+							</MasterView>
+						</Class>
+						<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="dQ_Y7NmAUHQAbBd8" Name="Pages" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:55:36.622" PmLastModified="2025-12-19T15:58:43.012" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<MasterView>
+								<DiagramOverview Idref="dQ_Y7NmAUHQAbBd7" Name="Pages"/>
+							</MasterView>
+						</DiagramOverview>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="F0yZbNmAUHQAbAuS" Leaf="false" Name="ExternalLogin" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:32:48.360" PmLastModified="2025-12-19T16:00:23.430" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="50yZbNmAUHQAbAuR" Name="ExternalLogin"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="x4CZbNmAUHQAbAuJ" Leaf="false" Name="ConfirmEmail" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:32:35.811" PmLastModified="2025-12-19T16:00:23.435" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="x4CZbNmAUHQAbAuI" Name="ConfirmEmail"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="accZbNmAUHQAbAuA" Leaf="false" Name="Register" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:32:28.054" PmLastModified="2025-12-19T16:00:23.435" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="accZbNmAUHQAbAt_" Name="Register"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="kpMZbNmAUHQAbAt3" Leaf="false" Name="Logout" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:32:21.321" PmLastModified="2025-12-19T16:00:23.435" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="kpMZbNmAUHQAbAt2" Name="Logout"/>
+							</MasterView>
+						</Class>
+						<Class Abstract="false" Active="false" BacklogActivityId="0" BusinessKeyMutable="true" BusinessModel="false" ConnectToCodeModel="1" Documentation_plain="" FinalSpecialization="false" Id="BfUZbNmAUHQAbAtu" Leaf="false" Name="Login" PmAuthor="Karam" PmCreateDateTime="2025-12-19T13:32:14.752" PmLastModified="2025-12-19T16:00:23.435" QualityReason_IsNull="true" QualityScore="-1" Root="false" UserIDLastNumericValue="0" UserID_IsNull="true" Visibility="public">
+							<MasterView>
+								<StructuredClass Idref="BfUZbNmAUHQAbAtt" Name="Login"/>
+							</MasterView>
+						</Class>
+						<DiagramOverview BacklogActivityId="0" DiagramId_IsNull="true" Documentation_plain="" Id="sEj47NmAUHQAbBg_" Name="Areas" PmAuthor="Karam" PmCreateDateTime="2025-12-19T15:59:01.773" PmLastModified="2025-12-19T16:00:23.435" QualityReason_IsNull="true" QualityScore="-1" UserIDLastNumericValue="0" UserID_IsNull="true">
+							<MasterView>
+								<DiagramOverview Idref="sEj47NmAUHQAbBg." Name="Areas"/>
+							</MasterView>
+						</DiagramOverview>
+					</ModelChildren>
+				</Package>
+			</ModelChildren>
+		</Package>
+	</Models>
+	<Diagrams>
+		<CompositeStructureDiagram AlignToGrid="false" AutoFitShapesSize="false" ConnectionPointStyle="0" ConnectorLabelOrientation="0" ConnectorLineJumps="0" ConnectorLineJumpsSize="0" ConnectorModelElementNameAlignment="4" ConnectorStyle="1" DiagramBackground="rgb(255, 255, 255)" Editable="true" FilterByViewpointLegend="true" FollowDiagramParentElement="true" GridColor="rgb(192, 192, 192)" GridHeight="10" GridVisible="false" GridWidth="10" Height="864" HideConnectorIfFromToIsHidden="0" HideEmptyTaggedValues="false" Id="3d_ubNmAUHQAbAXA" ImageHeight="0" ImageScale="1.0" ImageWidth="0" InitializeDiagramForCreate="true" Maximized="true" ModelElementNameAlignment="4" Name="Composite Structure Diagram1" PaintConnectorThroughLabel="1" PmAuthor="Karam" PmCreateDateTime="2025-12-19T12:56:31.546" PmLastModified="2025-12-19T16:43:48.102" PointConnectorEndToCompartmentMember="true" QualityScore="-1" RequestFitSizeWithPromptUser="false" RequestValidateSnapToGrid="false" ShapePresentationOption="0" ShowActivityStateNodeCaption="524287" ShowAllocatedFrom="true" ShowAllocatedTo="true" ShowColorLegend="false" ShowConnectorLegend="false" ShowConnectorName="0" ShowConstraints="false" ShowDefaultPackage="false" ShowInformationItemOption="2" ShowPMAuthor="false" ShowPMDifficulty="false" ShowPMDiscipline="false" ShowPMIteration="false" ShowPMPhase="false" ShowPMPriority="false" ShowPMStatus="false" ShowPMVersion="false" ShowPackageNameStyle="0" ShowPartMultiplicityOption="4" ShowPortMultiplicityOption="3" ShowRelationshipConstraintExpression="false" ShowShapeLegend="false" ShowShapeStereotypeIconName="true" ShowStereotypes="true" ShowTaggedValues="false" TeamworkCreateDateTime="0" TrimmedHeight="0" TrimmedWidth="0" Width="1681" X="0" Y="0" ZoomRatio="1.0" _globalPaletteOption="true" documentation="&lt;html&gt;&#13;&#10;  &lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      &#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+			<ShapeGroups>
+				<ShapeGroup Id="6Wq47NmAUHQAbBe7"/>
+			</ShapeGroups>
+			<Shapes>
+				<Package Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="708" Id="XYDebNmAUHQAbAZW" MetaModelElement="XYDebNmAUHQAbAZX" Model="XYDebNmAUHQAbAZX" ModelElementNameAlignment="1" Name="2" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="1464" X="346" Y="86" ZOrder="128">
+					<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+					<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+						<Stroke/>
+					</Line>
+					<Caption Height="688" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="1464" X="0" Y="20"/>
+					<DiagramElementChildren>
+						<Package Background="rgb(192, 192, 192)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="586" Id="v1NebNmAUHQAbAY3" MetaModelElement="v1NebNmAUHQAbAY4" Model="v1NebNmAUHQAbAY4" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="867" X="916" Y="136" ZOrder="126">
+							<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+							<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+								<Stroke/>
+							</Line>
+							<Caption Height="567" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="868" X="0" Y="20"/>
+							<DiagramElementChildren>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="46" Id="tQWRbNmAUHQAbAk8" MetaModelElement="tQWRbNmAUHQAbAk9" Model="tQWRbNmAUHQAbAk9" ModelElementNameAlignment="9" Name="ApplicationUser" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="86" X="923" Y="230" ZOrder="70">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="86" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="47" Id="3TeRbNmAUHQAbAlP" MetaModelElement="3TeRbNmAUHQAbAlQ" Model="3TeRbNmAUHQAbAlQ" ModelElementNameAlignment="9" Name="ChatDbContext" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="86" X="923" Y="178" ZOrder="68">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="86" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="50" Id="WNhRbNmAUHQAbAlY" MetaModelElement="WNhRbNmAUHQAbAlZ" Model="WNhRbNmAUHQAbAlZ" ModelElementNameAlignment="9" Name="DbInitializer" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="86" X="923" Y="281" ZOrder="72">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="86" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<Package Background="rgb(240, 196, 115)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="483" Id="QPZjbNmAUHQAbA3S" MetaModelElement="QPZjbNmAUHQAbA3T" Model="QPZjbNmAUHQAbA3T" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="581" X="1184" Y="212" ZOrder="80">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="463" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="581" X="0" Y="20"/>
+									<DiagramElementChildren>
+										<Package Background="rgb(250, 215, 87)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="332" Id="_mpebNmAUHQAbAYs" MetaModelElement="AWpebNmAUHQAbAYt" Model="AWpebNmAUHQAbAYt" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="550" X="1204" Y="350" ZOrder="78">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="312" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="550" X="0" Y="20"/>
+											<DiagramElementChildren>
+												<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Domain&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="0kR.bNmAUHQAbAbm" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Domain" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="60" X="1204" Y="349" ZOrder="74">
+													<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+													<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+														<Stroke/>
+													</Line>
+													<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="60" X="1322" Y="403"/>
+													<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+												</TextBox>
+												<Package Background="rgb(192, 192, 192)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="280" Id="ZHLdbNmAUHQAbA0F" MetaModelElement="ZHLdbNmAUHQAbA0G" Model="ZHLdbNmAUHQAbA0G" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="518" X="1226" Y="386" ZOrder="76">
+													<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+													<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+														<Stroke/>
+													</Line>
+													<Caption Height="260" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="518" X="0" Y="20"/>
+													<DiagramElementChildren>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="I7GBbNmAUHQAbAdt" MetaModelElement="I7GBbNmAUHQAbAdu" Model="I7GBbNmAUHQAbAdu" ModelElementNameAlignment="9" Name="Cheep" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="1337" Y="451" ZOrder="50">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="45uhbNmAUHQAbAhf" MetaModelElement="45uhbNmAUHQAbAhg" Model="45uhbNmAUHQAbAhg" ModelElementNameAlignment="9" Name="Author" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="1250" Y="451" ZOrder="48">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="NN.BbNmAUHQAbAd7" MetaModelElement="NN.BbNmAUHQAbAd8" Model="NN.BbNmAUHQAbAd8" ModelElementNameAlignment="9" Name="ICheepRepository" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="107" X="1381" Y="542" ZOrder="38">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="107" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="4eUhbNmAUHQAbAgT" MetaModelElement="4eUhbNmAUHQAbAgU" Model="4eUhbNmAUHQAbAgU" ModelElementNameAlignment="9" Name="IAuthorRepository" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="107" X="1250" Y="542" ZOrder="36">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="107" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="Ma8hbNmAUHQAbAgs" MetaModelElement="Ma8hbNmAUHQAbAgt" Model="Ma8hbNmAUHQAbAgt" ModelElementNameAlignment="9" Name="ICheepService" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="107" X="1250" Y="591" ZOrder="34">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="107" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="zoZhbNmAUHQAbAiB" MetaModelElement="zoZhbNmAUHQAbAiC" Model="zoZhbNmAUHQAbAiC" ModelElementNameAlignment="9" Name="CheepViewModel" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="92" X="1462" Y="451" ZOrder="42">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="92" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="NZFhbNmAUHQAbAiK" MetaModelElement="NZFhbNmAUHQAbAiL" Model="NZFhbNmAUHQAbAiL" ModelElementNameAlignment="9" Name="AuthorViewModel" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="100" X="1565" Y="451" ZOrder="44">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="100" X="0" Y="0"/>
+															<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+														</StructuredClass>
+														<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="60" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Core&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="w6go7NmAUHQAbBWo" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Core" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="100" X="1226" Y="386" ZOrder="64">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="60" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="100" X="1226" Y="386"/>
+															<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+														</TextBox>
+														<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="75" Id="pCJo7NmAUHQAbBYm" MetaModelElement="pCJo7NmAUHQAbBYn" Model="pCJo7NmAUHQAbBYn" ModelElementNameAlignment="9" Name="Model" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="181" X="1242" Y="424" ZOrder="52">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="50" X="1" Y="1"/>
+															<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+														</DiagramOverview>
+														<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="75" Id="WH7o7NmAUHQAbBZ1" MetaModelElement="WH7o7NmAUHQAbBZ2" Model="WH7o7NmAUHQAbBZ2" ModelElementNameAlignment="9" Name="DTO" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="217" X="1454" Y="424" ZOrder="46">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="44" X="1" Y="1"/>
+															<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+														</DiagramOverview>
+														<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="125" Id="LY0Y7NmAUHQAbBax" MetaModelElement="LY0Y7NmAUHQAbBay" Model="LY0Y7NmAUHQAbBay" ModelElementNameAlignment="9" Name="Interface" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="256" X="1242" Y="516" ZOrder="40">
+															<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+															<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+																<Stroke/>
+															</Line>
+															<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="63" X="1" Y="1"/>
+															<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+														</DiagramOverview>
+													</DiagramElementChildren>
+													<FillColor Color="rgb(192, 192, 192)" Style="1" Transparency="0" Type="1"/>
+												</Package>
+											</DiagramElementChildren>
+											<FillColor Color="rgb(250, 215, 87)" Style="1" Transparency="0" Type="1"/>
+										</Package>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="t9CRbNmAUHQAbAkT" MetaModelElement="d9CRbNmAUHQAbAkU" Model="d9CRbNmAUHQAbAkU" ModelElementNameAlignment="9" Name="AuthorRepository" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="106" X="1323" Y="277" ZOrder="56">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="106" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="cJSRbNmAUHQAbAkc" MetaModelElement="cJSRbNmAUHQAbAkd" Model="cJSRbNmAUHQAbAkd" ModelElementNameAlignment="9" Name="CheepRepository" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="106" X="1210" Y="277" ZOrder="54">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="106" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Repositories&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="FNsPbNmAUHQAbBOJ" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Repositories" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="74" X="1184" Y="211" ZOrder="66">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="74" X="1409" Y="221"/>
+											<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+										</TextBox>
+										<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="86" Id="gimo7NmAUHQAbBXt" MetaModelElement="gimo7NmAUHQAbBXu" Model="gimo7NmAUHQAbBXu" ModelElementNameAlignment="9" Name="Repositories" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="233" X="1204" Y="251" ZOrder="58">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="82" X="1" Y="1"/>
+											<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+										</DiagramOverview>
+									</DiagramElementChildren>
+									<FillColor Color="rgb(240, 196, 115)" Style="1" Transparency="0" Type="1"/>
+								</Package>
+								<Package Background="rgb(108, 195, 103)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="533" Id="esLTbNmAUHQAbA6l" MetaModelElement="QPZjbNmAUHQAbA3T" Model="QPZjbNmAUHQAbA3T" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="749" X="1024" Y="179" ZOrder="108">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="513" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="749" X="0" Y="20"/>
+									<DiagramElementChildren>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="57" Id="YtqRbNmAUHQAbAkt" MetaModelElement="4tqRbNmAUHQAbAku" Model="4tqRbNmAUHQAbAku" ModelElementNameAlignment="9" Name="CheepService" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="106" X="1048" Y="238" ZOrder="60">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="106" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Services&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="YF7TbNmAUHQAbA6v" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Services" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="60" X="1024" Y="178" ZOrder="102">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="60" X="1136" Y="212"/>
+											<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+										</TextBox>
+										<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="93" Id="fgko7NmAUHQAbBWv" MetaModelElement="_gko7NmAUHQAbBWw" Model="_gko7NmAUHQAbBWw" ModelElementNameAlignment="9" Name="Services" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="138" X="1034" Y="212" ZOrder="62">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="63" X="1" Y="1"/>
+											<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+										</DiagramOverview>
+									</DiagramElementChildren>
+									<FillColor Color="rgb(108, 195, 103)" Style="1" Transparency="0" Type="1"/>
+								</Package>
+								<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Infrastructure&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="n7W.bNmAUHQAbAbD" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Service" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="100" X="916" Y="136" ZOrder="122">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="77" X="1029" Y="290"/>
+									<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+								</TextBox>
+							</DiagramElementChildren>
+							<FillColor Color="rgb(192, 192, 192)" Style="1" Transparency="0" Type="1"/>
+						</Package>
+						<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      UI&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="Fkq.bNmAUHQAbAau" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="UI" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="103" X="345" Y="85" ZOrder="124">
+							<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+							<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+								<Stroke/>
+							</Line>
+							<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="60" X="550" Y="244"/>
+							<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+						</TextBox>
+						<Package Background="rgb(192, 192, 192)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="340" Id="eLQtbNmAUHQAbAyC" MetaModelElement="v1NebNmAUHQAbAY4" Model="v1NebNmAUHQAbAY4" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="541" X="356" Y="131" ZOrder="120">
+							<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+							<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+								<Stroke/>
+							</Line>
+							<Caption Height="320" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="541" X="0" Y="20"/>
+							<DiagramElementChildren>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="89" Id="3qJxbNmAUHQAbApN" MetaModelElement="3qJxbNmAUHQAbApO" Model="3qJxbNmAUHQAbApO" ModelElementNameAlignment="9" Name="Program" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="199" X="374" Y="175" ZOrder="118">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="16" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="199" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="npXJbNmAUHQAbAqf" MetaModelElement="npXJbNmAUHQAbAqg" Model="npXJbNmAUHQAbAqg" ModelElementNameAlignment="9" Name="_Layout" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="88" X="774" Y="230" ZOrder="14">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="89" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+									<ShapeGroup Id="6Wq47NmAUHQAbBe7"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="bWPJbNmAUHQAbAqo" MetaModelElement="bWPJbNmAUHQAbAqp" Model="bWPJbNmAUHQAbAqp" ModelElementNameAlignment="9" Name="_LoginPartial" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="88" X="774" Y="275" ZOrder="16">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="89" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+									<ShapeGroup Id="6Wq47NmAUHQAbBe7"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="42" Id="qyfJbNmAUHQAbAqx" MetaModelElement="ayfJbNmAUHQAbAqy" Model="ayfJbNmAUHQAbAqy" ModelElementNameAlignment="9" Name="_CheepPartial" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="88" X="774" Y="322" ZOrder="18">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="89" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+									<ShapeGroup Id="6Wq47NmAUHQAbBe7"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="Q8MpbNmAUHQAbAri" MetaModelElement="Q8MpbNmAUHQAbArj" Model="Q8MpbNmAUHQAbArj" ModelElementNameAlignment="9" Name="_ViewImport" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="585" Y="202" ZOrder="24">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="iT8pbNmAUHQAbArr" MetaModelElement="ST8pbNmAUHQAbArs" Model="ST8pbNmAUHQAbArs" ModelElementNameAlignment="9" Name="_ViewStart" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="585" Y="250" ZOrder="26">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="41" Id="BtipbNmAUHQAbAr0" MetaModelElement="BtipbNmAUHQAbAr1" Model="BtipbNmAUHQAbAr1" ModelElementNameAlignment="9" Name="AboutMe" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="585" Y="296" ZOrder="30">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id=".yKpbNmAUHQAbAr_" MetaModelElement=".yKpbNmAUHQAbAsA" Model=".yKpbNmAUHQAbAsA" ModelElementNameAlignment="9" Name="Public" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="84" X="672" Y="250" ZOrder="28">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="85" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="C_qpbNmAUHQAbAsM" MetaModelElement="C_qpbNmAUHQAbAsN" Model="C_qpbNmAUHQAbAsN" ModelElementNameAlignment="9" Name="UserTimeline" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="84" X="672" Y="202" ZOrder="22">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="85" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="BfUZbNmAUHQAbAtt" MetaModelElement="BfUZbNmAUHQAbAtu" Model="BfUZbNmAUHQAbAtu" ModelElementNameAlignment="9" Name="Login" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="387" Y="306" ZOrder="2">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="kpMZbNmAUHQAbAt2" MetaModelElement="kpMZbNmAUHQAbAt3" Model="kpMZbNmAUHQAbAt3" ModelElementNameAlignment="9" Name="Logout" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="474" Y="306" ZOrder="10">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="accZbNmAUHQAbAt_" MetaModelElement="accZbNmAUHQAbAuA" Model="accZbNmAUHQAbAuA" ModelElementNameAlignment="9" Name="Register" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="387" Y="354" ZOrder="4">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="x4CZbNmAUHQAbAuI" MetaModelElement="x4CZbNmAUHQAbAuJ" Model="x4CZbNmAUHQAbAuJ" ModelElementNameAlignment="9" Name="ConfirmEmail" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="474" Y="354" ZOrder="6">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="50yZbNmAUHQAbAuR" MetaModelElement="F0yZbNmAUHQAbAuS" Model="F0yZbNmAUHQAbAuS" ModelElementNameAlignment="9" Name="ExternalLogin" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="474" Y="399" ZOrder="8">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+									<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+								</StructuredClass>
+								<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Web&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="j7ytbNmAUHQAbAzL" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Web" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="60" X="355" Y="131" ZOrder="112">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="60" X="394" Y="151"/>
+									<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+								</TextBox>
+								<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="215" Id="dQ_Y7NmAUHQAbBd7" MetaModelElement="dQ_Y7NmAUHQAbBd8" Model="dQ_Y7NmAUHQAbBd8" ModelElementNameAlignment="9" Name="Pages" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="305" X="579" Y="175" ZOrder="32">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="53" X="0" Y="0"/>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+								</DiagramOverview>
+								<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="173" Id="VW047NmAUHQAbBeW" MetaModelElement="VW047NmAUHQAbBeX" Model="VW047NmAUHQAbBeX" ModelElementNameAlignment="9" Name="Shared" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="105" X="770" Y="202" ZOrder="20">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="56" X="0" Y="0"/>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+									<ShapeGroup Id="6Wq47NmAUHQAbBe7"/>
+								</DiagramOverview>
+								<DiagramOverview Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" FrameTitleStyle="0" Height="167" Id="sEj47NmAUHQAbBg." MetaModelElement="sEj47NmAUHQAbBg_" Model="sEj47NmAUHQAbBg_" ModelElementNameAlignment="9" Name="Areas" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="199" X="375" Y="279" ZOrder="12">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="18" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="49" X="1" Y="1"/>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+								</DiagramOverview>
+							</DiagramElementChildren>
+							<FillColor Color="rgb(192, 192, 192)" Style="1" Transparency="0" Type="1"/>
+						</Package>
+						<Package Background="rgb(192, 192, 192)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="300" Id="TcCtbNmAUHQAbAy5" MetaModelElement="v1NebNmAUHQAbAY4" Model="v1NebNmAUHQAbAY4" ModelElementNameAlignment="1" Name="" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="541" X="355" Y="477" ZOrder="116">
+							<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+							<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+								<Stroke/>
+							</Line>
+							<Caption Height="281" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="541" X="0" Y="20"/>
+							<DiagramElementChildren>
+								<TextBox Angle="0" Background="rgb(122, 207, 245)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" Foreground="rgb(0, 0, 0)" Height="40" HtmlText="&lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;    &lt;p&gt;&#13;&#10;      Test&#13;&#10;    &lt;/p&gt;&#13;&#10;  &lt;/body&gt;" Id="QfitbNmAUHQAbAzE" ModelElementNameAlignment="9" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PlainText="Test" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowGlossary="true" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="60" X="355" Y="477" ZOrder="114">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="12" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="0.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="40" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="Invisible" Visible="false" Width="60" X="385" Y="507"/>
+									<FillColor Color="rgba(255, 255, 255, 0.0)" Style="1" Transparency="100" Type="1"/>
+								</TextBox>
+								<Package Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="144" Id="OvrDbNmAUHQAbA2X" MetaModelElement="OvrDbNmAUHQAbA2Y" Model="OvrDbNmAUHQAbA2Y" ModelElementNameAlignment="1" Name="End2EndTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="267" X="374" Y="507" ZOrder="110">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="124" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="267" X="0" Y="20"/>
+									<DiagramElementChildren>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="_SGHbNmAUHQAbBEm" MetaModelElement="_SGHbNmAUHQAbBEn" Model="_SGHbNmAUHQAbBEn" ModelElementNameAlignment="9" Name="GlobalTestServer" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="105" X="526" Y="600" ZOrder="88">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="105" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="OkOHbNmAUHQAbBEx" MetaModelElement="OkOHbNmAUHQAbBEy" Model="OkOHbNmAUHQAbBEy" ModelElementNameAlignment="9" Name="TestServerFixture" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="105" X="526" Y="552" ZOrder="86">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="105" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="41BHbNmAUHQAbBE6" MetaModelElement="41BHbNmAUHQAbBE7" Model="41BHbNmAUHQAbBE7" ModelElementNameAlignment="9" Name="PlaywrightTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="130" X="384" Y="552" ZOrder="84">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="130" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="udxHbNmAUHQAbBFD" MetaModelElement="udxHbNmAUHQAbBFE" Model="udxHbNmAUHQAbBFE" ModelElementNameAlignment="9" Name="InteractiveButtonTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="130" X="384" Y="600" ZOrder="82">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="130" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+									</DiagramElementChildren>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+								</Package>
+								<Package Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="92" Id="n97DbNmAUHQAbA2g" MetaModelElement="X97DbNmAUHQAbA2h" Model="X97DbNmAUHQAbA2h" ModelElementNameAlignment="1" Name="IntegrationTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="121" X="649" Y="507" ZOrder="106">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="73" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="121" X="0" Y="20"/>
+									<DiagramElementChildren>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="kE0HbNmAUHQAbBD_" MetaModelElement="kE0HbNmAUHQAbBEA" Model="kE0HbNmAUHQAbBEA" ModelElementNameAlignment="9" Name="IntegrationTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="98" X="658" Y="546" ZOrder="90">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="98" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+									</DiagramElementChildren>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+								</Package>
+								<Package Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="100" Id="VV3DbNmAUHQAbA2p" MetaModelElement="1V3DbNmAUHQAbA2q" Model="1V3DbNmAUHQAbA2q" ModelElementNameAlignment="1" Name="UnitTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="236" X="374" Y="664" ZOrder="104">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="80" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="236" X="0" Y="20"/>
+									<DiagramElementChildren>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="Cq67bNmAUHQAbBAO" MetaModelElement="Cq67bNmAUHQAbBAP" Model="Cq67bNmAUHQAbBAP" ModelElementNameAlignment="9" Name="QueryTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="385" Y="716" ZOrder="100">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="7im7bNmAUHQAbBAX" MetaModelElement="7im7bNmAUHQAbBAY" Model="7im7bNmAUHQAbBAY" ModelElementNameAlignment="9" Name="CheepRepositoryTests" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="130" X="470" Y="716" ZOrder="98">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="130" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+									</DiagramElementChildren>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+								</Package>
+								<Package Background="rgb(224, 224, 224)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" Foreground="rgb(0, 0, 0)" Height="100" Id="zsl7bNmAUHQAbBB2" MetaModelElement="zsl7bNmAUHQAbBB3" Model="zsl7bNmAUHQAbBB3" ModelElementNameAlignment="1" Name="SupportScripts" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowOwnerOption="3" ShowPackageNameStyle="2" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="264" X="620" Y="665" ZOrder="96">
+									<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+									<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+										<Stroke/>
+									</Line>
+									<Caption Height="80" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="FreeMove" Visible="true" Width="264" X="0" Y="20"/>
+									<DiagramElementChildren>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="40" Id="XB97bNmAUHQAbBCB" MetaModelElement="XB97bNmAUHQAbBCC" Model="XB97bNmAUHQAbBCC" ModelElementNameAlignment="9" Name="MemoryDbFactory" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="80" X="630" Y="712" ZOrder="94">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="80" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+										<StructuredClass Background="rgb(255, 255, 255)" ConnectToPoint="true" ConnectionPointType="2" CoverConnector="false" CreatorDiagramType="CompositeStructureDiagram" DisplayOption="0" Foreground="rgb(0, 0, 0)" Height="42" Id="Pej7bNmAUHQAbBCK" MetaModelElement="vej7bNmAUHQAbBCL" Model="vej7bNmAUHQAbBCL" ModelElementNameAlignment="9" Name="CustomWebApplicationFactory" OverrideAppearanceWithStereotypeIcon="true" ParentConnectorDTheta="0.0" ParentConnectorHeaderLength="40" ParentConnectorLineLength="10" PresentationOption="4" PrimitiveShapeType="0" RequestDefaultSize="false" RequestFitSize="false" RequestFitSizeFromCenter="false" RequestResetCaption="false" RequestResetCaptionFitWidth="false" RequestResetCaptionSize="false" RequestSetSizeOption="0" Selectable="true" ShowAllocatedFrom="0" ShowAllocatedTo="0" ShowStereotypeIconName="0" ShowTaggedValues="0" Width="152" X="721" Y="712" ZOrder="92">
+											<ElementFont Color="rgb(0, 0, 0)" Name="Dialog" Size="11" Style="0"/>
+											<Line Cap="0" Color="rgb(0, 0, 0)" Transparency="0" Weight="1.0">
+												<Stroke/>
+											</Line>
+											<Caption Height="15" InternalHeight="-2147483648" InternalWidth="-2147483648" Side="InsideNorth" Visible="true" Width="152" X="0" Y="0"/>
+											<FillColor Color="rgb(255, 255, 255)" Style="1" Transparency="0" Type="1"/>
+										</StructuredClass>
+									</DiagramElementChildren>
+									<FillColor Color="rgb(224, 224, 224)" Style="1" Transparency="0" Type="1"/>
+								</Package>
+							</DiagramElementChildren>
+							<FillColor Color="rgb(192, 192, 192)" Style="1" Transparency="0" Type="1"/>
+						</Package>
+					</DiagramElementChildren>
+					<FillColor Color="rgb(122, 207, 245)" Style="1" Transparency="0" Type="1"/>
+				</Package>
+			</Shapes>
+		</CompositeStructureDiagram>
+	</Diagrams>
+</Project>

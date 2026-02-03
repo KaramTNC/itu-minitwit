@@ -1,0 +1,147 @@
+﻿@page "/info"
+@model Web.Pages.AboutMeModel
+@{
+    ViewData["Title"] = "Chirp!";
+    Layout = "Shared/_Layout";
+    var routeName = Model.UserAuthorVm;
+}
+
+@using Infrastructure
+
+@inject SignInManager<ApplicationUser> SignInManager
+
+<div>
+    <!-- User Info /-->
+    <h2>@routeName.Author's Information</h2>
+
+    <!-- User Info -->
+    <li>
+        <p>
+            Name: @routeName.Author
+        </p>
+        <p>
+            Email: @routeName.Email
+        </p>
+    </li>
+
+    <!-- Follower List /-->
+    <h2> @routeName.Author's Following List</h2>
+    @if (Model.FollowingVm.Any())
+    {
+        @foreach (var following in Model.FollowingVm)
+        {
+            <li>
+                <p>
+                    <strong>
+                        <a href="/@following.Author">@following.Author</a>
+                    </strong>
+                </p>
+            </li>
+        }
+    }
+
+    <!-- User Cheeps /-->
+    <h2> @routeName.Author's Cheeps </h2>
+    @if (Model.UserCheepsVm.Any())
+    {
+        <ul id="messagelist" class="cheeps">
+            @foreach (var cheep in Model.UserCheepsVm)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/@cheep.Author">@cheep.Author</a>
+                        </strong>
+                        @cheep.Message
+                        <small>&mdash; @cheep.Timestamp</small>
+
+                        <small>Likes @cheep.Likes.Count</small>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <!-- Follow Button -->
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="Email" value="@cheep.Email"/>
+                            <button type="submit" formaction="@routeName/?handler=Follow">
+                                @(cheep.IsFollowed ? "Unfollow" : "Follow")
+                            </button>
+                        </form>
+
+                        <!-- Like Button -->
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="CheepID" value="@cheep.CheepId"/>
+                            <button type="submit" formaction="@routeName/?handler=Like">
+                                @(cheep.IsLiked ? "UnLike" : "Like")
+                            </button>
+                        </form>
+                    }
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no cheeps so far.</em>
+    }
+
+    <!-- Liked Cheeps Section /-->
+    <h2>Liked Cheeps</h2>
+    @if (Model.LikedCheepsVm.Any())
+    {
+        <ul id="messagelist" class="cheeps">
+            @foreach (var cheep in Model.LikedCheepsVm)
+            {
+                <li>
+                    <p>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <strong>
+                                <a href="/@cheep.Author">@cheep.Author</a>
+                            </strong>
+                            @cheep.Message
+                            <small>&mdash; @cheep.Timestamp</small>
+
+                            <small>Likes @cheep.Likes.Count</small>
+
+                            <!-- Follow Button -->
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="Email" value="@cheep.Email"/>
+                            <button type="submit" formaction="/info/?handler=Follow">
+                                @(cheep.IsFollowed ? "Unfollow" : "Follow")
+                            </button>
+                        </form>
+
+
+                        <!-- Like Button -->
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="CheepID" value="@cheep.CheepId"/>
+                            <button type="submit" formaction="/info/?handler=Like">
+                                @(cheep.IsLiked ? "UnLike" : "Like")
+                            </button>
+                        </form>
+                    }
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em> There are no cheeps so far.</em>
+    }
+
+    <!-- Forget Me Section /-->
+    <h2>Forget Me</h2>
+    <p>
+        Delete your account from Chirp. WARNING THIS CANNOT BE REVERSED
+    </p>
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" formaction="/info/?handler=Forget">Forget me!</button>
+    </form>
+</div>
