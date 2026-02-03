@@ -48,7 +48,6 @@ public class Program
     /// <param name="environment">Optional environment to specify</param>
     /// <returns>Webapplication</returns>
     /// <exception cref="DirectoryNotFoundException">Cannot find Web directory</exception>
-    /// <exception cref="Exception">Cannot get GitHub credentials</exception>
     public static WebApplication BuildWebApplication(string[]? args = null, string? environment = null)
     {
         var baseDir = AppContext.BaseDirectory;
@@ -173,36 +172,6 @@ public class Program
         if (builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Testing"))
         {
             builder.Configuration.AddUserSecrets<Program>(optional: true);
-        }
-
-        var githubClientId = builder.Configuration["authentication_github_clientId"];
-        var githubClientSecret = builder.Configuration["authentication_github_clientSecret"];
-        var hasGitHubCredentials = !string.IsNullOrEmpty(githubClientId) && !string.IsNullOrEmpty(githubClientSecret);
-
-        // Ensure github credentials exist
-        if (!builder.Environment.IsDevelopment() && !builder.Environment.IsEnvironment("Testing") &&
-            !hasGitHubCredentials)
-        {
-            throw new Exception("GitHub OAuth credentials missing");
-        }
-
-        var authBuilder = builder.Services.AddAuthentication().AddCookie();
-        if (hasGitHubCredentials)
-        {
-            Console.WriteLine($"[DEBUG] GitHub OAuth enabled - ClientId: {githubClientId}");
-            authBuilder.AddGitHub(o =>
-            {
-                o.ClientId = githubClientId!;
-                o.ClientSecret = githubClientSecret!;
-                o.CallbackPath = new PathString("/git-login");
-
-                o.Scope.Add("user:email");
-                o.Scope.Add("read:user");
-            });
-        }
-        else
-        {
-            Console.WriteLine("[DEBUG] GitHub OAuth disabled - no credentials configured");
         }
         
         // Configure Razor Pages with runtime compilation
