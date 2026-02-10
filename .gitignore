@@ -19,3 +19,7 @@
 [Bb]in/
 [Oo]bj/
 .fake
+
+.local_vm/*
+.vagrant/*
+**/__pycache__/*
