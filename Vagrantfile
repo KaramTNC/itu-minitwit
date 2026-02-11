@@ -34,7 +34,12 @@ Vagrant.configure("2") do |config|
       # dotnet is always run when booting the machine
       echo "Starting the web server..."
       dotnet run &
+      # Wait for the dotnet server to be running before printing the IP address
+      while ! ss -tln | grep -q :5001; do sleep 1; done
       THIS_IP=`hostname -I | cut -d" " -f1`
+      echo "================================================================="
+      echo "=                            DONE                               ="
+      echo "================================================================="
       echo "The web server is up at http://${THIS_IP}:5001"
     SHELL
   end
