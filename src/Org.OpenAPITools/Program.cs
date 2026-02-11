@@ -15,6 +15,8 @@ namespace Org.OpenAPITools
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+            
+
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace Org.OpenAPITools
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                    webBuilder.UseStartup<Startup>()
-                             .UseUrls("http://0.0.0.0:8080/");
+                             .UseUrls("http://0.0.0.0:8080/");    
                 });
     }
 }

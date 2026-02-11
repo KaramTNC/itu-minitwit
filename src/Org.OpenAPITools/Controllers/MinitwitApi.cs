@@ -19,15 +19,20 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using Org.OpenAPITools.Attributes;
 using Org.OpenAPITools.Models;
-
+using Infrastructure.Repositories;
+using Infrastructure;
 namespace Org.OpenAPITools.Controllers
 { 
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
-    public class MinitwitApiController : ControllerBase
+    public class MinitwitApiController(ChatDbContext dbContext) : ControllerBase
     { 
+        private readonly CheepRepository _cheepRepository = new CheepRepository(dbContext);
+        private readonly AuthorRepository _authorRepository = new AuthorRepository(dbContext);
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -238,13 +243,14 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken")]
         public virtual IActionResult PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
         {
-
+            
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400, default);
 
-            throw new NotImplementedException();
+            _authorRepository.CreateAuthor(payload.Username, payload.Email);
+            return StatusCode(200);
         }
     }
 }
