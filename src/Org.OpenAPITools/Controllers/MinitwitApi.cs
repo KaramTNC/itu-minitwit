@@ -21,6 +21,8 @@ using Org.OpenAPITools.Attributes;
 using Org.OpenAPITools.Models;
 using Infrastructure.Repositories;
 using Infrastructure;
+using System.Threading.Tasks;
+using Core.Model;
 namespace Org.OpenAPITools.Controllers
 { 
     /// <summary>
@@ -152,18 +154,17 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerOperation("GetMessagesPerUser")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Message>), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult GetMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
+        public virtual async Task<IActionResult> GetMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default);
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            
             string exampleJson = null;
-            exampleJson = "[ {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}, {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n} ]";
-            exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+            Author author = await _authorRepository.ReturnBasedOnNameAsync(username);
+
+            var cheeps = _cheepRepository.GetAuthorCheeps(author.AuthorId);
+
+            var cheep = cheeps[0];
+            exampleJson = $"[ {{\n  \"pub_date\" : {},\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}}, {{\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}} ]";
             
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
@@ -218,15 +219,16 @@ namespace Org.OpenAPITools.Controllers
         [ValidateModelState]
         [SwaggerOperation("PostMessagesPerUser")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult PostMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]PostMessage payload, [FromQuery (Name = "latest")]int? latest)
+        public virtual async Task<IActionResult> PostMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]PostMessage payload, [FromQuery (Name = "latest")]int? latest)
         {
 
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
-
-            throw new NotImplementedException();
+            _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
+            single.latest = (int)latest;
+            return StatusCode(200);
         }
 
         /// <summary>

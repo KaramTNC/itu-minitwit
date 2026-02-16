@@ -48,7 +48,7 @@ def test_latest():
 
 
     
-"""
+
 def test_register():
     username = 'a'
     email = 'a@a.a'
@@ -78,7 +78,6 @@ def test_create_msg():
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 2
 
-
 def test_get_latest_user_msgs():
     username = 'a'
 
@@ -98,7 +97,7 @@ def test_get_latest_user_msgs():
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 3
 
-
+"""
 def test_get_latest_msgs():
     username = 'a'
     query = {'no': 20, 'latest': 4}
