@@ -101,7 +101,7 @@ namespace Org.OpenAPITools
                 services
                     .AddSwaggerGenNewtonsoftSupport();
                 services.AddDbContext<ChatDbContext>(options =>
-                    options.UseSqlite("Data Source=/home/tim/Desktop/minitwit.db;Mode=ReadWriteCreate;Cache=Shared"));
+                    options.UseSqlite("Data Source=../Web/chat.db"));
         }
 
         /// <summary>
@@ -142,20 +142,6 @@ namespace Org.OpenAPITools
                 {
                     endpoints.MapControllers();
                 });
-            using var scope = app.ApplicationServices.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
-        
-            try
-            {
-                if (context.Database.IsSqlite())
-                {
-                    context.Database.OpenConnection();
-                }
-            }
-            catch (InvalidOperationException) { }
-
-            context.Database.EnsureCreated();
-            DbInitializer.SeedDatabase(context);
         }
     }
 }

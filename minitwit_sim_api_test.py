@@ -46,6 +46,8 @@ def test_latest():
     assert response.ok
     assert response.json()['latest'] == 1337
 
+
+    
 """
 def test_register():
     username = 'a'

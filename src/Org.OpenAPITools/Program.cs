@@ -8,6 +8,9 @@ namespace Org.OpenAPITools
     /// </summary>
     public class Program
     {
+
+        public Singleton single =  Singleton.Instance;
+
         /// <summary>
         /// Main
         /// </summary>

@@ -32,7 +32,9 @@ namespace Org.OpenAPITools.Controllers
         private readonly CheepRepository _cheepRepository = new CheepRepository(dbContext);
         private readonly AuthorRepository _authorRepository = new AuthorRepository(dbContext);
 
+        private LatestValue late = new LatestValue();
 
+        public Singleton single =  Singleton.Instance;
         /// <summary>
         /// 
         /// </summary>
@@ -84,15 +86,15 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 500, type: typeof(ErrorResponse), description: "Internal Server Error")]
         public virtual IActionResult GetLatestValue()
         {
-
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default);
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
             string exampleJson = null;
-            exampleJson = "{\n  \"latest\" : 0\n}";
-            exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
-            
+            Console.WriteLine("In the GetLatestValue"  + late.Latest);
+            exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
+            //saved for if we have to make a error message
+            //exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<LatestValue>(exampleJson)
             : default;
@@ -250,6 +252,10 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(400, default);
 
             _authorRepository.CreateAuthor(payload.Username, payload.Email);
+            
+            single.latest = (int)latest;
+            
+            
             return StatusCode(200);
         }
     }
