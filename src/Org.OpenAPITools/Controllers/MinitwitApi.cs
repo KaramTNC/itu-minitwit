@@ -93,7 +93,6 @@ namespace Org.OpenAPITools.Controllers
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
             string exampleJson = null;
-            Console.WriteLine("In the GetLatestValue"  + late.Latest);
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
             //exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -161,15 +160,26 @@ namespace Org.OpenAPITools.Controllers
             string exampleJson = null;
             Author author = await _authorRepository.ReturnBasedOnNameAsync(username);
 
-            var cheeps = _cheepRepository.GetAuthorCheeps(author.AuthorId);
+            var cheeps = await _cheepRepository.GetAuthorCheeps(author.AuthorId);
 
             var cheep = cheeps[0];
-            exampleJson = $"[ {{\n  \"pub_date\" : {},\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}}, {{\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}} ]";
             
+            exampleJson = $@"[
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }},
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }}
+            ]";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
-            //TODO: Change the data returned
+            single.latest = (int)latest;
             return new ObjectResult(example);
         }
 
@@ -226,7 +236,7 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
-            _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
+            await _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
             single.latest = (int)latest;
             return StatusCode(200);
         }

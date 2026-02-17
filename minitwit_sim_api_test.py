@@ -8,7 +8,7 @@ from contextlib import closing
 
 
 BASE_URL = 'http://127.0.0.1:8080'
-DATABASE = "/home/tim/Desktop/minitwit.db"
+DATABASE = "src/Web/chat.db"
 USERNAME = 'simulator'
 PWD = 'super_safe!'
 CREDENTIALS = ':'.join([USERNAME, PWD]).encode('ascii')
@@ -27,8 +27,8 @@ def init_db():
 
 
 # Empty the database and initialize the schema again
-Path(DATABASE).unlink()
-init_db()
+#Path(DATABASE).unlink()
+#init_db()
 
 
 def test_latest():
