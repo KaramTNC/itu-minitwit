@@ -97,7 +97,7 @@ def test_get_latest_user_msgs():
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 3
 
-"""
+
 def test_get_latest_msgs():
     username = 'a'
     query = {'no': 20, 'latest': 4}
@@ -147,7 +147,7 @@ def test_register_c():
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 6
 
-
+"""
 def test_follow_user():
     username = 'a'
     url = f'{BASE_URL}/fllws/{username}'

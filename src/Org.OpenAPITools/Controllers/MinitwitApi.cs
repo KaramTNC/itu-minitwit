@@ -118,7 +118,7 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerOperation("GetMessages")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Message>), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
+        public virtual async Task<IActionResult> GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -126,13 +126,26 @@ namespace Org.OpenAPITools.Controllers
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
             string exampleJson = null;
-            exampleJson = "[ {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}, {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n} ]";
-            exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+            var cheeps = await _cheepRepository.ReadCheeps();
+
+            var cheep = cheeps[0];
             
+            exampleJson = $@"[
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }},
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }}
+            ]";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
-            //TODO: Change the data returned
+            single.latest = (int)latest;
             return new ObjectResult(example);
         }
 
