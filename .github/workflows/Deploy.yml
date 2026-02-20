@@ -2,6 +2,7 @@ name: Deploy
 
 # Run only on Main and when the BuildTest workflow succeeds
 on:
+  push:
   workflow_dispatch:
   workflow_run:
     workflows: [Build & Test]
