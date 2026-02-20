@@ -9,13 +9,21 @@ on:
     branches: [main]
 
 jobs:
-  setup-vagrant:
+  digitalocean-vagrant:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
       
       - name: Install Vagrant
         run: |
@@ -24,6 +32,10 @@ jobs:
           sudo apt update && sudo apt install vagrant
     
       - name: Run Vagrant
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KEY_NAME: ${{ secrets.SSH_KEY_NAME }}
+          DIGITAL_OCEAN_TOKEN: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
         run: vagrant up
   
   deploy:
