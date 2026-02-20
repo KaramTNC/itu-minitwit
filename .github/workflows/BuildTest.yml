@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     steps:
-      ## Setup
+      # Setup
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup .NET
@@ -26,13 +26,13 @@ jobs:
       env:
         CI: true
       
-      ## Restore and Build
+      # Restore and Build
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       
-      ## Test
+      # Test
       - name: Playwright Browsers
           run: pwsh test/End2EndTests/bin/Debug/net8.0/playwright.ps1 install --with-deps
       - name: Test
