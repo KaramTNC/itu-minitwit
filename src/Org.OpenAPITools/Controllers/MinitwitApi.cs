@@ -93,7 +93,6 @@ namespace Org.OpenAPITools.Controllers
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
             string exampleJson = null;
-            Console.WriteLine("In the GetLatestValue"  + late.Latest);
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
             //exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -119,7 +118,7 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerOperation("GetMessages")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Message>), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
+        public virtual async Task<IActionResult> GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -127,13 +126,26 @@ namespace Org.OpenAPITools.Controllers
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
             string exampleJson = null;
-            exampleJson = "[ {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}, {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n} ]";
-            exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+            var cheeps = await _cheepRepository.ReadCheeps();
+
+            var cheep = cheeps[0];
             
+            exampleJson = $@"[
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }},
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }}
+            ]";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
-            //TODO: Change the data returned
+            single.latest = (int)latest;
             return new ObjectResult(example);
         }
 
@@ -161,15 +173,26 @@ namespace Org.OpenAPITools.Controllers
             string exampleJson = null;
             Author author = await _authorRepository.ReturnBasedOnNameAsync(username);
 
-            var cheeps = _cheepRepository.GetAuthorCheeps(author.AuthorId);
+            var cheeps = await _cheepRepository.GetAuthorCheeps(author.AuthorId);
 
             var cheep = cheeps[0];
-            exampleJson = $"[ {{\n  \"pub_date\" : {},\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}}, {{\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}} ]";
             
+            exampleJson = $@"[
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }},
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }}
+            ]";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
-            //TODO: Change the data returned
+            single.latest = (int)latest;
             return new ObjectResult(example);
         }
 
@@ -190,17 +213,24 @@ namespace Org.OpenAPITools.Controllers
         [ValidateModelState]
         [SwaggerOperation("PostFollow")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
+        public virtual async Task<IActionResult> PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
         {
+            Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
+            Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+            
+            if (famous.Follows.Contains(follower.AuthorId)) 
+            {
+                _authorRepository.RemoveFollowerId(famous, follower.AuthorId);
+            } else
+            {
+                _authorRepository.AddFollowerId(famous, follower.AuthorId);
+                
+            }
 
-            //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(204);
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
 
-            throw new NotImplementedException();
+            single.latest = (int)latest;
+            return StatusCode(200);
+
         }
 
         /// <summary>
@@ -226,7 +256,7 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
-            _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
+            await _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
             single.latest = (int)latest;
             return StatusCode(200);
         }
