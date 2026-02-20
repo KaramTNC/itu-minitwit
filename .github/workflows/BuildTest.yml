@@ -23,10 +23,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
       
-      - name: Setup environments
-        env:
-          CI: true
-      
       # Restore and Build
       - name: Restore dependencies
         run: dotnet restore
@@ -37,4 +33,6 @@ jobs:
       - name: Playwright Browsers
         run: pwsh test/End2EndTests/bin/Debug/net8.0/playwright.ps1 install --with-deps
       - name: Test
+        env:
+          CI: true
         run: dotnet test --no-build --verbosity normal
