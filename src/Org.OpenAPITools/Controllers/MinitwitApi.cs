@@ -23,6 +23,9 @@ using Infrastructure.Repositories;
 using Infrastructure;
 using System.Threading.Tasks;
 using Core.Model;
+using System.Text.Json;
+using System.Linq.Expressions;
+
 namespace Org.OpenAPITools.Controllers
 { 
     /// <summary>
@@ -54,8 +57,18 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerOperation("GetFollow")]
         [SwaggerResponse(statusCode: 200, type: typeof(FollowsResponse), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult GetFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
+        public async virtual Task<IActionResult> GetFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
+            if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
+            {
+                string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+                var example = error != null
+                ? JsonConvert.DeserializeObject<ErrorResponse>(error)
+                : default;
+                single.latest = (int)latest;
+                Console.WriteLine("error here: 1");
+                return new ObjectResult(example);
+            }
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default);
@@ -63,15 +76,32 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(403, default);
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
+            Author author = await _authorRepository.ReturnBasedOnNameAsync(username);
+
+            List<int> ids = author.Follows;
+
+            List<Author> authors = await _authorRepository.GetAuthorsFromIdList(ids);
+
+            List<string> names = new List<string>();
+
+            for (int i = 0; i < authors.Count ; i++)
+            {
+                names.Add(authors[i].Name);
+            }
+
             string exampleJson = null;
-            exampleJson = "{\n  \"follows\" : [ \"Helge\", \"John\" ]\n}";
-            exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+            var obj = new
+            {
+                follows = names
+            };
+
+            exampleJson = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            //exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
             
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<FollowsResponse>(exampleJson)
-            : default;
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            single.latest = (int)latest;
+            Console.WriteLine("helpp");
+            Console.WriteLine(exampleJson);
+            return new ObjectResult(exampleJson);
         }
 
         /// <summary>
@@ -93,7 +123,6 @@ namespace Org.OpenAPITools.Controllers
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
             string exampleJson = null;
-            Console.WriteLine("In the GetLatestValue"  + late.Latest);
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
             //exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -119,21 +148,44 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerOperation("GetMessages")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Message>), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
+        public virtual async Task<IActionResult> GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
+            if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
+            {
+                string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+                var nuhuh = error != null
+                ? JsonConvert.DeserializeObject<ErrorResponse>(error)
+                : default;
+                single.latest = (int)latest;
+                Console.WriteLine("error here: 2");
+                return new ObjectResult(nuhuh);
+            }
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default);
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
             string exampleJson = null;
-            exampleJson = "[ {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}, {\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n} ]";
-            exampleJson = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+            var cheeps = await _cheepRepository.ReadCheeps();
+
+            var cheep = cheeps[0];
             
+            exampleJson = $@"[
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }},
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }}
+            ]";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
-            //TODO: Change the data returned
+            single.latest = (int)latest;
             return new ObjectResult(example);
         }
 
@@ -156,20 +208,41 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> GetMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
+            if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
+            {
+                string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+                var nuhuh = error != null
+                ? JsonConvert.DeserializeObject<ErrorResponse>(error)
+                : default;
+                single.latest = (int)latest;
+                Console.WriteLine("error here: 3");
+                return new ObjectResult(nuhuh);
+            }
 
             
             string exampleJson = null;
             Author author = await _authorRepository.ReturnBasedOnNameAsync(username);
 
-            var cheeps = _cheepRepository.GetAuthorCheeps(author.AuthorId);
+            var cheeps = await _cheepRepository.GetAuthorCheeps(author.AuthorId);
 
             var cheep = cheeps[0];
-            exampleJson = $"[ {{\n  \"pub_date\" : {},\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}}, {{\n  \"pub_date\" : \"2019-12-01 12:00:00\",\n  \"user\" : \"Helge\",\n  \"content\" : \"Hello, World!\"\n}} ]";
             
+            exampleJson = $@"[
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }},
+            {{
+            ""pub_date"" : ""{cheep.TimeStamp}"",
+            ""user"" : ""{cheep.Author.Name}"",
+            ""content"" : ""{cheep.Text}""
+            }}
+            ]";
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
-            //TODO: Change the data returned
+            single.latest = (int)latest;
             return new ObjectResult(example);
         }
 
@@ -190,17 +263,49 @@ namespace Org.OpenAPITools.Controllers
         [ValidateModelState]
         [SwaggerOperation("PostFollow")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
+        public virtual async Task<IActionResult> PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
         {
+            if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
+            {
+                string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+                var example = error != null
+                ? JsonConvert.DeserializeObject<ErrorResponse>(error)
+                : default;
+                single.latest = (int)latest;
+                Console.WriteLine("error here: 4");
+                return new ObjectResult(example);
+            }
+            Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
+            Author famous = follower;
+            if (payload.Follow != null)
+            {
+                famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+            }
+            else if(payload.Unfollow != null)
+            {
+                famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Unfollow);
+            }
+            else
+            {
+                Console.WriteLine("there's a problem..");
+            }
+            Console.WriteLine(payload.Follow);
+            Console.WriteLine(payload.Unfollow);
+            Console.WriteLine("Next round");
+            
+            if (follower.Follows.Contains(famous.AuthorId)) 
+            {
+                _authorRepository.RemoveFollowerId(follower, famous.AuthorId);
+            } else
+            {
+                _authorRepository.AddFollowerId(follower, famous.AuthorId);
+                
+            }
 
-            //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(204);
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
 
-            throw new NotImplementedException();
+            single.latest = (int)latest;
+            return StatusCode(200);
+
         }
 
         /// <summary>
@@ -221,12 +326,22 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> PostMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]PostMessage payload, [FromQuery (Name = "latest")]int? latest)
         {
+            if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
+            {
+                string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
+                var example = error != null
+                ? JsonConvert.DeserializeObject<ErrorResponse>(error)
+                : default;
+                single.latest = (int)latest;
+                Console.WriteLine("error here: 5");
+                return new ObjectResult(example);
+            }
 
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
-            _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
+            await _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
             single.latest = (int)latest;
             return StatusCode(200);
         }

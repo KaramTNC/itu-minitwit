@@ -8,7 +8,7 @@ from contextlib import closing
 
 
 BASE_URL = 'http://127.0.0.1:8080'
-DATABASE = "/home/tim/Desktop/minitwit.db"
+DATABASE = "src/Web/chat.db"
 USERNAME = 'simulator'
 PWD = 'super_safe!'
 CREDENTIALS = ':'.join([USERNAME, PWD]).encode('ascii')
@@ -27,8 +27,8 @@ def init_db():
 
 
 # Empty the database and initialize the schema again
-Path(DATABASE).unlink()
-init_db()
+#Path(DATABASE).unlink()
+#init_db()
 
 
 def test_latest():
@@ -97,7 +97,7 @@ def test_get_latest_user_msgs():
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 3
 
-"""
+
 def test_get_latest_msgs():
     username = 'a'
     query = {'no': 20, 'latest': 4}
@@ -196,4 +196,4 @@ def test_a_unfollows_b():
     # verify that latest was updated
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 11
-"""
+
