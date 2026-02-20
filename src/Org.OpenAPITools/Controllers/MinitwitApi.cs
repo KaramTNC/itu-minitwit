@@ -213,17 +213,24 @@ namespace Org.OpenAPITools.Controllers
         [ValidateModelState]
         [SwaggerOperation("PostFollow")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
-        public virtual IActionResult PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
+        public virtual async Task<IActionResult> PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
         {
+            Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
+            Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+            
+            if (famous.Follows.Contains(follower.AuthorId)) 
+            {
+                _authorRepository.RemoveFollowerId(famous, follower.AuthorId);
+            } else
+            {
+                _authorRepository.AddFollowerId(famous, follower.AuthorId);
+                
+            }
 
-            //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(204);
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
 
-            throw new NotImplementedException();
+            single.latest = (int)latest;
+            return StatusCode(200);
+
         }
 
         /// <summary>

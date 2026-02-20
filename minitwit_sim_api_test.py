@@ -147,7 +147,7 @@ def test_register_c():
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 6
 
-"""
+
 def test_follow_user():
     username = 'a'
     url = f'{BASE_URL}/fllws/{username}'
@@ -196,4 +196,4 @@ def test_a_unfollows_b():
     # verify that latest was updated
     response = requests.get(f'{BASE_URL}/latest', headers=HEADERS)
     assert response.json()['latest'] == 11
-"""
+
