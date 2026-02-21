@@ -31,10 +31,15 @@ jobs:
         with:
             ruby-version: 3.3.6
 
-      - name: Install Vagrant and DigitalOcean plugin
+      - name: Install Vagrant and DigitalOcean plugin (+ patch i18n gem with latest version)
         run: |
-          wget -O vagrant.deb https://releases.hashicorp.com/vagrant/2.4.1/vagrant_2.4.1-1_amd64.deb
-          sudo dpkg -i vagrant.deb
+          wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg 
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install vagrant
+
+          sudo /opt/vagrant/embedded/bin/gem install i18n -v 1.14.8 --install-dir /tmp/patched_gems
+          sudo cp -a /tmp/patched_gems/gems/i18n-1.14.8/. /opt/vagrant/embedded/gems/gems/i18n-1.14.7/
+
           vagrant plugin install vagrant-digitalocean
       
       - name: Run Vagrant
