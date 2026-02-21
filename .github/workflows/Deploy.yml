@@ -36,8 +36,13 @@ jobs:
           wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg 
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
           sudo apt update && sudo apt install vagrant
-          vagrant plugin update
           vagrant plugin install vagrant-digitalocean
+      
+      - name: Install latest version of i18n gem into Vagrant gems folder
+        run: |
+          rm -rf /opt/vagrant/embedded/gems/gems/i18n-*
+          gem install i18n
+          cp -a /usr/lib/ruby/gems/3.4.0/gems/i18n-1.14.8/. /opt/vagrant/embedded/gems/gems/i18n-1.14.8/
 
       - name: Run Vagrant
         env:
