@@ -13,6 +13,7 @@
 /test/SupportScripts/bin/
 /test/SupportScripts/obj/
 /.idea/
+/__pycache__/
 
 /bin
 /obj
