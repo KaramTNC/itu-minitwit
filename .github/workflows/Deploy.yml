@@ -55,4 +55,4 @@ jobs:
           fi
           echo "Ruby version: $(ruby -v)"
           echo "Vagrant version: $(vagrant -v)"
-          vagrant provision
+          vagrant provision --debug
