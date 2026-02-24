@@ -1,0 +1,38 @@
+name: Build & Test
+
+# Run on any push and pull request in the repository
+on: 
+  push:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix: 
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      # Setup
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      
+      # Restore and Build
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      
+      # Test
+      - name: Playwright Browsers
+        run: pwsh test/End2EndTests/bin/Debug/net8.0/playwright.ps1 install --with-deps
+      - name: Test
+        env:
+          CI: true
+        run: dotnet test --no-build --verbosity normal

@@ -1,0 +1,34 @@
+name: Deploy
+
+# Run only on Main and when the BuildTest workflow succeeds
+on:
+  push:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Build & Test]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  vagrant-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Copy repository files to server
+        run: |
+          scp -o StrictHostKeyChecking=no -r ./* root@46.101.201.186:/vagrant/
+          scp -o StrictHostKeyChecking=no -r ./* root@165.22.66.118:/vagrant/
+
+      
