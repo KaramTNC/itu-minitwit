@@ -26,33 +26,9 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      # - name: Install Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #       ruby-version: 3.3.6
-
-      - name: Install Vagrant and DigitalOcean plugin (+ patch i18n gem with latest version)
+      - name: Copy repository files to server
         run: |
-          wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg 
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install vagrant
+          scp -o StrictHostKeyChecking=no -r ./* root@46.101.201.186:/vagrant/
+          scp -o StrictHostKeyChecking=no -r ./* root@165.22.66.118:/vagrant/
 
-          sudo /opt/vagrant/embedded/bin/gem install i18n -v 1.14.8 --install-dir /tmp/patched_gems
-          sudo rm -rf /opt/vagrant/embedded/gems/gems/i18n-1.14.7/*
-          sudo cp -a /tmp/patched_gems/gems/i18n-1.14.8/. /opt/vagrant/embedded/gems/gems/i18n-1.14.7/
-
-          vagrant plugin install vagrant-digitalocean
       
-      - name: Run Vagrant
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_KEY_NAME: ${{ secrets.SSH_KEY_NAME }}
-          DIGITAL_OCEAN_TOKEN: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
-        run: |
-          if [ -z "$SSH_KEY" ] || [ -z "$SSH_KEY_NAME" ] || [ -z "$DIGITAL_OCEAN_TOKEN" ]; then
-            echo "Error: One or more required environment variables (SSH_KEY, SSH_KEY_NAME, DIGITAL_OCEAN_TOKEN) are missing."
-            exit 1
-          fi
-          echo "Ruby version: $(ruby -v)"
-          echo "Vagrant version: $(vagrant -v)"
-          vagrant provision --debug
