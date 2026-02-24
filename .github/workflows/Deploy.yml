@@ -26,10 +26,10 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Install Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-            ruby-version: 3.3.6
+      # - name: Install Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #       ruby-version: 3.3.6
 
       - name: Install Vagrant and DigitalOcean plugin (+ patch i18n gem with latest version)
         run: |
