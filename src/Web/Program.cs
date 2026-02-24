@@ -35,6 +35,7 @@ public class Program
             catch (InvalidOperationException) { }
         
             context.Database.EnsureCreated();
+            //has to say commented out for working with the devops
             //DbInitializer.SeedDatabase(context);
         }
 
