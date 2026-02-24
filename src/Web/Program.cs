@@ -35,7 +35,7 @@ public class Program
             catch (InvalidOperationException) { }
         
             context.Database.EnsureCreated();
-            DbInitializer.SeedDatabase(context);
+            //DbInitializer.SeedDatabase(context);
         }
 
         app.Run();
