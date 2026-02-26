@@ -55,7 +55,7 @@ namespace Org.OpenAPITools.Controllers
         [Route("/fllws/{username}")]
         [ValidateModelState]
         [SwaggerOperation("GetFollow")]
-        [SwaggerResponse(statusCode: 200, type: typeof(FollowsResponse), description: "Success")]
+        [SwaggerResponse(statusCode: 204, type: typeof(FollowsResponse), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public async virtual Task<IActionResult> GetFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
@@ -204,7 +204,7 @@ namespace Org.OpenAPITools.Controllers
         [Route("/msgs/{username}")]
         [ValidateModelState]
         [SwaggerOperation("GetMessagesPerUser")]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<Message>), description: "Success")]
+        [SwaggerResponse(statusCode: 204, type: typeof(List<Message>), description: "Success")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> GetMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
@@ -304,7 +304,7 @@ namespace Org.OpenAPITools.Controllers
 
 
             single.latest = (int)latest;
-            return StatusCode(200);
+            return StatusCode(204);
 
         }
 
@@ -343,7 +343,7 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(403, default);
             await _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
             single.latest = (int)latest;
-            return StatusCode(200);
+            return StatusCode(204);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace Org.OpenAPITools.Controllers
         [ValidateModelState]
         [SwaggerOperation("PostRegister")]
         [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken")]
-        public virtual IActionResult PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
+        public virtual async Task<IActionResult> PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
         {
             
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -373,7 +373,7 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
             
             
-            return StatusCode(200);
+            return StatusCode(204);
         }
     }
 }
