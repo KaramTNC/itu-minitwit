@@ -1,17 +1,43 @@
-services:
-  webserver:
-    image: itu-minitwit/myserver
-    ports:
-      - "8080:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+networks:
+  main:
+    name: itu-minitwit-network
 
-  clidownload:
-    image: appropriate/curl
-    depends_on:
-      webserver:
-        condition: service_healthy
-    entrypoint: sh -c "curl -s http://webserver:8080"
+volumes:
+  prometheus_data:
+
+services:
+  # webserver:
+  #   image: 98w43rh48h8h/itu-minitwit-api
+  #   ports:
+  #     - "8080:8080"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
+  # clidownload:
+  #   image: appropriate/curl
+  #   depends_on:
+  #     webserver:
+  #       condition: service_healthy
+  #   entrypoint: sh -c "curl -s http://webserver:8080"
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    # using host mode allows the container to access the ports from the local machine, so it can access the endpoint from dotnet's OpenTelemetry server.
+    # Later, I'm almost sure we'll have to replace this with the URL from the DigitalOcean server (http://46.101.201.186:8080:9184/metrics)
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    # no networks section needed when using host network
+    # networks:
+    #   - main
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"  
+    networks:
+      - main
