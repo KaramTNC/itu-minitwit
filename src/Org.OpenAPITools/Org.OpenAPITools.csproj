@@ -21,6 +21,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
         <PackageReference Include="JsonSubTypes" Version="1.8.0" />
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.3" />
     </ItemGroup>
     <ItemGroup>
         <!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />-->

@@ -26,6 +26,7 @@
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.3" />
     </ItemGroup>
 
     <ItemGroup>
