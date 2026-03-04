@@ -23,4 +23,5 @@
 
 .local_vm/*
 .vagrant/*
-**/__pycache__/*
+**/__pycache__/**.tar.gz
+*.tar.gz
