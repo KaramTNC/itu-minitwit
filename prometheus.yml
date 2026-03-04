@@ -18,10 +18,15 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'OpenTelemetryTest'
+  - job_name: 'OpenTelemetryTest-frontend'
     scrape_interval: 1s # poll very quickly for a more responsive demo
     static_configs:
       - targets: ['localhost:9184']
+
+  - job_name: 'OpenTelemetryTest-API'
+    scrape_interval: 1s # poll very quickly for a more responsive demo
+    static_configs:
+      - targets: ['localhost:9185']
 
   # - job_name:       'itu-minitwit-app'
 
