@@ -12,7 +12,7 @@ public class CheepRepositoryTests
 
     public CheepRepositoryTests()
     {
-        // Here we generate a sqlite in memory db could be smart to make a support class.
+        // Here we generate a in memory db could be smart to make a support class.
         // that all tests call to create a test db to reduce code duplicationæ.
 
         _cheepRepository = _memoryDb.GetCheepRepository();

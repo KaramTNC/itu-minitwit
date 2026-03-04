@@ -4,6 +4,7 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace SupportScripts;
 
@@ -17,7 +18,7 @@ public class MemoryDbFactory
     {
         var connection = new SqliteConnection("Filename=:memory:");
         connection.Open();
-        var builder = new DbContextOptionsBuilder<ChatDbContext>().UseSqlite(connection);
+        var builder = new DbContextOptionsBuilder<ChatDbContext>().UseNpgsql(connection);
 
         _context = new ChatDbContext(builder.Options);
         _context.Database.EnsureCreated();

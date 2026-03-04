@@ -27,7 +27,7 @@ public class Program
         
             try
             {
-                if (context.Database.IsSqlite())
+                if (context.Database.IsNpgsql())
                 {
                     context.Database.OpenConnection();
                 }
@@ -142,13 +142,13 @@ public class Program
         if (builder.Environment.IsEnvironment("Testing"))
         {
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite("DataSource=TestDb;Mode=Memory;Cache=Shared"));
+                options.UseNpgsql("DataSource=TestDb;Mode=Memory;Cache=Shared"));
         }
         else
         {
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite(connectionString));
+                options.UseNpgsql(connectionString));
         }
 
         // CRITICAL FIX: Use AddIdentity instead of AddDefaultIdentity
