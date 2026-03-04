@@ -18,7 +18,7 @@ public class MemoryDbFactory
     {
         var connection = new SqliteConnection("Filename=:memory:");
         connection.Open();
-        var builder = new DbContextOptionsBuilder<ChatDbContext>().UseNpgsql(connection);
+        var builder = new DbContextOptionsBuilder<ChatDbContext>().UseSqlite(connection);
 
         _context = new ChatDbContext(builder.Options);
         _context.Database.EnsureCreated();

@@ -142,7 +142,7 @@ public class Program
         if (builder.Environment.IsEnvironment("Testing"))
         {
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseNpgsql("DataSource=TestDb;Mode=Memory;Cache=Shared"));
+                options.UseSqlite("DataSource=TestDb;Mode=Memory;Cache=Shared"));
         }
         else
         {
