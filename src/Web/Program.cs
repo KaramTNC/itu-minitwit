@@ -5,6 +5,7 @@ using Infrastructure.Services;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Npgsql;
 
 namespace Web;
 
@@ -146,7 +147,11 @@ public class Program
         }
         else
         {
-            string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            string? envVarName = builder.Configuration.GetConnectionString("DefaultConnection");
+            if (envVarName == null) throw new Exception("DefaultConnection key not found in appsettings");
+
+            var connectionString = ToNpgsqlConnectionString(Environment.GetEnvironmentVariable(envVarName)!);
+
             builder.Services.AddDbContext<ChatDbContext>(options =>
                 options.UseNpgsql(connectionString));
         }
@@ -242,5 +247,16 @@ public class Program
         app.MapRazorPages();
 
         return app;
+    }
+    
+    static string ToNpgsqlConnectionString(string uri)
+    {
+        var u = new Uri(uri);
+        var userInfo = u.UserInfo.Split(':');
+        var db = u.AbsolutePath.TrimStart('/');
+        var query = System.Web.HttpUtility.ParseQueryString(u.Query);
+        var sslMode = query["sslmode"] ?? "Require";
+
+        return $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
     }
 }
