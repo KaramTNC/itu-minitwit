@@ -101,7 +101,7 @@ namespace Org.OpenAPITools
                 services
                     .AddSwaggerGenNewtonsoftSupport();
                 services.AddDbContext<ChatDbContext>(options =>
-                    options.UseSqlite("Data Source=../Web/chat.db"));
+                    options.UseSqlite(""));
         }
 
         /// <summary>
