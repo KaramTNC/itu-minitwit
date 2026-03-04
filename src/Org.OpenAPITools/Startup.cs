@@ -98,10 +98,14 @@ namespace Org.OpenAPITools
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
+
+                var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH") 
+                ?? "../Web/chat.db";
+
                 services
                     .AddSwaggerGenNewtonsoftSupport();
                 services.AddDbContext<ChatDbContext>(options =>
-                    options.UseSqlite("Data Source=../Web/chat.db"));
+                    options.UseSqlite($"Data Source={dbPath}"));
         }
 
         /// <summary>

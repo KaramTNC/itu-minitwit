@@ -11,13 +11,14 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Copy the code into the container
 WORKDIR /src
-COPY Core/Core.csproj Core/
-COPY Infrastructure/Infrastructure.csproj Infrastructure/
-COPY Org.OpenAPITools/Org.OpenAPITools.csproj Org.OpenAPITools/
+COPY src/Core/Core.csproj Core/
+COPY src/Web/Web.csproj Web/
+COPY src/Infrastructure/Infrastructure.csproj Infrastructure/
+COPY src/Org.OpenAPITools/Org.OpenAPITools.csproj Org.OpenAPITools/
 # NuGet restore
 RUN dotnet restore "Org.OpenAPITools/Org.OpenAPITools.csproj"
 
-COPY . .
+COPY /src .
 
 # Build the API
 WORKDIR "/src/Org.OpenAPITools" 
