@@ -62,6 +62,8 @@ namespace Org.OpenAPITools.Controllers
         {
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
+                single.IncrementGetFollowersCounter();
+
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
                 var example = error != null
                 ? JsonConvert.DeserializeObject<ErrorResponse>(error)
@@ -154,6 +156,7 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
+            single.IncrementGetMessagesCounter();
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -212,6 +215,8 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> GetMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
+            single.IncrementGetMessagesPerUserCounter();
+
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -269,6 +274,8 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
         {
+            single.IncrementPostFollowersCounter();
+
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -330,8 +337,12 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> PostMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]PostMessage payload, [FromQuery (Name = "latest")]int? latest)
         {
+            single.IncrementPostMessagesPerUserCounter();
+            
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
+                single.IncrementPostMessagesPerUserCounter();
+
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
                 var example = error != null
                 ? JsonConvert.DeserializeObject<ErrorResponse>(error)
@@ -366,7 +377,8 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken")]
         public virtual async Task<IActionResult> PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
         {
-            
+            single.IncrementPostRegisterCounter();
+
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...

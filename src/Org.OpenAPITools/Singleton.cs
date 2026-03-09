@@ -6,9 +6,40 @@ public sealed class Singleton
 
     public int latest = 0;
     static Meter s_meter = new("API", "1.0.0");
-    static Counter<int> s_latestRequestCounter = s_meter.CreateCounter<int>(
-        name: "latest_request_count",
+
+    static Counter<int> s_getFollowersRequestCounter = s_meter.CreateCounter<int>(
+        name: "get_followers_request_count",
+        description: "Number of GET requests to the /fllws endpoint",
+        unit: "requests");
+
+    static Counter<int> s_postFollowersRequestCounter = s_meter.CreateCounter<int>(
+        name: "post_followers_request_count",
+        description: "Number of POST requests to the /fllws endpoint",
+        unit: "requests");
+
+    static Counter<int> s_getLatestRequestCounter = s_meter.CreateCounter<int>(
+        name: "get_latest_request_count",
         description: "Number of requests to the /latest endpoint",
+        unit: "requests");
+
+    static Counter<int> s_getMessagesRequestCounter = s_meter.CreateCounter<int>(
+        name: "get_messages_request_count",
+        description: "Number of GET requests to the /msgs endpoint",
+        unit: "requests");
+
+    static Counter<int> s_getMessagesPerUserCounter = s_meter.CreateCounter<int>(
+        name: "get_messages_per_user_count",
+        description: "Number of GET requests to the /msgs/{username} endpoint",
+        unit: "requests");
+
+    static Counter<int> s_postMessagesPerUserRequestCounter = s_meter.CreateCounter<int>(
+        name: "post_messages_per_user_request_count",
+        description: "Number of POST requests to the /msgs/{username} endpoint",
+        unit: "requests");
+
+    static Counter<int> s_postRegisterRequestCounter = s_meter.CreateCounter<int>(
+        name: "post_register_request_count",
+        description: "Number of POST requests to the /register endpoint",
         unit: "requests");
 
     // Explicit static constructor to tell C# compiler
@@ -32,6 +63,36 @@ public sealed class Singleton
 
     public void IncrementLatestCounter()
     {
-        s_latestRequestCounter.Add(1);
+        s_getLatestRequestCounter.Add(1);
+    }
+
+    public void IncrementGetFollowersCounter()
+    {
+        s_getFollowersRequestCounter.Add(1);
+    }
+
+    public void IncrementPostFollowersCounter()
+    {
+        s_postFollowersRequestCounter.Add(1);
+    }
+
+    public void IncrementGetMessagesCounter()
+    {
+        s_getMessagesRequestCounter.Add(1);
+    }
+
+    public void IncrementGetMessagesPerUserCounter()
+    {
+        s_getMessagesPerUserCounter.Add(1);
+    }
+
+    public void IncrementPostMessagesPerUserCounter()
+    {
+        s_postMessagesPerUserRequestCounter.Add(1);
+    }
+
+    public void IncrementPostRegisterCounter()
+    {
+        s_postRegisterRequestCounter.Add(1);
     }
 }
