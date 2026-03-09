@@ -4,6 +4,7 @@ networks:
 
 volumes:
   prometheus_data:
+  grafana-storage:
 
 services:
   # webserver:
@@ -43,6 +44,9 @@ services:
     network_mode: "host"
     ports:
       - "3000:3000"  
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
 # no networks section needed when using host network
     # networks:
     #   - main
