@@ -60,16 +60,16 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public async virtual Task<IActionResult> GetFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
-            single.IncrementGetFollowersCounter();
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
-
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
                 var example = error != null
                 ? JsonConvert.DeserializeObject<ErrorResponse>(error)
                 : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 1");
+
+                single.IncrementGetFollowersCounter((int)example.Status);
                 return new ObjectResult(example);
             }
 
@@ -104,6 +104,8 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
             Console.WriteLine("helpp");
             Console.WriteLine(exampleJson);
+
+            single.IncrementGetFollowersCounter(JsonConvert.DeserializeObject<ErrorResponse>(exampleJson)?.Status ?? 200);
             return new ObjectResult(exampleJson);
         }
 
@@ -126,8 +128,6 @@ namespace Org.OpenAPITools.Controllers
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
 
-            single.IncrementLatestCounter();
-
             string exampleJson = null;
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
@@ -136,7 +136,9 @@ namespace Org.OpenAPITools.Controllers
             ? JsonConvert.DeserializeObject<LatestValue>(exampleJson)
             : default;
             //TODO: Change the data returned
-            return new ObjectResult(example);
+            ObjectResult result = new ObjectResult(example);
+            single.IncrementLatestCounter(result.StatusCode ?? 200);
+            return result;
         }
 
         /// <summary>
@@ -156,8 +158,6 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
-            single.IncrementGetMessagesCounter();
-
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -166,6 +166,7 @@ namespace Org.OpenAPITools.Controllers
                 : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 2");
+                single.IncrementGetMessagesCounter((int)nuhuh.Status);
                 return new ObjectResult(nuhuh);
             }
 
@@ -194,7 +195,9 @@ namespace Org.OpenAPITools.Controllers
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
             single.latest = (int)latest;
-            return new ObjectResult(example);
+            var result = new ObjectResult(example);
+            single.IncrementGetMessagesCounter(result.StatusCode ?? 200);
+            return result;
         }
 
         /// <summary>
@@ -216,8 +219,6 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> GetMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
-            single.IncrementGetMessagesPerUserCounter();
-
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -226,6 +227,7 @@ namespace Org.OpenAPITools.Controllers
                 : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 3");
+                single.IncrementGetMessagesPerUserCounter((int)nuhuh.Status);
                 return new ObjectResult(nuhuh);
             }
 
@@ -253,7 +255,9 @@ namespace Org.OpenAPITools.Controllers
             ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
             : default;
             single.latest = (int)latest;
-            return new ObjectResult(example);
+            var result = new ObjectResult(example);
+            single.IncrementGetMessagesPerUserCounter(result.StatusCode ?? 200);
+            return result;
         }
 
         /// <summary>
@@ -275,8 +279,6 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> PostFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]FollowAction payload, [FromQuery (Name = "latest")]int? latest)
         {
-            single.IncrementPostFollowersCounter();
-
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -285,7 +287,9 @@ namespace Org.OpenAPITools.Controllers
                 : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 4");
-                return new ObjectResult(example);
+                var result = new ObjectResult(example);
+                single.IncrementPostFollowersCounter(result.StatusCode ?? 200);
+                return result;
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
             Author famous = follower;
@@ -314,9 +318,11 @@ namespace Org.OpenAPITools.Controllers
                 
             }
 
-
             single.latest = (int)latest;
-            return StatusCode(204);
+
+            var statusCode = 204;
+            single.IncrementPostFollowersCounter(statusCode);
+            return StatusCode(statusCode);
 
         }
 
@@ -338,8 +344,6 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public virtual async Task<IActionResult> PostMessagesPerUser([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromBody]PostMessage payload, [FromQuery (Name = "latest")]int? latest)
         {
-            single.IncrementPostMessagesPerUserCounter();
-            
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -348,6 +352,7 @@ namespace Org.OpenAPITools.Controllers
                 : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 5");
+                single.IncrementPostMessagesPerUserCounter((int)example.Status);
                 return new ObjectResult(example);
             }
 
@@ -357,7 +362,10 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(403, default);
             await _cheepRepository.CreateCheep(await _authorRepository.ReturnBasedOnNameAsync(username), payload.Content);
             single.latest = (int)latest;
-            return StatusCode(204);
+
+            var statusCode = 204;
+            single.IncrementPostMessagesPerUserCounter(statusCode);
+            return StatusCode(statusCode);
         }
 
         /// <summary>
@@ -376,8 +384,6 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken")]
         public virtual async Task<IActionResult> PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
         {
-            single.IncrementPostRegisterCounter();
-
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -387,7 +393,8 @@ namespace Org.OpenAPITools.Controllers
             
             single.latest = (int)latest;
             
-            
+            var statusCode = 204;
+            single.IncrementPostRegisterCounter(statusCode);
             return StatusCode(204);
         }
     }

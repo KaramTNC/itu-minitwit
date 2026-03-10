@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 
 public sealed class Singleton
@@ -61,38 +62,38 @@ public sealed class Singleton
         }
     }
 
-    public void IncrementLatestCounter()
+    public void IncrementLatestCounter(int statusCode)
     {
-        s_getLatestRequestCounter.Add(1);
+        s_getLatestRequestCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 
-    public void IncrementGetFollowersCounter()
+    public void IncrementGetFollowersCounter(int statusCode)
     {
-        s_getFollowersRequestCounter.Add(1);
+        s_getFollowersRequestCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 
-    public void IncrementPostFollowersCounter()
+    public void IncrementPostFollowersCounter(int statusCode)
     {
-        s_postFollowersRequestCounter.Add(1);
+        s_postFollowersRequestCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 
-    public void IncrementGetMessagesCounter()
+    public void IncrementGetMessagesCounter(int statusCode)
     {
-        s_getMessagesRequestCounter.Add(1);
+        s_getMessagesRequestCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 
-    public void IncrementGetMessagesPerUserCounter()
+    public void IncrementGetMessagesPerUserCounter(int statusCode)
     {
-        s_getMessagesPerUserCounter.Add(1);
+        s_getMessagesPerUserCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 
-    public void IncrementPostMessagesPerUserCounter()
+    public void IncrementPostMessagesPerUserCounter(int statusCode)
     {
-        s_postMessagesPerUserRequestCounter.Add(1);
+        s_postMessagesPerUserRequestCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 
-    public void IncrementPostRegisterCounter()
+    public void IncrementPostRegisterCounter(int statusCode)
     {
-        s_postRegisterRequestCounter.Add(1);
+        s_postRegisterRequestCounter.Add(1, new KeyValuePair<string, object?>("status_code", statusCode.ToString()));
     }
 }
