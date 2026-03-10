@@ -317,31 +317,44 @@ namespace Org.OpenAPITools.Controllers
                 return new ObjectResult(example);
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
-            Author famous = follower;
+            if (follower == null)
+            {
+                return NotFound();
+            }
+
             if (payload.Follow != null)
             {
-                famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+                Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+                if (famous == null)
+                {
+                    return NotFound();
+                }
+                _authorRepository.AddFollowerId(follower, famous.AuthorId);
             }
             else if (payload.Unfollow != null)
             {
-                famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Unfollow);
-            }
-            else
-            {
-                Console.WriteLine("there's a problem..");
-            }
-            Console.WriteLine(payload.Follow);
-            Console.WriteLine(payload.Unfollow);
-            Console.WriteLine("Next round");
-
-            if (follower.Follows.Contains(famous.AuthorId))
-            {
+                Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+                if (famous == null)
+                {
+                    return NotFound();
+                }
                 _authorRepository.RemoveFollowerId(follower, famous.AuthorId);
             }
             else
             {
-                _authorRepository.AddFollowerId(follower, famous.AuthorId);
+                return BadRequest(
+                    new
+                    {
+                        status = 400,
+                        error_msg = "Request must contain either 'follow' or 'unfollow'",
+                    }
+                );
             }
+
+            Console.WriteLine(username);
+            Console.WriteLine(payload);
+            Console.WriteLine(payload);
+            Console.WriteLine("Next round");
 
             single.latest = (int)latest;
             return StatusCode(204);
