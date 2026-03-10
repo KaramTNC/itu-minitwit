@@ -317,33 +317,39 @@ namespace Org.OpenAPITools.Controllers
                 return new ObjectResult(example);
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
-            if (follower == null) {
+            if (follower == null)
+            {
                 return NotFound();
             }
-            
+
             if (payload.Follow != null)
             {
                 Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
-                if (famous == null) {
-                return NotFound();
+                if (famous == null)
+                {
+                    return NotFound();
                 }
                 _authorRepository.AddFollowerId(follower, famous.AuthorId);
             }
-            else if(payload.Unfollow != null)
+            else if (payload.Unfollow != null)
             {
                 Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
-                if (famous == null) {
-                return NotFound();
+                if (famous == null)
+                {
+                    return NotFound();
                 }
                 _authorRepository.RemoveFollowerId(follower, famous.AuthorId);
             }
-            
             else
             {
-                return BadRequest(new { status = 400, error_msg = "Request must contain either 'follow' or 'unfollow'" });
+                return BadRequest(
+                    new
+                    {
+                        status = 400,
+                        error_msg = "Request must contain either 'follow' or 'unfollow'",
+                    }
+                );
             }
-            
-            
 
             Console.WriteLine(username);
             Console.WriteLine(payload);
