@@ -13,7 +13,7 @@ public interface ICheepService
     /// <param name="page">Page to look up</param>
     /// <returns>List of Cheeps</returns>
     public Task<List<Cheep>> GetCheeps(int page);
-    
+
     /// <summary>
     /// Get a List of All Cheeps from a specific Author ID
     /// </summary>
@@ -21,7 +21,7 @@ public interface ICheepService
     /// <param name="page">Page to look up</param>
     /// <returns>List of Cheeps filered by Author ID</returns>
     public Task<List<Cheep>> GetCheepsFromAuthorId(int authorId, int page);
-    
+
     /// <summary>
     /// Get a List of Cheeps from a list of Author IDs
     /// </summary>
@@ -29,7 +29,7 @@ public interface ICheepService
     /// <param name="page">Page to look up</param>
     /// <returns>List of Cheeps filtered by list of Author IDs</returns>
     public Task<List<Cheep>> GetCheepsFromFollowed(List<int> follows, int page);
-    
+
     /// <summary>
     /// Get an Author object from a specific authorName
     /// </summary>
@@ -37,14 +37,14 @@ public interface ICheepService
     /// <param name="page">Page to lookup</param>
     /// <returns>Author object</returns>
     public Task<Author> GetAuthorFromName(string authorName, int page);
-    
+
     /// <summary>
     /// Get an AuthorID based on a matching email
     /// </summary>
     /// <param name="email">String email to fetch from</param>
     /// <returns>Integer id for an author</returns>
     public Task<int> GetAuthorId(string email);
-    
+
     /// <summary>
     /// Get an Author object if it exists, from a specific email
     /// </summary>
@@ -52,14 +52,14 @@ public interface ICheepService
     /// <param name="page">Page to look up</param>
     /// <returns>Author object</returns>
     public Task<Author?> GetEmail(string email, int page);
-    
+
     /// <summary>
     /// Get a list of AuthorIDs that a specified Author follows via its email
     /// </summary>
     /// <param name="email">Author's email to fetch from</param>
     /// <returns>List of AuthorIDs that have been followed</returns>
     public Task<List<int>> GetFollowers(string email);
-    
+
     /// <summary>
     /// Create a Cheep object given an author's email and their message
     /// </summary>
@@ -67,28 +67,28 @@ public interface ICheepService
     /// <param name="msg">String message</param>
     /// <returns></returns>
     public Task CreateCheep(string email, string msg);
-    
+
     /// <summary>
     /// Create a new Author given a name and email
     /// </summary>
     /// <param name="author">Author name</param>
     /// <param name="email">Author email</param>
     public void CreateAuthor(string author, string email);
-    
+
     /// <summary>
     /// Add a new authorID to a specific Author's list of Following
     /// </summary>
     /// <param name="author">Author object to add to</param>
     /// <param name="id">authorID to add</param>
     public void AddFollowerId(Author author, int id);
-    
+
     /// <summary>
     /// Remove an authorID from a specific Author's list of Following
     /// </summary>
     /// <param name="author">Author object to remove from</param>
     /// <param name="id">authorID to remove</param>
     public void RemoveFollowerId(Author author, int id);
-    
+
     /// <summary>
     /// Delete an Author from the database given its email
     /// </summary>
@@ -120,8 +120,12 @@ public interface ICheepService
     /// <param name="userTimelineAuthor">The UserTimeline's Author</param>
     /// <param name="page">Page to lookup</param>
     /// <returns>List of CheepViewModels</returns>
-    public Task<List<CheepViewModel>> GetUserTimelineCheeps(string userEmail, Author userTimelineAuthor, int page);
-    
+    public Task<List<CheepViewModel>> GetUserTimelineCheeps(
+        string userEmail,
+        Author userTimelineAuthor,
+        int page
+    );
+
     /// <summary>
     /// Get a list of CheepViewModels for the current User
     /// </summary>
@@ -151,21 +155,21 @@ public interface ICheepService
     /// <param name="userEmail">User's email</param>
     /// <returns></returns>
     public Task UpdateCheepLikes(int cheepId, string userEmail);
-    
+
     /// <summary>
     /// Get the Liked List of authorIDs that a Cheep contains
     /// </summary>
     /// <param name="cheepId">CheepID to check from</param>
     /// <returns>List of LikeIDs</returns>
     public Task<List<int>> GetCheepLikesAmount(int cheepId);
-    
+
     /// <summary>
     /// Get a List of CheepViewModel for the User's Liked Cheeps
     /// </summary>
     /// <param name="userEmail">User's email</param>
     /// <returns>List of Liked CheepViewModel</returns>
     public Task<List<CheepViewModel>> GetLikedCheepsForAuthor(string userEmail);
-    
+
     /// <summary>
     /// Get an Author matching their email
     /// </summary>

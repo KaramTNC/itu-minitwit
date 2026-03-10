@@ -18,20 +18,20 @@ ENABLE_LINTERS:
   - YAML_PRETTIER
 
   # Python
-  - PYTHON_RUFF          # Fast linter + formatter (replaces flake8/isort/pyupgrade)
-  - PYTHON_MYPY          # Type checking
-  - PYTHON_BANDIT        # Security scanning
-  - PYTHON_BLACK         # Code formatting
+  - PYTHON_RUFF # Fast linter + formatter (replaces flake8/isort/pyupgrade)
+  - PYTHON_MYPY # Type checking
+  - PYTHON_BANDIT # Security scanning
+  - PYTHON_BLACK # Code formatting
 
   # Bash / Shell
-  - BASH_SHELLCHECK      # Bug & style checking
-  - BASH_SHFMT           # Formatting
+  - BASH_SHELLCHECK # Bug & style checking
+  - BASH_SHFMT # Formatting
 
   # Docker
-  - DOCKERFILE_HADOLINT  # Dockerfile best practices
+  - DOCKERFILE_HADOLINT # Dockerfile best practices
 
   # Vagrant
-  - RUBY_RUBOCOP         # Vagrantfiles are Ruby; RuboCop catches issues
+  - RUBY_RUBOCOP # Vagrantfiles are Ruby; RuboCop catches issues
 
   # JSON
   - JSON_JSONLINT
@@ -42,9 +42,9 @@ ENABLE_LINTERS:
   - MARKDOWN_MARKDOWN_LINK_CHECK
 
   # Repository-wide
-  - REPOSITORY_SECRETLINT  # Detect accidentally committed secrets
-  - REPOSITORY_TRIVY       # Vulnerability scanning
-  - REPOSITORY_CHECKOV     # IaC security (covers Dockerfiles, GitHub Actions, etc.)
+  - REPOSITORY_SECRETLINT # Detect accidentally committed secrets
+  - REPOSITORY_TRIVY # Vulnerability scanning
+  - REPOSITORY_CHECKOV # IaC security (covers Dockerfiles, GitHub Actions, etc.)
 
 SHOW_ELAPSED_TIME: true
 

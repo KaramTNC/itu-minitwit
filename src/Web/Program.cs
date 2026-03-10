@@ -1,16 +1,15 @@
 using Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
-using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web;
 
 public class Program
 {
-    
     /// <summary>
     /// Main Program to run
     /// </summary>
@@ -18,13 +17,13 @@ public class Program
     public static void Main(string[] args)
     {
         var app = BuildWebApplication(args);
-        
+
         //Initialise Database
         if (!app.Environment.IsEnvironment("Testing"))
         {
             using var scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
-        
+
             try
             {
                 if (context.Database.IsSqlite())
@@ -33,7 +32,7 @@ public class Program
                 }
             }
             catch (InvalidOperationException) { }
-        
+
             context.Database.EnsureCreated();
             //has to say commented out for working with the devops
             //DbInitializer.SeedDatabase(context);
@@ -49,7 +48,10 @@ public class Program
     /// <param name="environment">Optional environment to specify</param>
     /// <returns>Webapplication</returns>
     /// <exception cref="DirectoryNotFoundException">Cannot find Web directory</exception>
-    public static WebApplication BuildWebApplication(string[]? args = null, string? environment = null)
+    public static WebApplication BuildWebApplication(
+        string[]? args = null,
+        string? environment = null
+    )
     {
         var baseDir = AppContext.BaseDirectory;
         string webProjectPath;
@@ -85,13 +87,17 @@ public class Program
             }
             else
             {
-                webProjectPath = Path.GetFullPath(Path.Combine(baseDir, "..", "..", "..", "..", "..", "src", "Web"));
+                webProjectPath = Path.GetFullPath(
+                    Path.Combine(baseDir, "..", "..", "..", "..", "..", "src", "Web")
+                );
                 Console.WriteLine($"[Testing] Using fallback path: {webProjectPath}");
             }
 
             if (!Directory.Exists(webProjectPath))
             {
-                throw new DirectoryNotFoundException($"Web project directory not found at: {webProjectPath}");
+                throw new DirectoryNotFoundException(
+                    $"Web project directory not found at: {webProjectPath}"
+                );
             }
 
             var areasPath = Path.Combine(webProjectPath, "Areas");
@@ -127,13 +133,15 @@ public class Program
             webProjectPath = foundDir?.FullName ?? baseDir;
         }
 
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
-        {
-            Args = args ?? Array.Empty<string>(),
-            EnvironmentName = environment ?? Environments.Development,
-            ContentRootPath = webProjectPath,
-            WebRootPath = Path.Combine(webProjectPath, "wwwroot")
-        });
+        var builder = WebApplication.CreateBuilder(
+            new WebApplicationOptions()
+            {
+                Args = args ?? Array.Empty<string>(),
+                EnvironmentName = environment ?? Environments.Development,
+                ContentRootPath = webProjectPath,
+                WebRootPath = Path.Combine(webProjectPath, "wwwroot"),
+            }
+        );
 
         builder.Services.AddSession();
         builder.Services.AddDistributedMemoryCache();
@@ -142,39 +150,44 @@ public class Program
         if (builder.Environment.IsEnvironment("Testing"))
         {
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite("DataSource=TestDb;Mode=Memory;Cache=Shared"));
+                options.UseSqlite("DataSource=TestDb;Mode=Memory;Cache=Shared")
+            );
         }
         else
         {
-            string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            string? connectionString = builder.Configuration.GetConnectionString(
+                "DefaultConnection"
+            );
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite(connectionString));
+                options.UseSqlite(connectionString)
+            );
         }
 
         // CRITICAL FIX: Use AddIdentity instead of AddDefaultIdentity
         // AddDefaultIdentity includes AddDefaultUI() which forces the RCL and prevents scaffolded pages from working
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => 
-        {
-            options.SignIn.RequireConfirmedAccount = true;
-            // Add any other identity options you need
-            options.Password.RequireDigit = true;
-            options.Password.RequireLowercase = true;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequiredLength = 6;
-            options.Password.RequiredUniqueChars = 1;
-        })
-        .AddEntityFrameworkStores<ChatDbContext>()
-        .AddDefaultTokenProviders();  // Required for email confirmation, password reset, etc.
+        builder
+            .Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                // Add any other identity options you need
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+            })
+            .AddEntityFrameworkStores<ChatDbContext>()
+            .AddDefaultTokenProviders(); // Required for email confirmation, password reset, etc.
 
         builder.Services.AddTransient<IEmailSender, NoOpEmailSender>();
-        
+
         // Load User Secrets
         if (builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Testing"))
         {
             builder.Configuration.AddUserSecrets<Program>(optional: true);
         }
-        
+
         // Configure Razor Pages with runtime compilation
         var razorPagesBuilder = builder.Services.AddRazorPages(options =>
         {
@@ -190,8 +203,7 @@ public class Program
         }
 
         // Explicitly configure MVC to use the Web assembly
-        builder.Services.AddMvc()
-            .AddApplicationPart(typeof(Program).Assembly);
+        builder.Services.AddMvc().AddApplicationPart(typeof(Program).Assembly);
 
         builder.Services.AddScoped<ICheepService, CheepService>();
         builder.Services.AddScoped<ICheepRepository, CheepRepository>();
