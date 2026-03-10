@@ -36,12 +36,12 @@ ENABLE_LINTERS:
 
   # Markdown
   - MARKDOWN_MARKDOWNLINT
-  - MARKDOWN_MARKDOWN_LINK_CHECK  # Catches broken links
+  - MARKDOWN_MARKDOWN_LINK_CHECK
 
   # Repository-wide
   - REPOSITORY_SECRETLINT  # Detect accidentally committed secrets
   - REPOSITORY_TRIVY       # Vulnerability scanning
-  - REPOSITORY_CHECKOV     # IaC security (covers Dockerfiles, etc.)
+  - REPOSITORY_CHECKOV     # IaC security (covers Dockerfiles, GitHub Actions, etc.)
 
 SHOW_ELAPSED_TIME: true
 
@@ -54,6 +54,12 @@ PYTHON_MYPY_ARGUMENTS: --ignore-missing-imports
 
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
 
+# Skip OpenAPI security checks — this API is intentionally public with no auth
+# Skip CKV_OPENAPI_21 — maxItems constraints are not applicable to this API
+# Skip CKV2_GHA_1 — top-level permissions are managed at the job level in all workflows
+REPOSITORY_CHECKOV_ARGUMENTS: >-
+  --skip-check CKV_OPENAPI_4,CKV_OPENAPI_5,CKV_OPENAPI_21,CKV2_GHA_1
+
 # Paths/files to ignore globally
 FILTER_REGEX_EXCLUDE: >-
   (\.git/
@@ -64,7 +70,3 @@ FILTER_REGEX_EXCLUDE: >-
   |obj/
   |dist/
   |__pycache__)
-
-# Don't block CI on these noisier linters (adjust as you stabilise)
-# DISABLE_ERRORS_LINTERS:
-#   - MARKDOWN_MARKDOWN_LINK_CHECK

@@ -1,9 +1,8 @@
 name: Build & Test
 
 on:
+  push:
   pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -125,13 +124,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/playwright.ps1') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
           restore-keys: playwright-${{ runner.os }}-
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
+      # Playwright needs a local build to locate its assets — shared artifact is not sufficient
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
 
       - name: Install Playwright browsers
         run: pwsh test/End2EndTests/bin/Release/net8.0/playwright.ps1 install --with-deps
