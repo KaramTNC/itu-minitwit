@@ -6,20 +6,12 @@ public sealed class Singleton
 
     // Explicit static constructor to tell C# compiler
     // not to mark type as beforefieldinit
-    static Singleton()
-    {
-    }
+    static Singleton() { }
 
-    private Singleton()
-    {
-        
-    }
+    private Singleton() { }
 
     public static Singleton Instance
     {
-        get
-        {
-            return instance;
-        }
+        get { return instance; }
     }
 }

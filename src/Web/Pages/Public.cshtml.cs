@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Web.Pages;
+
 /// <summary>
 /// Handles the logic for the public/front page
 /// </summary>
@@ -21,12 +22,17 @@ public class PublicModel(ICheepService service) : PageModel
     /// <returns></returns>
     public async Task<ActionResult> OnGet([FromQuery] int page = 0)
     {
-        Cheeps = await _service.GetAllCheeps(User.Identity!.Name!, User.FindFirst(ClaimTypes.Email)?.Value!, page);
+        Cheeps = await _service.GetAllCheeps(
+            User.Identity!.Name!,
+            User.FindFirst(ClaimTypes.Email)?.Value!,
+            page
+        );
         return Page();
     }
 
     [BindProperty]
     public required string Text { get; set; }
+
     /// <summary>
     /// Perform on posting a cheep
     /// </summary>
@@ -34,7 +40,7 @@ public class PublicModel(ICheepService service) : PageModel
     public async Task<IActionResult> OnPost()
     {
         var cheepMessage = Text;
-       
+
         if (cheepMessage.Length < 161)
         {
             await _service.CreateCheep(User.FindFirst(ClaimTypes.Email)?.Value!, cheepMessage);
@@ -45,6 +51,7 @@ public class PublicModel(ICheepService service) : PageModel
 
     [BindProperty]
     public required string Email { get; set; }
+
     /// <summary>
     /// Perform on following a user when pressing "Follow"
     /// </summary>
@@ -55,11 +62,11 @@ public class PublicModel(ICheepService service) : PageModel
         await _service.UpdateFollower(User.FindFirst(ClaimTypes.Email)?.Value!, Email);
 
         return RedirectToPage("");
-    } 
+    }
+
     [BindProperty]
     public int CheepId { get; set; }
-    
-    
+
     /// <summary>
     /// Perform on liking a cheep/post when pressing "Like"
     /// </summary>

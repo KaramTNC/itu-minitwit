@@ -29,5 +29,3 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no -r ./* root@46.101.201.186:/vagrant/
           scp -o StrictHostKeyChecking=no -r ./* root@165.22.66.118:/vagrant/
-
-      

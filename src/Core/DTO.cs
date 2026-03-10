@@ -11,8 +11,16 @@ namespace Core;
 /// <param name="IsFollowed">Determines if the viewing user has followed the Cheep's author</param>
 /// <param name="Likes">Represents amount of likes on the Cheep</param>
 /// <param name="IsLiked">Determines if the viewing user has liked this Cheep</param>
-public record CheepViewModel(int CheepId, string Author, string Message, string Timestamp, string Email, 
-    bool IsFollowed, List<int> Likes, bool IsLiked);
+public record CheepViewModel(
+    int CheepId,
+    string Author,
+    string Message,
+    string Timestamp,
+    string Email,
+    bool IsFollowed,
+    List<int> Likes,
+    bool IsLiked
+);
 
 /// <summary>
 /// DTO for an Author object to be used in ViewModels

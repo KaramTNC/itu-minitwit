@@ -14,14 +14,14 @@ public interface ICheepRepository
     /// <param name="msg">Cheep message</param>
     /// <returns></returns>
     Task CreateCheep(Author author, string msg);
-    
+
     /// <summary>
     /// Query the table for a list of Cheeps filtered by page
     /// </summary>
     /// <param name="page">Which page to get</param>
     /// <returns>List of Cheeps</returns>
     Task<List<Cheep>> ReadCheeps(int page);
-    
+
     /// <summary>
     /// Query the table for a list of Cheeps from a specific author name
     /// </summary>
@@ -29,7 +29,7 @@ public interface ICheepRepository
     /// <param name="page">Whic page to return</param>
     /// <returns>List of Cheeps matching the author name</returns>
     Task<List<Cheep>> ReadCheepsPerson(string name, int page);
-    
+
     /// <summary>
     /// Query the table for a list of Cheeps from a list of author IDs
     /// </summary>
@@ -37,13 +37,13 @@ public interface ICheepRepository
     /// <param name="page"></param>
     /// <returns>List of Cheeps matching the list of author IDs</returns>
     Task<List<Cheep>> ReadCheepsFollowed(List<int> follows, int page);
-    
+
     /// <summary>
     /// Query the table for an available Cheep id
     /// </summary>
     /// <returns>Unoccupied Cheep Id</returns>
     public int FindNewCheepId();
-    
+
     /// <summary>
     /// Query for a list of Author IDs who liked a given Cheep ID
     /// </summary>
