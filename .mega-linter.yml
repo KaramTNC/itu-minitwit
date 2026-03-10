@@ -4,6 +4,9 @@
 # Apply fixes automatically
 APPLY_FIXES: all
 
+# Only lint files changed in the PR — full codebase is now clean
+VALIDATE_ALL_CODEBASE: false
+
 # Only enable linters relevant to your stack
 ENABLE_LINTERS:
   # C#
