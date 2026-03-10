@@ -12,7 +12,8 @@ namespace Web.Pages;
 /// <param name="service"></param>
 public class UserTimelineModel(ICheepService service) : PageModel
 {
-    [BindProperty(SupportsGet = true)] public required string Author { get; set; } // Route-bound property
+    [BindProperty(SupportsGet = true)]
+    public required string Author { get; set; } // Route-bound property
     public required List<CheepViewModel> Cheeps { get; set; }
 
     /// <summary>
@@ -24,12 +25,13 @@ public class UserTimelineModel(ICheepService service) : PageModel
     {
         var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
         var author = await service.GetAuthorFromName(Author, 0);
-        
+
         Cheeps = await service.GetUserTimelineCheeps(userEmail!, author, page);
         return Page();
     }
-    
-    [BindProperty] public required string Text { get; set; }
+
+    [BindProperty]
+    public required string Text { get; set; }
 
     /// <summary>
     /// Perform on Cheep Posting
@@ -42,7 +44,8 @@ public class UserTimelineModel(ICheepService service) : PageModel
         return RedirectToPage("UserTimeline", new { author = Author });
     }
 
-    [BindProperty] public required string Email { get; set; }
+    [BindProperty]
+    public required string Email { get; set; }
 
     /// <summary>
     /// Perform when pressing "Follow" on a Cheep
@@ -57,7 +60,7 @@ public class UserTimelineModel(ICheepService service) : PageModel
 
     [BindProperty]
     public int CheepId { get; set; }
-    
+
     /// <summary>
     /// Perform when pressing "Like" on a Cheep
     /// </summary>

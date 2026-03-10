@@ -5,12 +5,12 @@
 
 using System.Security.Claims;
 using Core.Interfaces;
+using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Infrastructure;
 
 namespace Web.Areas.Identity.Pages.Account
 {
@@ -32,7 +32,9 @@ namespace Web.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender, ICheepService service)
+            IEmailSender emailSender,
+            ICheepService service
+        )
         {
             _service = service;
             _signInManager = signInManager;
@@ -73,21 +75,29 @@ namespace Web.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public class InputModel
-        {
-        }
+        public class InputModel { }
 
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var redirectUrl = Url.Page(
+                "./ExternalLogin",
+                pageHandler: "Callback",
+                values: new { returnUrl }
+            );
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+                provider,
+                redirectUrl
+            );
             return new ChallengeResult(provider, properties);
         }
 
-        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> OnGetCallbackAsync(
+            string returnUrl = null,
+            string remoteError = null
+        )
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
@@ -102,19 +112,27 @@ namespace Web.Areas.Identity.Pages.Account
                 ErrorMessage = "Error loading external login information.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-            
+
             // Make a check for whether the use exists first
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            var username = info.Principal.FindFirstValue(ClaimTypes.Name) ??
-                           info.Principal.FindFirstValue("urn:github:login");
+            var username =
+                info.Principal.FindFirstValue(ClaimTypes.Name)
+                ?? info.Principal.FindFirstValue("urn:github:login");
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey,
-                isPersistent: true, bypassTwoFactor: true);
+            var result = await _signInManager.ExternalLoginSignInAsync(
+                info.LoginProvider,
+                info.ProviderKey,
+                isPersistent: true,
+                bypassTwoFactor: true
+            );
             if (result.Succeeded)
             {
-                _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name,
-                    info.LoginProvider);
+                _logger.LogInformation(
+                    "{Name} logged in with {LoginProvider} provider.",
+                    info.Principal.Identity.Name,
+                    info.LoginProvider
+                );
                 return LocalRedirect(returnUrl);
             }
 
@@ -122,7 +140,7 @@ namespace Web.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("./Lockout");
             }
-            
+
             Console.WriteLine("Error loading external login information.");
             Console.WriteLine(result.ToString());
 
@@ -133,24 +151,26 @@ namespace Web.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser
                 {
-                    UserName = username, 
+                    UserName = username,
                     Email = email,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
                 };
                 var identityResult = await _userManager.CreateAsync(user);
                 if (identityResult.Succeeded)
                 {
                     _service.CreateAuthor(user.UserName, user.Email);
-                    
+
                     await _userManager.AddLoginAsync(user, info);
                     await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                     return LocalRedirect(returnUrl);
                 }
                 Console.WriteLine("Something went wrong");
-                identityResult.Errors.ToList().ForEach(error =>
-                {
-                    Console.WriteLine(error.Code, error.Description);
-                });
+                identityResult
+                    .Errors.ToList()
+                    .ForEach(error =>
+                    {
+                        Console.WriteLine(error.Code, error.Description);
+                    });
             }
 
             return Page();
@@ -180,7 +200,10 @@ namespace Web.Areas.Identity.Pages.Account
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        _logger.LogInformation(
+                            "User created an account using {Name} provider.",
+                            info.LoginProvider
+                        );
 
                         /*var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -200,7 +223,11 @@ namespace Web.Areas.Identity.Pages.Account
                             return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
                         }*/
 
-                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                        await _signInManager.SignInAsync(
+                            user,
+                            isPersistent: false,
+                            info.LoginProvider
+                        );
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -224,9 +251,11 @@ namespace Web.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
-                                                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                    $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
+                throw new InvalidOperationException(
+                    $"Can't create an instance of '{nameof(ApplicationUser)}'. "
+                        + $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively "
+                        + $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml"
+                );
             }
         }
 
@@ -234,7 +263,9 @@ namespace Web.Areas.Identity.Pages.Account
         {
             if (!_userManager.SupportsUserEmail)
             {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
+                throw new NotSupportedException(
+                    "The default UI requires a user store with email support."
+                );
             }
 
             return (IUserEmailStore<ApplicationUser>)_userStore;

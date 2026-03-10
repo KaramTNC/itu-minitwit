@@ -8,7 +8,7 @@ namespace PlaywrightTests;
 public class InteractiveButtonTests : PageTest
 {
     private string ServerAddress => GlobalTestSetup.ServerAddress;
-    
+
     [SetUp]
     public async Task Setup()
     {
@@ -17,7 +17,7 @@ public class InteractiveButtonTests : PageTest
 
     [Test]
     public async Task BasicTest()
-    { 
+    {
         var response = await Page.GotoAsync(ServerAddress);
         Assert.That(response!.Status, Is.EqualTo(200));
     }
@@ -28,9 +28,10 @@ public class InteractiveButtonTests : PageTest
         // Act
         await Page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        
+
         // Assert
-        await Expect(Page.Locator("h2")).ToMatchAriaSnapshotAsync("- heading \"Public Timeline\" [level=2]");
+        await Expect(Page.Locator("h2"))
+            .ToMatchAriaSnapshotAsync("- heading \"Public Timeline\" [level=2]");
     }
 
     [Test]
@@ -39,7 +40,7 @@ public class InteractiveButtonTests : PageTest
         var link = Page.GetByRole(AriaRole.Link, new() { Name = "Login" });
         await link.ClickAsync();
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        
+
         // Fixed: Added leading slash
         await Expect(Page).ToHaveURLAsync(ServerAddress + "/Identity/Account/Login");
     }
@@ -50,7 +51,7 @@ public class InteractiveButtonTests : PageTest
         var link = Page.GetByRole(AriaRole.Link, new() { Name = "Register" });
         await link.ClickAsync();
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        
+
         // Fixed: Added leading slash
         await Expect(Page).ToHaveURLAsync(ServerAddress + "/Identity/Account/Register");
     }
@@ -82,9 +83,15 @@ public class InteractiveButtonTests : PageTest
                 await link.WaitForAsync(new() { Timeout = 5000 });
 
                 // Assert link is visible and has text
-                Assert.IsTrue(await link.IsVisibleAsync(), $"Cheep #{i + 1}: Author link is not visible.");
+                Assert.IsTrue(
+                    await link.IsVisibleAsync(),
+                    $"Cheep #{i + 1}: Author link is not visible."
+                );
                 var authorName = await link.InnerTextAsync();
-                Assert.IsFalse(string.IsNullOrWhiteSpace(authorName), $"Cheep #{i + 1}: Author link text is empty.");
+                Assert.IsFalse(
+                    string.IsNullOrWhiteSpace(authorName),
+                    $"Cheep #{i + 1}: Author link text is empty."
+                );
 
                 // Click the link and verify the timeline heading
                 await link.ClickAsync();
