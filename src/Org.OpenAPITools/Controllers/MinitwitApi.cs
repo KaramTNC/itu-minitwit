@@ -60,9 +60,9 @@ namespace Org.OpenAPITools.Controllers
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorResponse), description: "Unauthorized - Must include correct Authorization header")]
         public async virtual Task<IActionResult> GetFollow([FromRoute (Name = "username")][Required]string username, [FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
+            single.IncrementGetFollowersCounter();
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
-                single.IncrementGetFollowersCounter();
 
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
                 var example = error != null
@@ -157,6 +157,7 @@ namespace Org.OpenAPITools.Controllers
         public virtual async Task<IActionResult> GetMessages([FromHeader (Name = "Authorization")][Required()]string authorization, [FromQuery (Name = "latest")]int? latest, [FromQuery (Name = "no")]int? no)
         {
             single.IncrementGetMessagesCounter();
+
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
@@ -341,8 +342,6 @@ namespace Org.OpenAPITools.Controllers
             
             if(!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
-                single.IncrementPostMessagesPerUserCounter();
-
                 string error = "{\n  \"error_msg\" : \"You are not authorized to use this resource!\",\n  \"status\" : 403\n}";
                 var example = error != null
                 ? JsonConvert.DeserializeObject<ErrorResponse>(error)
