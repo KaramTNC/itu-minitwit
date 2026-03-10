@@ -2,7 +2,6 @@ using Core.Model;
 
 namespace Core.Interfaces;
 
-
 /// <summary>
 /// Interface for the AuthorRepository that represents the Author table
 /// </summary>
@@ -14,27 +13,27 @@ public interface IAuthorRepository
     /// <param name="name">Author name</param>
     /// <param name="email">Author email</param>
     public void CreateAuthor(string name, string email);
-    
+
     /// <summary>
     /// Add a new followingId under an Author entry
     /// </summary>
     /// <param name="author">Author entry object</param>
     /// <param name="id">Following id</param>
     public void AddFollowerId(Author author, int id);
-    
+
     /// <summary>
     /// Remove an existing followingId under an Author entry
     /// </summary>
     /// <param name="author">Authoe entry object</param>
     /// <param name="id">following id</param>
     public void RemoveFollowerId(Author author, int id);
-    
+
     /// <summary>
     /// Check the Author table for a uniquely unoccupied Author ID entry
     /// </summary>
     /// <returns>Integer representing an unoccupied entry ID</returns>
     public Task<int> FindNewAuthorId();
-    
+
     /// <summary>
     /// Query the Author table for a list of entries matching an Email
     /// </summary>
@@ -42,7 +41,7 @@ public interface IAuthorRepository
     /// <param name="page">Page of the query</param>
     /// <returns>List of Author entries matching the email</returns>
     public Task<List<Author>> ReturnBasedOnEmailAsync(string email, int page = 0);
-    
+
     /// <summary>
     /// Query the Author table for a list of entry IDs matching an Email
     /// </summary>
@@ -50,7 +49,6 @@ public interface IAuthorRepository
     /// <returns>List of ID entries matching the Email</returns>
     public Task<List<int>> ReturnFollowAuthorsIds(string email);
 
-    
     /// <summary>
     /// Query the Author table for an ID matching an Email
     /// </summary>
@@ -65,7 +63,7 @@ public interface IAuthorRepository
     /// <param name="page">Page of the query</param>
     /// <returns></returns>
     public Task<Author> ReturnBasedOnNameAsync(string name, int page = 0);
-    
+
     /// <summary>
     /// Delete a table entry matching the email
     /// </summary>
@@ -79,7 +77,7 @@ public interface IAuthorRepository
     /// <param name="idList">List of author IDs</param>
     /// <returns>List of Author entries matching idList</returns>
     public Task<List<Author>> GetAuthorsFromIdList(List<int> idList);
-    
+
     /// <summary>
     /// Query for a list of an Author entry's Liked Cheeps Ids
     /// </summary>
@@ -100,7 +98,7 @@ public interface IAuthorRepository
     /// <param name="author">Author object</param>
     /// <param name="cheepId">Cheep Id</param>
     public void RemoveLikeId(Author author, int cheepId);
-    
+
     /// <summary>
     /// Query the Author table for whether an id is available
     /// </summary>

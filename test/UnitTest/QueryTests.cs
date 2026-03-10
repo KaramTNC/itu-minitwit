@@ -10,7 +10,6 @@ public class QueryTests
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
 
-
     public QueryTests()
     {
         // Here we generate a sqlite in memory db could be smart to make a support class.
@@ -32,13 +31,10 @@ public class QueryTests
         var cheeps = await _cheepRepository.ReadCheeps(0);
 
         var testCheep = cheeps.Find(x => x.Author.Name == "Helge");
-        
+
         Assert.NotNull(testCheep);
-        Assert.Equal(  "Helge"  , testCheep.Author.Name  );
+        Assert.Equal("Helge", testCheep.Author.Name);
     }
-
-
-
 
     [Fact]
     public async Task ReadCheepsAuthor()
@@ -51,9 +47,6 @@ public class QueryTests
 
         Assert.Null(cheeps.Find(x => x.Author.Name == "Adrian"));
     }
-
-    
-    
 
     [Fact]
     public async Task ReadAuthor()
@@ -84,7 +77,6 @@ public class QueryTests
         Assert.NotNull(testCheep);
         Assert.Equal("test answer", testCheep.Text);
         Assert.Null(cheeps.Find(x => x.Author.Name == "Helge"));
-
     }
 
     [Fact]
@@ -95,7 +87,6 @@ public class QueryTests
         Assert.NotNull(likedAuthors);
 
         Assert.Equal(1, likedAuthors[0]);
-
     }
 
     [Fact]
@@ -106,7 +97,6 @@ public class QueryTests
         Assert.Equal("Join itu lan now", cheep!.Text);
     }
 
-
     [Fact]
     public async Task ReadAuthorCheeps()
     {
@@ -115,7 +105,6 @@ public class QueryTests
         Assert.Equal("test answer", cheeps[0].Text);
     }
 
-    
     [Fact]
     public async Task ReadFollowAuthorsIds()
     {
@@ -123,7 +112,6 @@ public class QueryTests
         var follows = await _authorRepository.ReturnFollowAuthorsIds(author.Email);
         Assert.NotNull(follows);
         Assert.Equal(2, follows[0]);
-        
     }
 
     [Fact]
@@ -154,5 +142,4 @@ public class QueryTests
         Assert.NotNull(cheepLikes);
         Assert.Equal(1, cheepLikes[0]);
     }
-    
 }

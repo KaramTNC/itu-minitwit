@@ -24,3 +24,4 @@
 .local_vm/*
 .vagrant/*
 **/__pycache__/*
+megalinter-reports/

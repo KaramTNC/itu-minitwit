@@ -10,15 +10,15 @@ namespace Infrastructure.Repositories;
 public class CheepRepository : ICheepRepository
 {
     private readonly ChatDbContext _dbContext;
+
     public CheepRepository(ChatDbContext dbContext)
     {
         _dbContext = dbContext;
     }
-    
-    
+
     public async Task CreateCheep(Author author, string msg)
     {
-       var cheep = new Cheep()
+        var cheep = new Cheep()
         {
             CheepId = FindNewCheepId(),
             Text = msg,
@@ -30,7 +30,7 @@ public class CheepRepository : ICheepRepository
         _dbContext.Cheeps.Add(cheep);
         await _dbContext.SaveChangesAsync();
     }
-    
+
     public int FindNewCheepId()
     {
         return _dbContext.Cheeps.Count() + 1;
@@ -38,10 +38,11 @@ public class CheepRepository : ICheepRepository
 
     public async Task<List<Cheep>> ReadCheeps(int page = 0)
     {
-        var query = (
-            from cheep in _dbContext.Cheeps.Include(c => c.Author)
-            select cheep).OrderByDescending(c => c.TimeStamp).Skip(page*32).Take(32);
-        
+        var query = (from cheep in _dbContext.Cheeps.Include(c => c.Author) select cheep)
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip(page * 32)
+            .Take(32);
+
         var result = await query.ToListAsync();
 
         return result;
@@ -53,24 +54,27 @@ public class CheepRepository : ICheepRepository
             from cheep in _dbContext.Cheeps.Include(c => c.Author)
             where cheep.Author.Name == name
             select cheep
-            ).OrderByDescending(c => c.TimeStamp).Skip(page * 32).Take(32);
+        )
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip(page * 32)
+            .Take(32);
         var result = await query.ToListAsync();
 
-        
         return result;
     }
 
     public async Task<List<Cheep>> ReadCheepsFollowed(List<int> follows, int page)
     {
-        
         var query = (
             from cheep in _dbContext.Cheeps.Include(c => c.Author)
             where follows.Contains(cheep.Author.AuthorId)
             select cheep
-            ).OrderByDescending(c => c.TimeStamp).Skip(page * 32).Take(32);
+        )
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip(page * 32)
+            .Take(32);
         var result = await query.ToListAsync();
 
-        
         return result;
     }
 
@@ -94,15 +98,11 @@ public class CheepRepository : ICheepRepository
         }
     }
 
-    
-    
-    
     public void AddlikedId(Cheep cheep, int authorId)
     {
         cheep.PeopleLikes.Add(authorId);
         _dbContext.Update(cheep);
         _dbContext.SaveChanges();
-
     }
 
     public void RemovelikedId(Cheep cheep, int authorId)
@@ -110,7 +110,6 @@ public class CheepRepository : ICheepRepository
         cheep.PeopleLikes.Remove(authorId);
         _dbContext.Update(cheep);
         _dbContext.SaveChanges();
-
     }
 
     public async Task<Cheep?> GetCheepFromId(int cheepId)
@@ -135,12 +134,8 @@ public class CheepRepository : ICheepRepository
 
     public async Task<List<Cheep>> GetAuthorCheeps(int authorId)
     {
-        var query = (
-            from cheep in _dbContext.Cheeps
-            where cheep.AuthorId == authorId 
-            select cheep
-        );
-        
+        var query = (from cheep in _dbContext.Cheeps where cheep.AuthorId == authorId select cheep);
+
         var returnList = await query.ToListAsync();
         return returnList;
     }
@@ -150,5 +145,4 @@ public class CheepRepository : ICheepRepository
         _dbContext.Remove(cheep);
         await _dbContext.SaveChangesAsync();
     }
-    
 }

@@ -32,7 +32,6 @@ public class PlaywrightTests : PageTest
         Assert.That(response!.Status, Is.EqualTo(200));
     }
 
-
     [Test]
     public async Task RegisterTest()
     {
@@ -47,7 +46,8 @@ public class PlaywrightTests : PageTest
         await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         await Expect(Page).ToHaveURLAsync(new Regex(".*/?"));
         //await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Logout" })).ToBeVisibleAsync();
-        await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Login" })).Not.ToBeVisibleAsync();
+        await Expect(_page.GetByRole(AriaRole.Link, new() { Name = "Login" }))
+            .Not.ToBeVisibleAsync();
     }
 
     [Test]
@@ -59,9 +59,9 @@ public class PlaywrightTests : PageTest
         await LoginAccountIdentity(email, password);
 
         //Assert
-        await Expect(_page.GetByRole(AriaRole.Alert)).ToMatchAriaSnapshotAsync("- listitem: User not found.");
+        await Expect(_page.GetByRole(AriaRole.Alert))
+            .ToMatchAriaSnapshotAsync("- listitem: User not found.");
     }
-
 
     [Test]
     public async Task DeleteAccount_AccountGetsDeleted()
@@ -81,8 +81,10 @@ public class PlaywrightTests : PageTest
 
         await DeleteAccountIdentity();
 
-        await Expect(_page.Locator("body")).ToMatchAriaSnapshotAsync(
-            "- link \"public timeline\":\n  - /url: /\n- text: \"|\"\n- list:\n  - listitem:\n    - link \"Register\":\n      - /url: /Identity/Account/Register\n  - listitem:\n    - link \"Login\":\n      - /url: /Identity/Account/Login");
+        await Expect(_page.Locator("body"))
+            .ToMatchAriaSnapshotAsync(
+                "- link \"public timeline\":\n  - /url: /\n- text: \"|\"\n- list:\n  - listitem:\n    - link \"Register\":\n      - /url: /Identity/Account/Register\n  - listitem:\n    - link \"Login\":\n      - /url: /Identity/Account/Login"
+            );
 
         var cheep = _page.GetByRole(AriaRole.Paragraph).First;
         var authorLink = cheep.GetByRole(AriaRole.Link);
@@ -90,7 +92,6 @@ public class PlaywrightTests : PageTest
 
         Assert.That(username != authorName);
     }
-
 
     [Test]
     public async Task SendCheepTest_UserSendsValidCheep()
@@ -116,7 +117,8 @@ public class PlaywrightTests : PageTest
         // Simpler approach: verify individual elements without complex regex
         await Expect(firstCheep).ToContainTextAsync(cheepText);
         await Expect(firstCheep.GetByRole(AriaRole.Link).First).ToHaveTextAsync(username);
-        await Expect(firstCheep.GetByRole(AriaRole.Link).First).ToHaveAttributeAsync("href", $"/{username}");
+        await Expect(firstCheep.GetByRole(AriaRole.Link).First)
+            .ToHaveAttributeAsync("href", $"/{username}");
     }
 
     [Test]
@@ -154,7 +156,8 @@ public class PlaywrightTests : PageTest
         await RegisterAccountIdentity("likeaCheep@test.com", "test123?T", "likeAccount");
 
         // Locate the cheep by user
-        var cheep = _page.Locator("#messagelist > li")
+        var cheep = _page
+            .Locator("#messagelist > li")
             .Filter(new() { HasText = "Jacqualine Gilcoine" })
             .First;
 
@@ -171,7 +174,8 @@ public class PlaywrightTests : PageTest
         Assert.That(newLikes, Is.EqualTo(currentLikes + 1));
 
         // Assert button updated
-        await Expect(cheep.GetByRole(AriaRole.Button, new() { Name = "Unlike" })).ToBeVisibleAsync();
+        await Expect(cheep.GetByRole(AriaRole.Button, new() { Name = "Unlike" }))
+            .ToBeVisibleAsync();
     }
 
     [Test]
@@ -197,7 +201,6 @@ public class PlaywrightTests : PageTest
         // Assert button updated
         await Expect(cheep.GetByRole(AriaRole.Button, new() { Name = "Like" })).ToBeVisibleAsync();
     }
-
 
     [Test]
     public async Task UserTimelineContainsUserCheeps()
@@ -234,11 +237,10 @@ public class PlaywrightTests : PageTest
         await RegisterAccountIdentity(email, password, username);
 
         // Find the first cheep whose author is NOT the current user
-        var firstOtherCheep = _page.Locator("#messagelist > li")
-            .First;
-    
+        var firstOtherCheep = _page.Locator("#messagelist > li").First;
+
         string authorName = await firstOtherCheep.GetByRole(AriaRole.Link).First.InnerTextAsync();
-    
+
         if (authorName == username)
         {
             firstOtherCheep = _page.Locator("#messagelist > li").Nth(1);
@@ -253,7 +255,8 @@ public class PlaywrightTests : PageTest
         await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Assert the followed cheep appears on timeline
-        var followedCheep = _page.Locator("#messagelist > li")
+        var followedCheep = _page
+            .Locator("#messagelist > li")
             .Filter(new() { HasText = authorName })
             .First;
         await Expect(followedCheep).ToContainTextAsync(authorName);
@@ -302,14 +305,13 @@ public class PlaywrightTests : PageTest
         await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Assert followed author appears in main user's Following List
-        var followedLink = _page.Locator("h2", new() { HasText = $"{mainUsername}'s Following List" })
+        var followedLink = _page
+            .Locator("h2", new() { HasText = $"{mainUsername}'s Following List" })
             .Locator("..")
             .GetByRole(AriaRole.Link, new() { Name = authorName });
 
         await Expect(followedLink).ToBeVisibleAsync();
     }
-
-
 
     [Test]
     public async Task UserAboutMeCheepList_ContainsUserCheeps()
@@ -346,10 +348,12 @@ public class PlaywrightTests : PageTest
         await _page.GotoAsync($"{ServerAddress}/info?page=1");
         await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var likedCheep = _page.Locator("#messagelist > li").Filter(new() { HasText = "Jacqualine Gilcoine" }).First;
+        var likedCheep = _page
+            .Locator("#messagelist > li")
+            .Filter(new() { HasText = "Jacqualine Gilcoine" })
+            .First;
         await Expect(likedCheep).ToContainTextAsync("Jacqualine Gilcoine");
     }
-
 
     private async Task LoginAccountIdentity(string email, string password)
     {
@@ -361,7 +365,6 @@ public class PlaywrightTests : PageTest
         await _page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
     }
 
-
     private async Task RegisterAccountIdentity(string email, string password, string username)
     {
         await _page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
@@ -369,8 +372,12 @@ public class PlaywrightTests : PageTest
         await _page.GetByRole(AriaRole.Textbox, new() { Name = "Username" }).FillAsync(username);
         await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).ClickAsync();
         await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email" }).FillAsync(email);
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password", Exact = true }).FillAsync(password);
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Confirm Password" }).FillAsync(password);
+        await _page
+            .GetByRole(AriaRole.Textbox, new() { Name = "Password", Exact = true })
+            .FillAsync(password);
+        await _page
+            .GetByRole(AriaRole.Textbox, new() { Name = "Confirm Password" })
+            .FillAsync(password);
 
         await _page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
     }
@@ -397,9 +404,7 @@ public class PlaywrightTests : PageTest
 
     private async Task<ILocator> FollowUser(string username)
     {
-        var cheep = _page.Locator("#messagelist > li")
-            .Filter(new() { HasText = username })
-            .First;
+        var cheep = _page.Locator("#messagelist > li").Filter(new() { HasText = username }).First;
 
         var followButton = cheep.GetByRole(AriaRole.Button, new() { Name = "Follow" });
         await followButton.ClickAsync();
@@ -410,9 +415,7 @@ public class PlaywrightTests : PageTest
 
     private async Task<ILocator> UnfollowUser(string username)
     {
-        var cheep = _page.Locator("#messagelist > li")
-            .Filter(new() { HasText = username })
-            .First;
+        var cheep = _page.Locator("#messagelist > li").Filter(new() { HasText = username }).First;
 
         var unfollowButton = cheep.GetByRole(AriaRole.Button, new() { Name = "Unfollow" });
         await unfollowButton.ClickAsync();
@@ -423,9 +426,7 @@ public class PlaywrightTests : PageTest
 
     private async Task<ILocator> LikeCheep(string username)
     {
-        var cheep = _page.Locator("#messagelist > li")
-            .Filter(new() { HasText = username })
-            .First;
+        var cheep = _page.Locator("#messagelist > li").Filter(new() { HasText = username }).First;
 
         await cheep.WaitForAsync(new() { State = WaitForSelectorState.Visible });
 
@@ -438,9 +439,7 @@ public class PlaywrightTests : PageTest
 
     private async Task<ILocator> UnlikeCheep(string username)
     {
-        var cheep = _page.Locator("#messagelist > li")
-            .Filter(new() { HasText = username })
-            .First;
+        var cheep = _page.Locator("#messagelist > li").Filter(new() { HasText = username }).First;
 
         await cheep.WaitForAsync(new() { State = WaitForSelectorState.Visible });
 

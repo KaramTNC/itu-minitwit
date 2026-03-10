@@ -8,8 +8,7 @@ namespace Org.OpenAPITools
     /// </summary>
     public class Program
     {
-
-        public Singleton single =  Singleton.Instance;
+        public Singleton single = Singleton.Instance;
 
         /// <summary>
         /// Main
@@ -18,8 +17,6 @@ namespace Org.OpenAPITools
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            
-
         }
 
         /// <summary>
@@ -31,8 +28,7 @@ namespace Org.OpenAPITools
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                   webBuilder.UseStartup<Startup>()
-                             .UseUrls("http://0.0.0.0:8080/");    
+                    webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:8080/");
                 });
     }
 }
