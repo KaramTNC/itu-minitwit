@@ -6,6 +6,7 @@ using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Npgsql;
+using DotNetEnv;
 
 namespace Web;
 
@@ -17,7 +18,8 @@ public class Program
     /// </summary>
     /// <param name="args">Optional arguments</param>
     public static void Main(string[] args)
-    {
+    {   
+        Env.Load("../../.env");
         var app = BuildWebApplication(args);
         
         //Initialise Database
@@ -150,6 +152,8 @@ public class Program
             string? envVarName = builder.Configuration.GetConnectionString("DefaultConnection");
             if (envVarName == null) throw new Exception("DefaultConnection key not found in appsettings");
 
+            Console.WriteLine(Environment.GetEnvironmentVariable(envVarName));
+            Console.WriteLine(envVarName);
             var connectionString = ToNpgsqlConnectionString(Environment.GetEnvironmentVariable(envVarName)!);
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
