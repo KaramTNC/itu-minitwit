@@ -8,7 +8,7 @@ Your new project automatically takes advantage of modern client-side utilities l
 We hope you enjoy the new capabilities in ASP.NET 5 and Visual Studio 2015.
 The ASP.NET Team
 
-### You've created a new ASP.NET 5 project. [Learn what's new](http://go.microsoft.com/fwlink/?LinkId=518016)
+## You've created a new ASP.NET 5 project. [Learn what's new](http://go.microsoft.com/fwlink/?LinkId=518016)
 
 ### This application consists of:
 * Sample pages using ASP.NET MVC 6
