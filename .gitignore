@@ -25,3 +25,4 @@
 .vagrant/*
 **/__pycache__/*
 megalinter-reports/
+src/Web/chat.db
