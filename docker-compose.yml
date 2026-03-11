@@ -25,17 +25,17 @@ services:
     # Later, I'm almost sure we'll have to replace this with the URL from the DigitalOcean server (http://46.101.201.186:8080:9184/metrics)
     network_mode: "host"
     ports:
-      - "3000:3000"  
+      - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
 
   itu-api-server:
-    build: 
+    build:
       context: .
       dockerfile: docker/api/Dockerfile
     image: itu-api-server
     container_name: api
-    networks: 
+    networks:
       - itu-minitwit-network
     ports:
       - "8080:8080"
@@ -47,12 +47,12 @@ services:
       - ./src/Web/chat.db:/app/db/chat.db
 
   itu-web-server:
-    build: 
+    build:
       context: .
       dockerfile: docker/web/Dockerfile
     image: itu-web-server
     container_name: web
-    networks: 
+    networks:
       - itu-minitwit-network
     ports:
       - "5001:5001"

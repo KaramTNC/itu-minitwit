@@ -104,18 +104,17 @@ namespace Org.OpenAPITools
                     $"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetExecutingAssembly().GetName().Name}.xml"
                 );
 
-                    // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
-                    // Use [ValidateModelState] on Actions to actually validate it in C# as well!
-                    c.OperationFilter<GeneratePathParamsValidationFilter>();
-                });
+                // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
+                // Use [ValidateModelState] on Actions to actually validate it in C# as well!
+                c.OperationFilter<GeneratePathParamsValidationFilter>();
+            });
 
-                var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH") 
-                ?? "../Web/chat.db";
+            var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH") ?? "../Web/chat.db";
 
-                services
-                    .AddSwaggerGenNewtonsoftSupport();
-                services.AddDbContext<ChatDbContext>(options =>
-                    options.UseSqlite($"Data Source={dbPath}"));
+            services.AddSwaggerGenNewtonsoftSupport();
+            services.AddDbContext<ChatDbContext>(options =>
+                options.UseSqlite($"Data Source={dbPath}")
+            );
         }
 
         /// <summary>
