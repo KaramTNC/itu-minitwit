@@ -71,7 +71,7 @@ jobs:
 
       - name: Check for pending model changes without a migration
         run: |
-          dotnet ef migrations has-pending-model-changes --no-build --configuration Release
+          dotnet ef migrations has-pending-model-changes --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
         env:
           # Uses a throw-away in-memory SQLite DB so EF can reflect the model without a real server.
           # If your migrations use PostgreSQL-specific features, replace with a real Npgsql connection string.
