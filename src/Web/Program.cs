@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Npgsql;
 using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web;
 
@@ -27,10 +27,12 @@ public class Program
         // Necessary for monitoring metrics
         // Initialises a metrics endpoint where Prometheus can scrape (and store) the metrics gathered by OpenTelemetry.
         using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
-                .AddMeter("Web.Public") // This meter is currently the only one used. We'll need to add more meters using .AddMeter later on.
-                .AddPrometheusHttpListener(options => options.UriPrefixes = new string[] { "http://localhost:9184/" }) // endpoint is http://localhost:9184/metrics
-                .Build();
-        
+            .AddMeter("Web.Public") // This meter is currently the only one used. We'll need to add more meters using .AddMeter later on.
+            .AddPrometheusHttpListener(options =>
+                options.UriPrefixes = new string[] { "http://localhost:9184/" }
+            ) // endpoint is http://localhost:9184/metrics
+            .Build();
+
         //Initialise Database
         if (!app.Environment.IsEnvironment("Testing"))
         {

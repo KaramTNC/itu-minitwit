@@ -41,6 +41,42 @@ jobs:
             **/obj
           retention-days: 1
 
+  check-migrations:
+    name: Check Pending Migrations
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', '**/packages.lock.json') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Check for pending model changes without a migration
+        run: |
+          dotnet ef migrations has-pending-model-changes --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+        env:
+          # Uses a throw-away in-memory SQLite DB so EF can reflect the model without a real server.
+          # If your migrations use PostgreSQL-specific features, replace with a real Npgsql connection string.
+          ConnectionStrings__DefaultConnection: "Data Source=:memory:"
+
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest

@@ -21,7 +21,8 @@ public class PublicModel(ICheepService service) : PageModel
     static Counter<int> s_publicTimelineVisitsCounter = s_meter.CreateCounter<int>(
         name: "public_timeline_visits",
         description: "Number of visits to the public timeline page",
-        unit: "visits");
+        unit: "visits"
+    );
 
     /// <summary>
     /// Perform on Page Load
@@ -30,7 +31,11 @@ public class PublicModel(ICheepService service) : PageModel
     /// <returns></returns>
     public async Task<ActionResult> OnGet([FromQuery] int page = 0)
     {
-        Cheeps = await _service.GetAllCheeps(User.Identity!.Name!, User.FindFirst(ClaimTypes.Email)?.Value!, page);
+        Cheeps = await _service.GetAllCheeps(
+            User.Identity!.Name!,
+            User.FindFirst(ClaimTypes.Email)?.Value!,
+            page
+        );
         s_publicTimelineVisitsCounter.Add(1);
         return Page();
     }
