@@ -21,7 +21,7 @@ RUN dotnet restore "Org.OpenAPITools/Org.OpenAPITools.csproj"
 COPY /src .
 
 # Build the API
-WORKDIR "/src/Org.OpenAPITools" 
+WORKDIR "/src/Org.OpenAPITools"
 RUN dotnet build "Org.OpenAPITools.csproj" -c Release -o /app/build
 
 # Publish it
@@ -32,4 +32,13 @@ RUN dotnet publish "Org.OpenAPITools.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# CKV_DOCKER_3: Create and use a non-root user
+RUN adduser --disabled-password --gecos "" appuser
+USER appuser
+
+# CKV_DOCKER_2: Add healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:80/health || exit 1
+
 ENTRYPOINT ["dotnet", "Org.OpenAPITools.dll"]
