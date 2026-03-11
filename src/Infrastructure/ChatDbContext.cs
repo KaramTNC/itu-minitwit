@@ -1,7 +1,7 @@
 using Core.Model;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
@@ -23,11 +23,9 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
     public ChatDbContext(DbContextOptions<ChatDbContext> options)
         : base(options) { }
 
-    public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options)
-    {
-        
-    }
-    
+    public ChatDbContext(DbContextOptions<ChatDbContext> options)
+        : base(options) { }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -52,7 +50,7 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Follows).HasColumnName("follows");
             entity.Property(e => e.CheepLikes).HasColumnName("cheeplikes");
         });
-        
+
         modelBuilder.Entity<IdentityUser>().ToTable("aspnetusers");
         modelBuilder.Entity<IdentityRole>().ToTable("aspnetroles");
         modelBuilder.Entity<IdentityUserRole<string>>().ToTable("aspnetuserroles");
