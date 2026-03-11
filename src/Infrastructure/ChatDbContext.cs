@@ -22,11 +22,6 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
 
     public ChatDbContext(DbContextOptions<ChatDbContext> options)
         : base(options) { }
-
-    public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options)
-    {
-        
-    }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

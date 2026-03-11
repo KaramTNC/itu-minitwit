@@ -170,9 +170,6 @@ public class Program
         }
         else
         {
-            string? connectionString = builder.Configuration.GetConnectionString(
-                "DefaultConnection"
-            );
             string? envVarName = builder.Configuration.GetConnectionString("DefaultConnection");
             if (envVarName == null) throw new Exception("DefaultConnection key not found in appsettings");
 
