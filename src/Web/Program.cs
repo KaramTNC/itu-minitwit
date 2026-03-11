@@ -174,8 +174,9 @@ public class Program
             if (envVarName == null)
                 throw new Exception("DefaultConnection key not found in appsettings");
 
-            var rawUri = Environment.GetEnvironmentVariable(envVarName)
-                         ?? builder.Configuration.GetConnectionString("DefaultConnection"); // fallback
+            var rawUri =
+                Environment.GetEnvironmentVariable(envVarName)
+                ?? builder.Configuration.GetConnectionString("DefaultConnection"); // fallback
 
             if (rawUri == null)
                 throw new Exception($"Environment variable '{envVarName}' is not set");
