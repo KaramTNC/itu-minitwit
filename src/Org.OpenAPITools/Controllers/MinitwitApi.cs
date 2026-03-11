@@ -333,7 +333,7 @@ namespace Org.OpenAPITools.Controllers
             }
             else if (payload.Unfollow != null)
             {
-                Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
+                Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Unfollow);
                 if (famous == null)
                 {
                     return NotFound();
@@ -352,8 +352,8 @@ namespace Org.OpenAPITools.Controllers
             }
 
             Console.WriteLine(username);
-            Console.WriteLine(payload);
-            Console.WriteLine(payload);
+            Console.WriteLine(payload.Follow);
+            Console.WriteLine(payload.Unfollow);
             Console.WriteLine("Next round");
 
             single.latest = (int)latest;
