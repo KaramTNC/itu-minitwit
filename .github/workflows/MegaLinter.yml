@@ -7,7 +7,7 @@ name: MegaLinter
 on:
   pull_request:
     branches:
-      - main
+      - staging
 
 env:
   APPLY_FIXES: all
