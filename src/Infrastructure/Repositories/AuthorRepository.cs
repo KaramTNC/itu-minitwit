@@ -140,7 +140,7 @@ public class AuthorRepository : IAuthorRepository
         var result = await query.ToListAsync();
 
         if (result.Count == 0)
-            throw new Exception("No authors found from " + name);
+            return null; //throw new Exception("No authors found from " + name);
 
         return result[0];
     }
