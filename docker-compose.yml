@@ -39,6 +39,7 @@ services:
       - itu-minitwit-network
     ports:
       - "8080:8080"
+      - "9185:9185"
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - DATABASE_PATH=/app/db/chat.db
@@ -55,6 +56,7 @@ services:
       - itu-minitwit-network
     ports:
       - "5001:5001"
+      - "9184:9184"
     environment:
       - ASPNETCORE_URLS=http://+:5001
     volumes:
