@@ -15,170 +15,125 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                table: "AspNetRoleClaims");
+                table: "AspNetRoleClaims"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                table: "AspNetUserClaims");
+                table: "AspNetUserClaims"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                table: "AspNetUserLogins");
+                table: "AspNetUserLogins"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                table: "AspNetUserRoles");
+                table: "AspNetUserRoles"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                table: "AspNetUserRoles");
+                table: "AspNetUserRoles"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                table: "AspNetUserTokens");
+                table: "AspNetUserTokens"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Cheeps_Authors_AuthorId",
-                table: "Cheeps");
+            migrationBuilder.DropForeignKey(name: "FK_Cheeps_Authors_AuthorId", table: "Cheeps");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Cheeps",
-                table: "Cheeps");
+            migrationBuilder.DropPrimaryKey(name: "PK_Cheeps", table: "Cheeps");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Authors",
-                table: "Authors");
+            migrationBuilder.DropPrimaryKey(name: "PK_Authors", table: "Authors");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetUserTokens",
-                table: "AspNetUserTokens");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetUserTokens", table: "AspNetUserTokens");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetUserRoles",
-                table: "AspNetUserRoles");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetUserRoles", table: "AspNetUserRoles");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetUserLogins",
-                table: "AspNetUserLogins");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetUserLogins", table: "AspNetUserLogins");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetUserClaims",
-                table: "AspNetUserClaims");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetUserClaims", table: "AspNetUserClaims");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetRoles",
-                table: "AspNetRoles");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetRoles", table: "AspNetRoles");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetRoleClaims",
-                table: "AspNetRoleClaims");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetRoleClaims", table: "AspNetRoleClaims");
 
-            migrationBuilder.RenameTable(
-                name: "Cheeps",
-                newName: "cheeps");
+            migrationBuilder.RenameTable(name: "Cheeps", newName: "cheeps");
 
-            migrationBuilder.RenameTable(
-                name: "Authors",
-                newName: "authors");
+            migrationBuilder.RenameTable(name: "Authors", newName: "authors");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetUserTokens",
-                newName: "aspnetusertokens");
+            migrationBuilder.RenameTable(name: "AspNetUserTokens", newName: "aspnetusertokens");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetUserRoles",
-                newName: "aspnetuserroles");
+            migrationBuilder.RenameTable(name: "AspNetUserRoles", newName: "aspnetuserroles");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetUserLogins",
-                newName: "aspnetuserlogins");
+            migrationBuilder.RenameTable(name: "AspNetUserLogins", newName: "aspnetuserlogins");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetUserClaims",
-                newName: "aspnetuserclaims");
+            migrationBuilder.RenameTable(name: "AspNetUserClaims", newName: "aspnetuserclaims");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetRoles",
-                newName: "aspnetroles");
+            migrationBuilder.RenameTable(name: "AspNetRoles", newName: "aspnetroles");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetRoleClaims",
-                newName: "aspnetroleclaims");
+            migrationBuilder.RenameTable(name: "AspNetRoleClaims", newName: "aspnetroleclaims");
 
-            migrationBuilder.RenameColumn(
-                name: "TimeStamp",
-                table: "cheeps",
-                newName: "timestamp");
+            migrationBuilder.RenameColumn(name: "TimeStamp", table: "cheeps", newName: "timestamp");
 
-            migrationBuilder.RenameColumn(
-                name: "Text",
-                table: "cheeps",
-                newName: "text");
+            migrationBuilder.RenameColumn(name: "Text", table: "cheeps", newName: "text");
 
             migrationBuilder.RenameColumn(
                 name: "PeopleLikes",
                 table: "cheeps",
-                newName: "peoplelikes");
+                newName: "peoplelikes"
+            );
 
-            migrationBuilder.RenameColumn(
-                name: "AuthorId",
-                table: "cheeps",
-                newName: "authorid");
+            migrationBuilder.RenameColumn(name: "AuthorId", table: "cheeps", newName: "authorid");
 
-            migrationBuilder.RenameColumn(
-                name: "CheepId",
-                table: "cheeps",
-                newName: "cheepid");
+            migrationBuilder.RenameColumn(name: "CheepId", table: "cheeps", newName: "cheepid");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Cheeps_AuthorId",
                 table: "cheeps",
-                newName: "IX_cheeps_authorid");
+                newName: "IX_cheeps_authorid"
+            );
 
-            migrationBuilder.RenameColumn(
-                name: "Name",
-                table: "authors",
-                newName: "name");
+            migrationBuilder.RenameColumn(name: "Name", table: "authors", newName: "name");
 
-            migrationBuilder.RenameColumn(
-                name: "Follows",
-                table: "authors",
-                newName: "follows");
+            migrationBuilder.RenameColumn(name: "Follows", table: "authors", newName: "follows");
 
-            migrationBuilder.RenameColumn(
-                name: "Email",
-                table: "authors",
-                newName: "email");
+            migrationBuilder.RenameColumn(name: "Email", table: "authors", newName: "email");
 
             migrationBuilder.RenameColumn(
                 name: "CheepLikes",
                 table: "authors",
-                newName: "cheeplikes");
+                newName: "cheeplikes"
+            );
 
-            migrationBuilder.RenameColumn(
-                name: "AuthorId",
-                table: "authors",
-                newName: "authorid");
+            migrationBuilder.RenameColumn(name: "AuthorId", table: "authors", newName: "authorid");
 
             migrationBuilder.RenameIndex(
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "aspnetuserroles",
-                newName: "IX_aspnetuserroles_RoleId");
+                newName: "IX_aspnetuserroles_RoleId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_AspNetUserLogins_UserId",
                 table: "aspnetuserlogins",
-                newName: "IX_aspnetuserlogins_UserId");
+                newName: "IX_aspnetuserlogins_UserId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "aspnetuserclaims",
-                newName: "IX_aspnetuserclaims_UserId");
+                newName: "IX_aspnetuserclaims_UserId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "aspnetroleclaims",
-                newName: "IX_aspnetroleclaims_RoleId");
+                newName: "IX_aspnetroleclaims_RoleId"
+            );
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "timestamp",
@@ -186,7 +141,8 @@ namespace Infrastructure.Migrations
                 type: "timestamp with time zone",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "text",
@@ -196,7 +152,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldMaxLength: 160);
+                oldMaxLength: 160
+            );
 
             migrationBuilder.AlterColumn<List<int>>(
                 name: "peoplelikes",
@@ -204,7 +161,8 @@ namespace Infrastructure.Migrations
                 type: "integer[]",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "authorid",
@@ -212,16 +170,22 @@ namespace Infrastructure.Migrations
                 type: "integer",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldType: "INTEGER"
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "cheepid",
-                table: "cheeps",
-                type: "integer",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "INTEGER")
-                .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "cheepid",
+                    table: "cheeps",
+                    type: "integer",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "INTEGER"
+                )
+                .Annotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "name",
@@ -230,7 +194,8 @@ namespace Infrastructure.Migrations
                 maxLength: 200,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<List<int>>(
                 name: "follows",
@@ -238,7 +203,8 @@ namespace Infrastructure.Migrations
                 type: "integer[]",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "email",
@@ -247,7 +213,8 @@ namespace Infrastructure.Migrations
                 maxLength: 200,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<List<int>>(
                 name: "cheeplikes",
@@ -255,16 +222,22 @@ namespace Infrastructure.Migrations
                 type: "integer[]",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "authorid",
-                table: "authors",
-                type: "integer",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "INTEGER")
-                .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "authorid",
+                    table: "authors",
+                    type: "integer",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "INTEGER"
+                )
+                .Annotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Value",
@@ -273,7 +246,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -282,7 +256,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -291,7 +266,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -299,7 +275,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -310,7 +287,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<bool>(
                 name: "TwoFactorEnabled",
@@ -318,7 +296,8 @@ namespace Infrastructure.Migrations
                 type: "boolean",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldType: "INTEGER"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "SecurityStamp",
@@ -327,7 +306,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<bool>(
                 name: "PhoneNumberConfirmed",
@@ -335,7 +315,8 @@ namespace Infrastructure.Migrations
                 type: "boolean",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldType: "INTEGER"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "PhoneNumber",
@@ -344,7 +325,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "PasswordHash",
@@ -353,7 +335,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedUserName",
@@ -364,7 +347,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedEmail",
@@ -375,7 +359,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<DateTimeOffset>(
                 name: "LockoutEnd",
@@ -384,7 +369,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<bool>(
                 name: "LockoutEnabled",
@@ -392,7 +378,8 @@ namespace Infrastructure.Migrations
                 type: "boolean",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldType: "INTEGER"
+            );
 
             migrationBuilder.AlterColumn<bool>(
                 name: "EmailConfirmed",
@@ -400,7 +387,8 @@ namespace Infrastructure.Migrations
                 type: "boolean",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldType: "INTEGER"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
@@ -411,7 +399,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
@@ -420,7 +409,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "AccessFailedCount",
@@ -428,7 +418,8 @@ namespace Infrastructure.Migrations
                 type: "integer",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldType: "INTEGER"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Id",
@@ -436,7 +427,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "RoleId",
@@ -444,7 +436,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -452,7 +445,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -460,7 +454,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderDisplayName",
@@ -469,7 +464,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
@@ -478,7 +474,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -487,7 +484,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -495,7 +493,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -504,7 +503,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimType",
@@ -513,16 +513,22 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "aspnetuserclaims",
-                type: "integer",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "INTEGER")
-                .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "Id",
+                    table: "aspnetuserclaims",
+                    type: "integer",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "INTEGER"
+                )
+                .Annotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedName",
@@ -533,7 +539,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -544,7 +551,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
@@ -553,7 +561,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Id",
@@ -561,7 +570,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "RoleId",
@@ -569,7 +579,8 @@ namespace Infrastructure.Migrations
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -578,7 +589,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimType",
@@ -587,56 +599,66 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "aspnetroleclaims",
-                type: "integer",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "INTEGER")
-                .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "Id",
+                    table: "aspnetroleclaims",
+                    type: "integer",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "INTEGER"
+                )
+                .Annotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_cheeps",
-                table: "cheeps",
-                column: "cheepid");
+            migrationBuilder.AddPrimaryKey(name: "PK_cheeps", table: "cheeps", column: "cheepid");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_authors",
                 table: "authors",
-                column: "authorid");
+                column: "authorid"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_aspnetusertokens",
                 table: "aspnetusertokens",
-                columns: new[] { "UserId", "LoginProvider", "Name" });
+                columns: new[] { "UserId", "LoginProvider", "Name" }
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_aspnetuserroles",
                 table: "aspnetuserroles",
-                columns: new[] { "UserId", "RoleId" });
+                columns: new[] { "UserId", "RoleId" }
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_aspnetuserlogins",
                 table: "aspnetuserlogins",
-                columns: new[] { "LoginProvider", "ProviderKey" });
+                columns: new[] { "LoginProvider", "ProviderKey" }
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_aspnetuserclaims",
                 table: "aspnetuserclaims",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_aspnetroles",
                 table: "aspnetroles",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_aspnetroleclaims",
                 table: "aspnetroleclaims",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.CreateTable(
                 name: "aspnetusers",
@@ -654,14 +676,18 @@ namespace Infrastructure.Migrations
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnd = table.Column<DateTimeOffset>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_aspnetusers", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_aspnetroleclaims_aspnetroles_RoleId",
@@ -669,7 +695,8 @@ namespace Infrastructure.Migrations
                 column: "RoleId",
                 principalTable: "aspnetroles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_aspnetuserclaims_AspNetUsers_UserId",
@@ -677,7 +704,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_aspnetuserlogins_AspNetUsers_UserId",
@@ -685,7 +713,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_aspnetuserroles_AspNetUsers_UserId",
@@ -693,7 +722,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_aspnetuserroles_aspnetroles_RoleId",
@@ -701,7 +731,8 @@ namespace Infrastructure.Migrations
                 column: "RoleId",
                 principalTable: "aspnetroles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_aspnetusertokens_AspNetUsers_UserId",
@@ -709,7 +740,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_cheeps_authors_authorid",
@@ -717,7 +749,8 @@ namespace Infrastructure.Migrations
                 column: "authorid",
                 principalTable: "authors",
                 principalColumn: "authorid",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
@@ -725,173 +758,127 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_aspnetroleclaims_aspnetroles_RoleId",
-                table: "aspnetroleclaims");
+                table: "aspnetroleclaims"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_aspnetuserclaims_AspNetUsers_UserId",
-                table: "aspnetuserclaims");
+                table: "aspnetuserclaims"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_aspnetuserlogins_AspNetUsers_UserId",
-                table: "aspnetuserlogins");
+                table: "aspnetuserlogins"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_aspnetuserroles_AspNetUsers_UserId",
-                table: "aspnetuserroles");
+                table: "aspnetuserroles"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_aspnetuserroles_aspnetroles_RoleId",
-                table: "aspnetuserroles");
+                table: "aspnetuserroles"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_aspnetusertokens_AspNetUsers_UserId",
-                table: "aspnetusertokens");
+                table: "aspnetusertokens"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_cheeps_authors_authorid",
-                table: "cheeps");
+            migrationBuilder.DropForeignKey(name: "FK_cheeps_authors_authorid", table: "cheeps");
 
-            migrationBuilder.DropTable(
-                name: "aspnetusers");
+            migrationBuilder.DropTable(name: "aspnetusers");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_cheeps",
-                table: "cheeps");
+            migrationBuilder.DropPrimaryKey(name: "PK_cheeps", table: "cheeps");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_authors",
-                table: "authors");
+            migrationBuilder.DropPrimaryKey(name: "PK_authors", table: "authors");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_aspnetusertokens",
-                table: "aspnetusertokens");
+            migrationBuilder.DropPrimaryKey(name: "PK_aspnetusertokens", table: "aspnetusertokens");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_aspnetuserroles",
-                table: "aspnetuserroles");
+            migrationBuilder.DropPrimaryKey(name: "PK_aspnetuserroles", table: "aspnetuserroles");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_aspnetuserlogins",
-                table: "aspnetuserlogins");
+            migrationBuilder.DropPrimaryKey(name: "PK_aspnetuserlogins", table: "aspnetuserlogins");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_aspnetuserclaims",
-                table: "aspnetuserclaims");
+            migrationBuilder.DropPrimaryKey(name: "PK_aspnetuserclaims", table: "aspnetuserclaims");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_aspnetroles",
-                table: "aspnetroles");
+            migrationBuilder.DropPrimaryKey(name: "PK_aspnetroles", table: "aspnetroles");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_aspnetroleclaims",
-                table: "aspnetroleclaims");
+            migrationBuilder.DropPrimaryKey(name: "PK_aspnetroleclaims", table: "aspnetroleclaims");
 
-            migrationBuilder.RenameTable(
-                name: "cheeps",
-                newName: "Cheeps");
+            migrationBuilder.RenameTable(name: "cheeps", newName: "Cheeps");
 
-            migrationBuilder.RenameTable(
-                name: "authors",
-                newName: "Authors");
+            migrationBuilder.RenameTable(name: "authors", newName: "Authors");
 
-            migrationBuilder.RenameTable(
-                name: "aspnetusertokens",
-                newName: "AspNetUserTokens");
+            migrationBuilder.RenameTable(name: "aspnetusertokens", newName: "AspNetUserTokens");
 
-            migrationBuilder.RenameTable(
-                name: "aspnetuserroles",
-                newName: "AspNetUserRoles");
+            migrationBuilder.RenameTable(name: "aspnetuserroles", newName: "AspNetUserRoles");
 
-            migrationBuilder.RenameTable(
-                name: "aspnetuserlogins",
-                newName: "AspNetUserLogins");
+            migrationBuilder.RenameTable(name: "aspnetuserlogins", newName: "AspNetUserLogins");
 
-            migrationBuilder.RenameTable(
-                name: "aspnetuserclaims",
-                newName: "AspNetUserClaims");
+            migrationBuilder.RenameTable(name: "aspnetuserclaims", newName: "AspNetUserClaims");
 
-            migrationBuilder.RenameTable(
-                name: "aspnetroles",
-                newName: "AspNetRoles");
+            migrationBuilder.RenameTable(name: "aspnetroles", newName: "AspNetRoles");
 
-            migrationBuilder.RenameTable(
-                name: "aspnetroleclaims",
-                newName: "AspNetRoleClaims");
+            migrationBuilder.RenameTable(name: "aspnetroleclaims", newName: "AspNetRoleClaims");
 
-            migrationBuilder.RenameColumn(
-                name: "timestamp",
-                table: "Cheeps",
-                newName: "TimeStamp");
+            migrationBuilder.RenameColumn(name: "timestamp", table: "Cheeps", newName: "TimeStamp");
 
-            migrationBuilder.RenameColumn(
-                name: "text",
-                table: "Cheeps",
-                newName: "Text");
+            migrationBuilder.RenameColumn(name: "text", table: "Cheeps", newName: "Text");
 
             migrationBuilder.RenameColumn(
                 name: "peoplelikes",
                 table: "Cheeps",
-                newName: "PeopleLikes");
+                newName: "PeopleLikes"
+            );
 
-            migrationBuilder.RenameColumn(
-                name: "authorid",
-                table: "Cheeps",
-                newName: "AuthorId");
+            migrationBuilder.RenameColumn(name: "authorid", table: "Cheeps", newName: "AuthorId");
 
-            migrationBuilder.RenameColumn(
-                name: "cheepid",
-                table: "Cheeps",
-                newName: "CheepId");
+            migrationBuilder.RenameColumn(name: "cheepid", table: "Cheeps", newName: "CheepId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_cheeps_authorid",
                 table: "Cheeps",
-                newName: "IX_Cheeps_AuthorId");
+                newName: "IX_Cheeps_AuthorId"
+            );
 
-            migrationBuilder.RenameColumn(
-                name: "name",
-                table: "Authors",
-                newName: "Name");
+            migrationBuilder.RenameColumn(name: "name", table: "Authors", newName: "Name");
 
-            migrationBuilder.RenameColumn(
-                name: "follows",
-                table: "Authors",
-                newName: "Follows");
+            migrationBuilder.RenameColumn(name: "follows", table: "Authors", newName: "Follows");
 
-            migrationBuilder.RenameColumn(
-                name: "email",
-                table: "Authors",
-                newName: "Email");
+            migrationBuilder.RenameColumn(name: "email", table: "Authors", newName: "Email");
 
             migrationBuilder.RenameColumn(
                 name: "cheeplikes",
                 table: "Authors",
-                newName: "CheepLikes");
+                newName: "CheepLikes"
+            );
 
-            migrationBuilder.RenameColumn(
-                name: "authorid",
-                table: "Authors",
-                newName: "AuthorId");
+            migrationBuilder.RenameColumn(name: "authorid", table: "Authors", newName: "AuthorId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_aspnetuserroles_RoleId",
                 table: "AspNetUserRoles",
-                newName: "IX_AspNetUserRoles_RoleId");
+                newName: "IX_AspNetUserRoles_RoleId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_aspnetuserlogins_UserId",
                 table: "AspNetUserLogins",
-                newName: "IX_AspNetUserLogins_UserId");
+                newName: "IX_AspNetUserLogins_UserId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_aspnetuserclaims_UserId",
                 table: "AspNetUserClaims",
-                newName: "IX_AspNetUserClaims_UserId");
+                newName: "IX_AspNetUserClaims_UserId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_aspnetroleclaims_RoleId",
                 table: "AspNetRoleClaims",
-                newName: "IX_AspNetRoleClaims_RoleId");
+                newName: "IX_AspNetRoleClaims_RoleId"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "TimeStamp",
@@ -899,7 +886,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone");
+                oldType: "timestamp with time zone"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Text",
@@ -909,7 +897,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "character varying(160)",
-                oldMaxLength: 160);
+                oldMaxLength: 160
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "PeopleLikes",
@@ -917,7 +906,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(List<int>),
-                oldType: "integer[]");
+                oldType: "integer[]"
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "AuthorId",
@@ -925,16 +915,22 @@ namespace Infrastructure.Migrations
                 type: "INTEGER",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "integer");
+                oldType: "integer"
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "CheepId",
-                table: "Cheeps",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "integer")
-                .OldAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "CheepId",
+                    table: "Cheeps",
+                    type: "INTEGER",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "integer"
+                )
+                .OldAnnotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -943,7 +939,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "character varying(200)",
-                oldMaxLength: 200);
+                oldMaxLength: 200
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Follows",
@@ -951,7 +948,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(List<int>),
-                oldType: "integer[]");
+                oldType: "integer[]"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
@@ -960,7 +958,8 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "character varying(200)",
-                oldMaxLength: 200);
+                oldMaxLength: 200
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "CheepLikes",
@@ -968,16 +967,22 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(List<int>),
-                oldType: "integer[]");
+                oldType: "integer[]"
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "AuthorId",
-                table: "Authors",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "integer")
-                .OldAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "AuthorId",
+                    table: "Authors",
+                    type: "INTEGER",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "integer"
+                )
+                .OldAnnotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Value",
@@ -986,7 +991,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -995,7 +1001,8 @@ namespace Infrastructure.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -1004,7 +1011,8 @@ namespace Infrastructure.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -1012,7 +1020,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -1023,7 +1032,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "TwoFactorEnabled",
@@ -1031,7 +1041,8 @@ namespace Infrastructure.Migrations
                 type: "INTEGER",
                 nullable: false,
                 oldClrType: typeof(bool),
-                oldType: "boolean");
+                oldType: "boolean"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "SecurityStamp",
@@ -1040,7 +1051,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "PhoneNumberConfirmed",
@@ -1048,7 +1060,8 @@ namespace Infrastructure.Migrations
                 type: "INTEGER",
                 nullable: false,
                 oldClrType: typeof(bool),
-                oldType: "boolean");
+                oldType: "boolean"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "PhoneNumber",
@@ -1057,7 +1070,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "PasswordHash",
@@ -1066,7 +1080,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedUserName",
@@ -1077,7 +1092,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedEmail",
@@ -1088,7 +1104,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LockoutEnd",
@@ -1097,7 +1114,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(DateTimeOffset),
                 oldType: "timestamp with time zone",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "LockoutEnabled",
@@ -1105,7 +1123,8 @@ namespace Infrastructure.Migrations
                 type: "INTEGER",
                 nullable: false,
                 oldClrType: typeof(bool),
-                oldType: "boolean");
+                oldType: "boolean"
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "EmailConfirmed",
@@ -1113,7 +1132,8 @@ namespace Infrastructure.Migrations
                 type: "INTEGER",
                 nullable: false,
                 oldClrType: typeof(bool),
-                oldType: "boolean");
+                oldType: "boolean"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
@@ -1124,7 +1144,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
@@ -1133,7 +1154,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "AccessFailedCount",
@@ -1141,7 +1163,8 @@ namespace Infrastructure.Migrations
                 type: "INTEGER",
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "integer");
+                oldType: "integer"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Id",
@@ -1149,7 +1172,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "RoleId",
@@ -1157,7 +1181,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -1165,7 +1190,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -1173,7 +1199,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderDisplayName",
@@ -1182,7 +1209,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
@@ -1191,7 +1219,8 @@ namespace Infrastructure.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -1200,7 +1229,8 @@ namespace Infrastructure.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
@@ -1208,7 +1238,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -1217,7 +1248,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimType",
@@ -1226,16 +1258,22 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "AspNetUserClaims",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "integer")
-                .OldAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "Id",
+                    table: "AspNetUserClaims",
+                    type: "INTEGER",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "integer"
+                )
+                .OldAnnotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedName",
@@ -1246,7 +1284,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -1257,7 +1296,8 @@ namespace Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
@@ -1266,7 +1306,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Id",
@@ -1274,7 +1315,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "RoleId",
@@ -1282,7 +1324,8 @@ namespace Infrastructure.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "text"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -1291,7 +1334,8 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimType",
@@ -1300,56 +1344,66 @@ namespace Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "AspNetRoleClaims",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "integer")
-                .OldAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "Id",
+                    table: "AspNetRoleClaims",
+                    type: "INTEGER",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "integer"
+                )
+                .OldAnnotation(
+                    "Npgsql:ValueGenerationStrategy",
+                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                );
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Cheeps",
-                table: "Cheeps",
-                column: "CheepId");
+            migrationBuilder.AddPrimaryKey(name: "PK_Cheeps", table: "Cheeps", column: "CheepId");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Authors",
                 table: "Authors",
-                column: "AuthorId");
+                column: "AuthorId"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetUserTokens",
                 table: "AspNetUserTokens",
-                columns: new[] { "UserId", "LoginProvider", "Name" });
+                columns: new[] { "UserId", "LoginProvider", "Name" }
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetUserRoles",
                 table: "AspNetUserRoles",
-                columns: new[] { "UserId", "RoleId" });
+                columns: new[] { "UserId", "RoleId" }
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetUserLogins",
                 table: "AspNetUserLogins",
-                columns: new[] { "LoginProvider", "ProviderKey" });
+                columns: new[] { "LoginProvider", "ProviderKey" }
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetUserClaims",
                 table: "AspNetUserClaims",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetRoles",
                 table: "AspNetRoles",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetRoleClaims",
                 table: "AspNetRoleClaims",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
@@ -1357,7 +1411,8 @@ namespace Infrastructure.Migrations
                 column: "RoleId",
                 principalTable: "AspNetRoles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserClaims_AspNetUsers_UserId",
@@ -1365,7 +1420,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserLogins_AspNetUsers_UserId",
@@ -1373,7 +1429,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
@@ -1381,7 +1438,8 @@ namespace Infrastructure.Migrations
                 column: "RoleId",
                 principalTable: "AspNetRoles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserRoles_AspNetUsers_UserId",
@@ -1389,7 +1447,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserTokens_AspNetUsers_UserId",
@@ -1397,7 +1456,8 @@ namespace Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Cheeps_Authors_AuthorId",
@@ -1405,7 +1465,8 @@ namespace Infrastructure.Migrations
                 column: "AuthorId",
                 principalTable: "Authors",
                 principalColumn: "AuthorId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
     }
 }
