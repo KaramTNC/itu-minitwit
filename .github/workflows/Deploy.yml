@@ -25,6 +25,26 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Apply database migrations
+        run: |
+          dotnet ef database update --no-build --configuration Release
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.DB_URL }}
+
       - name: Copy repository files to server
         run: |
           scp -o StrictHostKeyChecking=no -r ./* root@46.101.201.186:/vagrant/
