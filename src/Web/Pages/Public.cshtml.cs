@@ -1,8 +1,11 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.Metrics;
+using System.Security.Claims;
 using Core;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
 
 namespace Web.Pages;
 
@@ -14,6 +17,11 @@ public class PublicModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
     public required List<CheepViewModel> Cheeps { get; set; }
+    static Meter s_meter = new("Web.Public", "1.0.0");
+    static Counter<int> s_publicTimelineVisitsCounter = s_meter.CreateCounter<int>(
+        name: "public_timeline_visits",
+        description: "Number of visits to the public timeline page",
+        unit: "visits");
 
     /// <summary>
     /// Perform on Page Load
@@ -22,11 +30,8 @@ public class PublicModel(ICheepService service) : PageModel
     /// <returns></returns>
     public async Task<ActionResult> OnGet([FromQuery] int page = 0)
     {
-        Cheeps = await _service.GetAllCheeps(
-            User.Identity!.Name!,
-            User.FindFirst(ClaimTypes.Email)?.Value!,
-            page
-        );
+        Cheeps = await _service.GetAllCheeps(User.Identity!.Name!, User.FindFirst(ClaimTypes.Email)?.Value!, page);
+        s_publicTimelineVisitsCounter.Add(1);
         return Page();
     }
 

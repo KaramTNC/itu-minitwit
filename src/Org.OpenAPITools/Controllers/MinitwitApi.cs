@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text.Json;
@@ -77,6 +78,8 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 1");
+
+                single.IncrementGetFollowersCounter((int)example.Status);
                 return new ObjectResult(example);
             }
 
@@ -108,6 +111,8 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
             Console.WriteLine("helpp");
             Console.WriteLine(exampleJson);
+
+            single.IncrementGetFollowersCounter(JsonConvert.DeserializeObject<ErrorResponse>(exampleJson)?.Status ?? 200);
             return new ObjectResult(exampleJson);
         }
 
@@ -133,6 +138,7 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(200, default);
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
+
             string exampleJson = null;
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
@@ -142,7 +148,9 @@ namespace Org.OpenAPITools.Controllers
                     ? JsonConvert.DeserializeObject<LatestValue>(exampleJson)
                     : default;
             //TODO: Change the data returned
-            return new ObjectResult(example);
+            ObjectResult result = new ObjectResult(example);
+            single.IncrementLatestCounter(result.StatusCode ?? 200);
+            return result;
         }
 
         /// <summary>
@@ -178,6 +186,7 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 2");
+                single.IncrementGetMessagesCounter((int)nuhuh.Status);
                 return new ObjectResult(nuhuh);
             }
 
@@ -208,7 +217,9 @@ namespace Org.OpenAPITools.Controllers
                     ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
                     : default;
             single.latest = (int)latest;
-            return new ObjectResult(example);
+            var result = new ObjectResult(example);
+            single.IncrementGetMessagesCounter(result.StatusCode ?? 200);
+            return result;
         }
 
         /// <summary>
@@ -247,6 +258,7 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 3");
+                single.IncrementGetMessagesPerUserCounter((int)nuhuh.Status);
                 return new ObjectResult(nuhuh);
             }
 
@@ -275,7 +287,9 @@ namespace Org.OpenAPITools.Controllers
                     ? JsonConvert.DeserializeObject<List<Message>>(exampleJson)
                     : default;
             single.latest = (int)latest;
-            return new ObjectResult(example);
+            var result = new ObjectResult(example);
+            single.IncrementGetMessagesPerUserCounter(result.StatusCode ?? 200);
+            return result;
         }
 
         /// <summary>
@@ -314,7 +328,9 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 4");
-                return new ObjectResult(example);
+                var result = new ObjectResult(example);
+                single.IncrementPostFollowersCounter(result.StatusCode ?? 200);
+                return result;
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
             if (follower == null)
@@ -357,7 +373,11 @@ namespace Org.OpenAPITools.Controllers
             Console.WriteLine("Next round");
 
             single.latest = (int)latest;
-            return StatusCode(204);
+
+            var statusCode = 204;
+            single.IncrementPostFollowersCounter(statusCode);
+            return StatusCode(statusCode);
+
         }
 
         /// <summary>
@@ -395,6 +415,7 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 5");
+                single.IncrementPostMessagesPerUserCounter((int)example.Status);
                 return new ObjectResult(example);
             }
 
@@ -407,7 +428,10 @@ namespace Org.OpenAPITools.Controllers
                 payload.Content
             );
             single.latest = (int)latest;
-            return StatusCode(204);
+
+            var statusCode = 204;
+            single.IncrementPostMessagesPerUserCounter(statusCode);
+            return StatusCode(statusCode);
         }
 
         /// <summary>
@@ -423,15 +447,8 @@ namespace Org.OpenAPITools.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("PostRegister")]
-        [SwaggerResponse(
-            statusCode: 400,
-            type: typeof(ErrorResponse),
-            description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken"
-        )]
-        public virtual async Task<IActionResult> PostRegister(
-            [FromBody] RegisterRequest payload,
-            [FromQuery(Name = "latest")] int? latest
-        )
+        [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken")]
+        public virtual async Task<IActionResult> PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
         {
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
@@ -441,7 +458,9 @@ namespace Org.OpenAPITools.Controllers
             _authorRepository.CreateAuthor(payload.Username, payload.Email);
 
             single.latest = (int)latest;
-
+            
+            var statusCode = 204;
+            single.IncrementPostRegisterCounter(statusCode);
             return StatusCode(204);
         }
     }
