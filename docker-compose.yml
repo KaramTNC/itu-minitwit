@@ -1,17 +1,61 @@
+networks:
+  itu-minitwit-network:
+    name: itu-minitwit-network
+
+volumes:
+  prometheus_data:
+  grafana-storage:
+
 services:
-  webserver:
-    image: itu-minitwit/myserver
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    # Using host mode allows the container to access the ports from the local machine, so it can access the endpoint from dotnet's OpenTelemetry server.
+    # Later, I'm almost sure we'll have to replace this with the URL from the DigitalOcean server (http://46.101.201.186:8080:9184/metrics)
+    network_mode: "host"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    # no networks section needed when using host network
+  grafana:
+    image: grafana/grafana
+    # Using host mode allows the container to access the ports from the local machine, so it can access the endpoint from dotnet's OpenTelemetry server.
+    # Later, I'm almost sure we'll have to replace this with the URL from the DigitalOcean server (http://46.101.201.186:8080:9184/metrics)
+    network_mode: "host"
+    ports:
+      - "3000:3000"  
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+  itu-api-server:
+    build: 
+      context: .
+      dockerfile: docker/api/Dockerfile
+    image: itu-api-server
+    container_name: api
+    networks: 
+      - itu-minitwit-network
     ports:
       - "8080:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - DATABASE_PATH=/app/db/chat.db
+    volumes:
+      - ./src/Web/chat.db:/app/db/chat.db
 
-  clidownload:
-    image: appropriate/curl
-    depends_on:
-      webserver:
-        condition: service_healthy
-    entrypoint: sh -c "curl -s http://webserver:8080"
+  itu-web-server:
+    build: 
+      context: .
+      dockerfile: docker/web/Dockerfile
+    image: itu-web-server
+    container_name: web
+    networks: 
+      - itu-minitwit-network
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
+    volumes:
+      - ./src/Web/chat.db:/app/db/chat.db

@@ -20,7 +20,6 @@ public class TestServerFixture : IAsyncDisposable
 
     public async Task StartAsync()
     {
-        
         if (!_serverStarted)
         {
             // Check if port is already in use
@@ -29,7 +28,9 @@ public class TestServerFixture : IAsyncDisposable
                 using var testClient = new HttpClient();
                 testClient.Timeout = TimeSpan.FromSeconds(1);
                 var testResult = await testClient.GetAsync(ServerAddress);
-                Console.WriteLine($"WARNING: Port 5273 is already in use! Got status: {testResult.StatusCode}");
+                Console.WriteLine(
+                    $"WARNING: Port 5273 is already in use! Got status: {testResult.StatusCode}"
+                );
             }
             catch
             {
@@ -37,7 +38,9 @@ public class TestServerFixture : IAsyncDisposable
             }
 
             // Create and keep open a connection to prevent in-memory DB from being destroyed
-            _keepAliveConnection = new SqliteConnection("DataSource=TestDb;Mode=Memory;Cache=Shared");
+            _keepAliveConnection = new SqliteConnection(
+                "DataSource=TestDb;Mode=Memory;Cache=Shared"
+            );
             _keepAliveConnection.Open();
             Console.WriteLine("Opened persistent in-memory database connection");
 
@@ -59,10 +62,14 @@ public class TestServerFixture : IAsyncDisposable
             }
 
             Console.WriteLine("Content root: " + _app.Environment.ContentRootPath);
-            Console.WriteLine("Pages folder exists? " +
-                              Directory.Exists(Path.Combine(_app.Environment.ContentRootPath, "Pages")));
-            Console.WriteLine("wwwroot folder exists? " +
-                              Directory.Exists(Path.Combine(_app.Environment.ContentRootPath, "wwwroot")));
+            Console.WriteLine(
+                "Pages folder exists? "
+                    + Directory.Exists(Path.Combine(_app.Environment.ContentRootPath, "Pages"))
+            );
+            Console.WriteLine(
+                "wwwroot folder exists? "
+                    + Directory.Exists(Path.Combine(_app.Environment.ContentRootPath, "wwwroot"))
+            );
 
             _app.Urls.Clear();
             _app.Urls.Add(ServerAddress);
@@ -98,10 +105,12 @@ public class TestServerFixture : IAsyncDisposable
 
             // Wait until server is actually reachable with retries
             bool serverReady = false;
-            using var httpClient = new HttpClient(new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-            });
+            using var httpClient = new HttpClient(
+                new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+                }
+            );
             httpClient.Timeout = TimeSpan.FromSeconds(5);
 
             for (int i = 0; i < 30; i++)
@@ -115,7 +124,9 @@ public class TestServerFixture : IAsyncDisposable
                     if ((int)result.StatusCode >= 200 && (int)result.StatusCode < 600)
                     {
                         serverReady = true;
-                        Console.WriteLine($"Server is ready and responding with status {result.StatusCode}");
+                        Console.WriteLine(
+                            $"Server is ready and responding with status {result.StatusCode}"
+                        );
                         break;
                     }
                 }
@@ -138,7 +149,8 @@ public class TestServerFixture : IAsyncDisposable
             if (!serverReady)
             {
                 throw new Exception(
-                    $"Server failed to become ready within timeout period. Check if port 5273 is available and not blocked by firewall.");
+                    $"Server failed to become ready within timeout period. Check if port 5273 is available and not blocked by firewall."
+                );
             }
         }
     }

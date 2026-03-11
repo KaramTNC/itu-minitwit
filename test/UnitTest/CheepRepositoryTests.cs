@@ -31,7 +31,6 @@ public class CheepRepositoryTests
         Assert.Equal(3, _authorRepository.FindNewAuthorId().Result);
     }
 
-
     /*
     The test below was just to verify we could add to the new data base;
     The test case should be updated with the queries to do the following instead of what is is currently
@@ -50,7 +49,6 @@ public class CheepRepositoryTests
         Assert.Equal(4, _authorRepository.FindNewAuthorId().Result);
     }
 
-
     [Fact]
     public async Task CreateCheep_WithExistingAuthor()
     {
@@ -63,7 +61,7 @@ public class CheepRepositoryTests
             Email = email,
             Name = author,
             AuthorId = 0,
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<Cheep>(),
         };
 
         //Values needs to be updated when merged with Vee and madelines code
@@ -73,19 +71,17 @@ public class CheepRepositoryTests
         Assert.Equal(4, _authorRepository.FindNewAuthorId().Result);
         Assert.Equal(6, _cheepRepository.FindNewCheepId());
     }
-    
+
     [Fact]
     public async Task DoesItAddCheepLikeId()
     {
         var cheep = await _cheepRepository.GetCheepFromId(2);
         var likedAuthors = await _cheepRepository.GetLikedAuthors(2);
-        
+
         Assert.NotNull(likedAuthors);
         Assert.Empty(likedAuthors);
         _cheepRepository.AddlikedId(cheep!, 1);
         Assert.Equal(1, cheep!.PeopleLikes[0]);
-
-
     }
 
     [Fact]
@@ -93,14 +89,12 @@ public class CheepRepositoryTests
     {
         var cheep = await _cheepRepository.GetCheepFromId(4);
         var likedAuthors = await _cheepRepository.GetLikedAuthors(4);
-        
+
         Assert.NotNull(likedAuthors);
         Assert.Equal(1, cheep!.PeopleLikes[0]);
         _cheepRepository.RemovelikedId(cheep!, 1);
         likedAuthors = await _cheepRepository.GetLikedAuthors(4);
         Assert.Empty(likedAuthors);
-
-
     }
 
     [Fact]
@@ -120,7 +114,6 @@ public class CheepRepositoryTests
         Assert.Empty(author.Follows);
         _authorRepository.AddFollowerId(author, 1);
         Assert.Equal(1, author.Follows[0]);
-
     }
 
     [Fact]
@@ -131,9 +124,7 @@ public class CheepRepositoryTests
         Assert.Equal(2, author.Follows[0]);
         _authorRepository.RemoveFollowerId(author, 2);
         Assert.Empty(author.Follows);
-
     }
-
 
     [Fact]
     public async Task DoesItRemoveAuthorLikeId()
@@ -142,17 +133,15 @@ public class CheepRepositoryTests
         Assert.Equal(1, author.CheepLikes[0]);
         _authorRepository.RemoveLikeId(author, 1);
         Assert.Empty(author.CheepLikes);
-
     }
 
     [Fact]
     public async Task DoesItAddAuthorLikeId()
     {
-         var author = await _authorRepository.ReturnBasedOnNameAsync("Adrian");
+        var author = await _authorRepository.ReturnBasedOnNameAsync("Adrian");
         Assert.Single(author.CheepLikes);
         _authorRepository.AddLikeId(author, 2);
         Assert.Equal(2, author.CheepLikes.Count);
         Assert.Equal(2, author.CheepLikes[1]);
     }
-
 }

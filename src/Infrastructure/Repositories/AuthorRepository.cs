@@ -10,11 +10,12 @@ namespace Infrastructure.Repositories;
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChatDbContext _dbContext;
+
     public AuthorRepository(ChatDbContext dbContext)
     {
         _dbContext = dbContext;
     }
-    
+
     public void CreateAuthor(string name, string email)
     {
         var newAuthor = new Author()
@@ -22,7 +23,7 @@ public class AuthorRepository : IAuthorRepository
             AuthorId = FindNewAuthorId().Result,
             Name = name,
             Email = email,
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<Cheep>(),
         };
 
         _dbContext.Authors.Add(newAuthor);
@@ -41,21 +42,23 @@ public class AuthorRepository : IAuthorRepository
         author.Follows.Remove(id);
         _dbContext.Update(author);
         _dbContext.SaveChanges();
-
     }
-    
+
     public async Task DeleteAuthor(string email)
     {
         //var usersList = _dbContext.Users;
-        var myUser = _dbContext.Users.SingleOrDefault(user => user.NormalizedEmail == email.ToUpper());
+        var myUser = _dbContext.Users.SingleOrDefault(user =>
+            user.NormalizedEmail == email.ToUpper()
+        );
         var author = await ReturnBasedOnEmailAsync(email);
 
-        if (author.Count() != 1 || author.Count == 0) return;
-        
+        if (author.Count() != 1 || author.Count == 0)
+            return;
+
         //await _dbContext.Users.FindAsync(email);
         _dbContext.Authors.Remove(author.First());
         _dbContext.Users.Remove(myUser!);
-        
+
         await _dbContext.SaveChangesAsync();
     }
 
@@ -78,27 +81,26 @@ public class AuthorRepository : IAuthorRepository
     }
 
     #endregion
-    
+
     public async Task<List<Author>> ReturnBasedOnEmailAsync(string email, int page = 0)
     {
-        var query = (
-            from person in _dbContext.Authors
-            where person.Email == email
-            select person
-            ).OrderByDescending(c => c.Name).Skip(page * 32).Take(32);
+        var query = (from person in _dbContext.Authors where person.Email == email select person)
+            .OrderByDescending(c => c.Name)
+            .Skip(page * 32)
+            .Take(32);
 
         var result = await query.ToListAsync();
 
         return result;
     }
-    
+
     public async Task<List<int>> ReturnFollowAuthorsIds(string email)
     {
         var query = (
             from person in _dbContext.Authors
             where person.Email == email
             select person.Follows
-            );
+        );
 
         var result = await query.ToListAsync();
         try
@@ -109,7 +111,6 @@ public class AuthorRepository : IAuthorRepository
         {
             return new List<int>();
         }
-        
     }
 
     public async Task<int> ReturnAuthorsId(string email)
@@ -131,19 +132,19 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<Author> ReturnBasedOnNameAsync(string name, int page = 0)
     {
-        var query = (
-            from person in _dbContext.Authors
-            where person.Name == name
-            select person
-            ).OrderByDescending(c => c.Name).Skip(page * 32).Take(32);
+        var query = (from person in _dbContext.Authors where person.Name == name select person)
+            .OrderByDescending(c => c.Name)
+            .Skip(page * 32)
+            .Take(32);
 
         var result = await query.ToListAsync();
-        
-        if (result.Count == 0) throw new Exception("No authors found from " + name);
+
+        if (result.Count == 0)
+            return null; //throw new Exception("No authors found from " + name);
 
         return result[0];
     }
-    
+
     public async Task<List<Author>> GetAuthorsFromIdList(List<int> idList)
     {
         var query = (
@@ -166,7 +167,8 @@ public class AuthorRepository : IAuthorRepository
         ).OrderByDescending(c => c.Name);
         var result = await query.ToListAsync();
 
-        if (result.Count == 0) return true;
+        if (result.Count == 0)
+            return true;
         return false;
     }
 
@@ -177,9 +179,9 @@ public class AuthorRepository : IAuthorRepository
             where person.Email == email
             select person.CheepLikes
         );
-        
+
         var result = (await query.ToListAsync())[0];
-        
+
         try
         {
             return result;
@@ -189,7 +191,7 @@ public class AuthorRepository : IAuthorRepository
             return new List<int>();
         }
     }
-    
+
     //Has test
     public void RemoveLikeId(Author author, int cheepId)
     {
@@ -197,7 +199,7 @@ public class AuthorRepository : IAuthorRepository
         _dbContext.Update(author);
         _dbContext.SaveChanges();
     }
-    
+
     //Has test
     public void AddLikeId(Author author, int cheepId)
     {

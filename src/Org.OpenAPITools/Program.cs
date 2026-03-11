@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
 
 namespace Org.OpenAPITools
 {
@@ -8,8 +10,7 @@ namespace Org.OpenAPITools
     /// </summary>
     public class Program
     {
-
-        public Singleton single =  Singleton.Instance;
+        public Singleton single = Singleton.Instance;
 
         /// <summary>
         /// Main
@@ -17,9 +18,14 @@ namespace Org.OpenAPITools
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-            
+            // Necessary for monitoring metrics
+            // Initialises a metrics endpoint where Prometheus can scrape (and store) the metrics gathered by OpenTelemetry.
+            using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+                    .AddMeter("API") // This meter is currently the only one used. We'll need to add more meters using .AddMeter later on.
+                    .AddPrometheusHttpListener(options => options.UriPrefixes = new string[] { "http://localhost:9185/" }) // endpoint is http://localhost:9185/metrics
+                    .Build();
 
+            CreateHostBuilder(args).Build().Run();
         }
 
         /// <summary>
@@ -31,8 +37,7 @@ namespace Org.OpenAPITools
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                   webBuilder.UseStartup<Startup>()
-                             .UseUrls("http://0.0.0.0:8080/");    
+                    webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:8080/");
                 });
     }
 }

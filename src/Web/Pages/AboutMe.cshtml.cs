@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Web.Pages;
+
 /// <summary>
-/// Handles logic for the about me page 
+/// Handles logic for the about me page
 /// </summary>
 /// <param name="service"></param>
 public class AboutMeModel(ICheepService service) : PageModel
@@ -24,10 +25,12 @@ public class AboutMeModel(ICheepService service) : PageModel
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {
         UserCheepsVm = await service.GetUserCheeps(User.FindFirst(ClaimTypes.Email)?.Value!, page);
-        UserAuthorVm =  await service.GetAuthorViewModel(User.FindFirst(ClaimTypes.Email)?.Value!);
+        UserAuthorVm = await service.GetAuthorViewModel(User.FindFirst(ClaimTypes.Email)?.Value!);
         FollowingVm = await service.GetFollowerViewModel(User.FindFirst(ClaimTypes.Email)?.Value!);
-        LikedCheepsVm = await service.GetLikedCheepsForAuthor(User.FindFirst(ClaimTypes.Email)?.Value!);
-            
+        LikedCheepsVm = await service.GetLikedCheepsForAuthor(
+            User.FindFirst(ClaimTypes.Email)?.Value!
+        );
+
         return Page();
     }
 
@@ -39,15 +42,16 @@ public class AboutMeModel(ICheepService service) : PageModel
     {
         var identity = User.FindFirst(ClaimTypes.Email)?.Value;
         await service.DeleteAuthor(identity!);
-        
+
         Response.Cookies.Delete(".AspNetCore.Identity.Application");
         Response.Cookies.Delete("Seq-Session");
         Response.Cookies.Delete(".AspNetCore.Antiforgery.xYiNViD5USA");
-        
+
         return RedirectToPage("Public");
     }
-    
-    [BindProperty] public required string Email { get; set; }
+
+    [BindProperty]
+    public required string Email { get; set; }
 
     /// <summary>
     /// Performs when pressing "Follow" on a Cheep Post
@@ -62,7 +66,7 @@ public class AboutMeModel(ICheepService service) : PageModel
 
     [BindProperty]
     public int CheepId { get; set; }
-    
+
     /// <summary>
     /// Performs when pressing "Like" on a Cheep
     /// </summary>

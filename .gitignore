@@ -23,6 +23,7 @@
 .env
 .local_vm/*
 .vagrant/*
-**/__pycache__/**.tar.gz
+**/__pycache__/*
 *.tar.gz
-*.tar.gz
+megalinter-reports/
+src/Web/chat.db
