@@ -1,8 +1,6 @@
 networks:
   itu-network:
-    external: true
     name: itu-network
-
 services:
   itu-api-server:
     build: 
