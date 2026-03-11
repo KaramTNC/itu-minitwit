@@ -10,8 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -112,7 +112,9 @@ namespace Org.OpenAPITools.Controllers
             Console.WriteLine("helpp");
             Console.WriteLine(exampleJson);
 
-            single.IncrementGetFollowersCounter(JsonConvert.DeserializeObject<ErrorResponse>(exampleJson)?.Status ?? 200);
+            single.IncrementGetFollowersCounter(
+                JsonConvert.DeserializeObject<ErrorResponse>(exampleJson)?.Status ?? 200
+            );
             return new ObjectResult(exampleJson);
         }
 
@@ -377,7 +379,6 @@ namespace Org.OpenAPITools.Controllers
             var statusCode = 204;
             single.IncrementPostFollowersCounter(statusCode);
             return StatusCode(statusCode);
-
         }
 
         /// <summary>
@@ -447,8 +448,15 @@ namespace Org.OpenAPITools.Controllers
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("PostRegister")]
-        [SwaggerResponse(statusCode: 400, type: typeof(ErrorResponse), description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken")]
-        public virtual async Task<IActionResult> PostRegister([FromBody]RegisterRequest payload, [FromQuery (Name = "latest")]int? latest)
+        [SwaggerResponse(
+            statusCode: 400,
+            type: typeof(ErrorResponse),
+            description: "Bad Request | Possible reasons:  - missing username  - invalid email  - password missing  - username already taken"
+        )]
+        public virtual async Task<IActionResult> PostRegister(
+            [FromBody] RegisterRequest payload,
+            [FromQuery(Name = "latest")] int? latest
+        )
         {
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
@@ -458,7 +466,7 @@ namespace Org.OpenAPITools.Controllers
             _authorRepository.CreateAuthor(payload.Username, payload.Email);
 
             single.latest = (int)latest;
-            
+
             var statusCode = 204;
             single.IncrementPostRegisterCounter(statusCode);
             return StatusCode(204);
