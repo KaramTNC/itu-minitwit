@@ -111,10 +111,10 @@ namespace Org.OpenAPITools
 
             var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH") ?? "../Web/chat.db";
 
-                services
-                    .AddSwaggerGenNewtonsoftSupport();
-                services.AddDbContext<ChatDbContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSwaggerGenNewtonsoftSupport();
+            services.AddDbContext<ChatDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+            );
         }
 
         /// <summary>

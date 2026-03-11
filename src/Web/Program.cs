@@ -1,13 +1,13 @@
 using Core.Interfaces;
+using DotNetEnv;
+using Infrastructure;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
-using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Npgsql;
-using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 
@@ -20,7 +20,7 @@ public class Program
     /// </summary>
     /// <param name="args">Optional arguments</param>
     public static void Main(string[] args)
-    {   
+    {
         Env.Load("../../.env");
         var app = BuildWebApplication(args);
 
@@ -171,15 +171,18 @@ public class Program
         else
         {
             string? envVarName = builder.Configuration.GetConnectionString("DefaultConnection");
-            if (envVarName == null) throw new Exception("DefaultConnection key not found in appsettings");
+            if (envVarName == null)
+                throw new Exception("DefaultConnection key not found in appsettings");
 
             Console.WriteLine(Environment.GetEnvironmentVariable(envVarName));
             Console.WriteLine(envVarName);
-            var connectionString = ToNpgsqlConnectionString(Environment.GetEnvironmentVariable(envVarName)!);
+            var connectionString = ToNpgsqlConnectionString(
+                Environment.GetEnvironmentVariable(envVarName)!
+            );
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseNpgsql(connectionString));
-                
+                options.UseNpgsql(connectionString)
+            );
         }
 
         // CRITICAL FIX: Use AddIdentity instead of AddDefaultIdentity
@@ -274,7 +277,7 @@ public class Program
 
         return app;
     }
-    
+
     static string ToNpgsqlConnectionString(string uri)
     {
         var u = new Uri(uri);

@@ -1,6 +1,5 @@
 using Core.Model;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +18,7 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Cheep> Cheeps { get; set; }
 
     public DbSet<Author> Authors { get; set; }
-
+    
     public ChatDbContext(DbContextOptions<ChatDbContext> options)
         : base(options) { }
     
@@ -47,7 +46,7 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Follows).HasColumnName("follows");
             entity.Property(e => e.CheepLikes).HasColumnName("cheeplikes");
         });
-        
+
         modelBuilder.Entity<IdentityUser>().ToTable("aspnetusers");
         modelBuilder.Entity<IdentityRole>().ToTable("aspnetroles");
         modelBuilder.Entity<IdentityUserRole<string>>().ToTable("aspnetuserroles");
