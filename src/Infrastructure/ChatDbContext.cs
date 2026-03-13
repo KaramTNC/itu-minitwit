@@ -33,7 +33,7 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.AuthorId).HasColumnName("authorid");
             entity.Property(e => e.Text).HasColumnName("text");
             entity.Property(e => e.TimeStamp).HasColumnName("timestamp");
-            entity.Property(e => e.PeopleLikes).HasColumnName("peoplelikes");
+            entity.Property(e => e.PeopleLikes).HasColumnName("peoplelikes").HasColumnType("integer[]");
         });
 
         modelBuilder.Entity<Author>(entity =>
@@ -43,8 +43,8 @@ public class ChatDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.AuthorId).HasColumnName("authorid");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Email).HasColumnName("email");
-            entity.Property(e => e.Follows).HasColumnName("follows");
-            entity.Property(e => e.CheepLikes).HasColumnName("cheeplikes");
+            entity.Property(e => e.Follows).HasColumnName("follows").HasColumnType("integer[]");
+            entity.Property(e => e.CheepLikes).HasColumnName("cheeplikes").HasColumnType("integer[]");
         });
 
         modelBuilder.Entity<IdentityUser>().ToTable("aspnetusers");

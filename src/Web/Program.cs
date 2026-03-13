@@ -46,7 +46,9 @@ public class Program
                     context.Database.OpenConnection();
                 }
             }
-            catch (InvalidOperationException) { }
+            catch (InvalidOperationException)
+            {
+            }
 
             context.Database.EnsureCreated();
             //has to say commented out for working with the devops
@@ -181,7 +183,12 @@ public class Program
             if (rawUri == null)
                 throw new Exception($"Environment variable '{envVarName}' is not set");
 
-            var connectionString = ToNpgsqlConnectionString(rawUri);
+            var connectionString =
+                Environment.GetEnvironmentVariable(envVarName)
+                ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+            if (connectionString == null)
+                throw new Exception($"Environment variable '{envVarName}' is not set");
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
                 options.UseNpgsql(connectionString)
@@ -289,6 +296,7 @@ public class Program
         var query = System.Web.HttpUtility.ParseQueryString(u.Query);
         var sslMode = query["sslmode"] ?? "Require";
 
-        return $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
+        return
+            $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
     }
 }
