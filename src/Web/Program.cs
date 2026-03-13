@@ -24,8 +24,7 @@ public class Program
         Env.Load("../../.env");
         var app = BuildWebApplication(args);
         var metricsUriPrefix =
-            Environment.GetEnvironmentVariable("OTEL_PROMETHEUS_URI_PREFIX")
-            ?? "http://*:9184/";
+            Environment.GetEnvironmentVariable("OTEL_PROMETHEUS_URI_PREFIX") ?? "http://*:9184/";
 
         // Necessary for monitoring metrics
         // Initialises a metrics endpoint where Prometheus can scrape (and store) the metrics gathered by OpenTelemetry.
