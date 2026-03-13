@@ -16,24 +16,14 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ["prometheus:9090"]
 
   - job_name: "OpenTelemetryTest-frontend"
     scrape_interval: 1s # poll very quickly for a more responsive demo
     static_configs:
-      - targets: ["localhost:9184"]
+      - targets: ["itu-web-server:9184"]
 
   - job_name: "OpenTelemetryTest-API"
     scrape_interval: 1s # poll very quickly for a more responsive demo
     static_configs:
-      - targets: ["localhost:9185"]
-
-  # - job_name:       'itu-minitwit-app'
-
-  #   # Override the global default and scrape targets from this job every 5 seconds.
-  #   scrape_interval: 5s
-
-  #   static_configs:
-  #     - targets: ['minitwit:5000']
-  #       labels:
-  #         group: 'production'
+      - targets: ["itu-api-server:9185"]

@@ -10,24 +10,21 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
-    # Using host mode allows the container to access the ports from the local machine, so it can access the endpoint from dotnet's OpenTelemetry server.
-    # Later, I'm almost sure we'll have to replace this with the URL from the DigitalOcean server (http://46.101.201.186:8080:9184/metrics)
-    network_mode: "host"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
-    # no networks section needed when using host network
+    networks:
+      - itu-minitwit-network
   grafana:
     image: grafana/grafana
-    # Using host mode allows the container to access the ports from the local machine, so it can access the endpoint from dotnet's OpenTelemetry server.
-    # Later, I'm almost sure we'll have to replace this with the URL from the DigitalOcean server (http://46.101.201.186:8080:9184/metrics)
-    network_mode: "host"
     ports:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+    networks:
+      - itu-minitwit-network
 
   itu-api-server:
     build:
@@ -35,16 +32,17 @@ services:
       dockerfile: docker/api/Dockerfile
     image: itu-api-server
     container_name: api
-    networks:
-      - itu-minitwit-network
     ports:
       - "8080:8080"
       - "9185:9185"
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - DATABASE_PATH=/app/db/chat.db
+      - OTEL_PROMETHEUS_URI_PREFIX=http://*:9185/
     volumes:
       - ./src/Web/chat.db:/app/db/chat.db
+    networks:
+      - itu-minitwit-network
 
   itu-web-server:
     build:
@@ -52,12 +50,13 @@ services:
       dockerfile: docker/web/Dockerfile
     image: itu-web-server
     container_name: web
-    networks:
-      - itu-minitwit-network
     ports:
       - "5001:5001"
       - "9184:9184"
     environment:
       - ASPNETCORE_URLS=http://+:5001
+      - OTEL_PROMETHEUS_URI_PREFIX=http://*:9184/
     volumes:
       - ./src/Web/chat.db:/app/db/chat.db
+    networks:
+      - itu-minitwit-network
