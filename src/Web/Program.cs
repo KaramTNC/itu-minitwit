@@ -46,9 +46,7 @@ public class Program
                     context.Database.OpenConnection();
                 }
             }
-            catch (InvalidOperationException)
-            {
-            }
+            catch (InvalidOperationException) { }
 
             context.Database.EnsureCreated();
             //has to say commented out for working with the devops
@@ -296,7 +294,6 @@ public class Program
         var query = System.Web.HttpUtility.ParseQueryString(u.Query);
         var sslMode = query["sslmode"] ?? "Require";
 
-        return
-            $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
+        return $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
     }
 }

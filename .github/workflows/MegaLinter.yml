@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-          ref: ${{ github.head_ref }}  # Add this line
+          ref: ${{ github.head_ref }} # Add this line
 
       # Cache MegaLinter Docker image to avoid re-downloading on every run
       - name: Cache MegaLinter Docker image

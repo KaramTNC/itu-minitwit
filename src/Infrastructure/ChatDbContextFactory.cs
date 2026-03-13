@@ -11,7 +11,7 @@ public class ChatDbContextFactory : IDesignTimeDbContextFactory<ChatDbContext>
         if (File.Exists(envPath))
             DotNetEnv.Env.Load(envPath);
 
-        var connectionString = 
+        var connectionString =
             Environment.GetEnvironmentVariable("DB_URL")
             ?? "Host=localhost;Database=design-time;Username=dummy;Password=dummy";
 
