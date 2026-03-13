@@ -40,11 +40,10 @@ services:
     ports:
       - "8080:8080"
       - "9185:9185"
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_URLS=http://+:8080
-      - DATABASE_PATH=/app/db/chat.db
-    volumes:
-      - ./src/Web/chat.db:/app/db/chat.db
 
   itu-web-server:
     build:
@@ -57,7 +56,8 @@ services:
     ports:
       - "5001:5001"
       - "9184:9184"
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_URLS=http://+:5001
-    volumes:
-      - ./src/Web/chat.db:/app/db/chat.db
+   
