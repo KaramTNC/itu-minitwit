@@ -113,7 +113,7 @@ namespace Org.OpenAPITools
 
             services.AddSwaggerGenNewtonsoftSupport();
             services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite($"Data Source={dbPath}")
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
             );
         }
 

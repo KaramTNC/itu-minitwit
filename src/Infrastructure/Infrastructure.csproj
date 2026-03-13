@@ -11,13 +11,11 @@
       Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"
       Version="8.0.22"
     />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.22" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SQLite" Version="8.0.22" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
   </ItemGroup>
 
   <ItemGroup>

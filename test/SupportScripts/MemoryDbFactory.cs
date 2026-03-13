@@ -4,6 +4,7 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace SupportScripts;
 
