@@ -1,15 +1,14 @@
 name: Deploy
 
-# Run only on Main and when the BuildTest workflow succeeds
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Build & Test]
+    workflows: [Docker Build & Publish]
     types: [completed]
     branches: [main]
 
 jobs:
-  vagrant-deploy:
+  deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
@@ -39,24 +38,70 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Stop app on servers
+      - name: Check for migration changes
+        id: migrations
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "pkill -f 'dotnet run --project /itu-minitwit/src/Org.OpenAPITools' || true; pkill -f 'dotnet run --project /itu-minitwit/src/Web' || true"
-          ssh -o StrictHostKeyChecking=no root@165.22.66.118 "pkill -f 'dotnet run --project /itu-minitwit/src/Org.OpenAPITools' || true; pkill -f 'dotnet run --project /itu-minitwit/src/Web' || true"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q 'Migrations/' && echo "changed=true" >> $GITHUB_OUTPUT || echo "changed=false" >> $GITHUB_OUTPUT
 
       - name: Apply database migrations
+        if: steps.migrations.outputs.changed == 'true'
         run: |
-          dotnet ef database update --no-build --configuration Release
+          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
         env:
-          ConnectionStrings__DefaultConnection: ${{ secrets.DB_URL }}
+          DB_URL: ${{ secrets.DB_URL }}
 
-      - name: Copy repository files to servers
+      - name: Copy files to servers
         run: |
-          scp -o StrictHostKeyChecking=no -r ./* root@46.101.201.186:/vagrant/
-          scp -o StrictHostKeyChecking=no -r ./* root@165.22.66.118:/vagrant/
+          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@46.101.201.186:~/minitwit/
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@165.22.66.118:~/minitwit/
 
-      - name: Start app on servers
-        if: always()
+      - name: Pull and redeploy on servers
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "cd /itu-minitwit && nohup dotnet run --project src/Org.OpenAPITools >> src/Org.OpenAPITools/dotnet.log 2>&1 & nohup dotnet run --project src/Web >> src/Web/dotnet.log 2>&1 &"
-          ssh -o StrictHostKeyChecking=no root@165.22.66.118 "cd /itu-minitwit && nohup dotnet run --project src/Org.OpenAPITools >> src/Org.OpenAPITools/dotnet.log 2>&1 & nohup dotnet run --project src/Web >> src/Web/dotnet.log 2>&1 &"
+          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+            cd ~/minitwit &&
+            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
+            docker compose pull &&
+            docker compose up -d --remove-orphans
+          " &
+          ssh -o StrictHostKeyChecking=no root@165.22.66.118 "
+            cd ~/minitwit &&
+            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
+            docker compose pull &&
+            docker compose up -d --remove-orphans
+          " &
+          wait
+
+      - name: Health check
+        id: healthcheck
+        run: |
+          sleep 10
+          curl --fail http://46.101.201.186:5001 || exit 1
+          curl --fail http://165.22.66.118:5001 || exit 1
+
+      - name: Rollback on health check failure
+        if: failure() && steps.healthcheck.conclusion == 'failure'
+        run: |
+          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+            cd ~/minitwit &&
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
+            docker compose up -d --remove-orphans
+          " &
+          ssh -o StrictHostKeyChecking=no root@165.22.66.118 "
+            cd ~/minitwit &&
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
+            docker compose up -d --remove-orphans
+          " &
+          wait
+
+      - name: Notify on failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          status: ${{ job.status }}
+          title: "Deploy failed"
+          description: "[${{ github.repository }}] ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          color: 0xff0000
