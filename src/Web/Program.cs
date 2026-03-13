@@ -23,14 +23,17 @@ public class Program
     {
         Env.Load("../../.env");
         var app = BuildWebApplication(args);
+        var metricsUriPrefix =
+            Environment.GetEnvironmentVariable("OTEL_PROMETHEUS_URI_PREFIX")
+            ?? "http://*:9184/";
 
         // Necessary for monitoring metrics
         // Initialises a metrics endpoint where Prometheus can scrape (and store) the metrics gathered by OpenTelemetry.
         using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
             .AddMeter("Web.Public") // This meter is currently the only one used. We'll need to add more meters using .AddMeter later on.
             .AddPrometheusHttpListener(options =>
-                options.UriPrefixes = new string[] { "http://localhost:9184/" }
-            ) // endpoint is http://localhost:9184/metrics
+                options.UriPrefixes = new string[] { metricsUriPrefix }
+            ) // endpoint is http://<host>:9184/metrics
             .Build();
 
         //Initialise Database
