@@ -183,7 +183,12 @@ public class Program
             if (rawUri == null)
                 throw new Exception($"Environment variable '{envVarName}' is not set");
 
-            var connectionString = ToNpgsqlConnectionString(rawUri);
+            var connectionString =
+                Environment.GetEnvironmentVariable(envVarName)
+                ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+            if (connectionString == null)
+                throw new Exception($"Environment variable '{envVarName}' is not set");
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
                 options.UseNpgsql(connectionString)
