@@ -7,15 +7,16 @@ public class ChatDbContextFactory : IDesignTimeDbContextFactory<ChatDbContext>
 {
     public ChatDbContext CreateDbContext(string[] args)
     {
-        // Walk up from Infrastructure/ to solution root to find .env
-        DotNetEnv.Env.Load(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env"));
+        var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env");
+        if (File.Exists(envPath))
+            DotNetEnv.Env.Load(envPath);
 
-        var dbUrl = Environment.GetEnvironmentVariable("DB_URL")
-                    ?? throw new InvalidOperationException("DB_URL not set in .env");
+        var connectionString = 
+            Environment.GetEnvironmentVariable("DB_URL")
+            ?? "Host=localhost;Database=design-time;Username=dummy;Password=dummy";
 
         var optionsBuilder = new DbContextOptionsBuilder<ChatDbContext>();
-        optionsBuilder.UseNpgsql(dbUrl);
-
+        optionsBuilder.UseNpgsql(connectionString);
         return new ChatDbContext(optionsBuilder.Options);
     }
 }
