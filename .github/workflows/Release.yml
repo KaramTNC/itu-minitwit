@@ -1,9 +1,9 @@
-﻿name: Weekly Release
+﻿name: Release
 
 on:
-  schedule:
-    - cron: '0 12 * * 1'  # Every Monday at 12:00 UTC
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   release:
@@ -19,11 +19,12 @@ jobs:
         id: version
         run: |
           echo "date=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+          echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.version.outputs.date }}
-          name: Release v${{ steps.version.outputs.date }}
+          tag_name: v${{ steps.version.outputs.date }}-${{ steps.version.outputs.sha }}
+          name: Release v${{ steps.version.outputs.date }}-${{ steps.version.outputs.sha }}
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
