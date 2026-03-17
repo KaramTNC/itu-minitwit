@@ -10,6 +10,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      PRODUCTION_IP: "46.101.201.186"
+      STAGING_IP: "134.122.71.241"
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
     steps:
@@ -53,18 +56,18 @@ jobs:
       - name: Copy files to servers
         run: |
           sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@46.101.201.186:~/minitwit/
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@165.22.66.118:~/minitwit/
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.PRODUCTION_IP }}:~/minitwit/
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.STAGING_IP }}:~/minitwit/
 
       - name: Pull and redeploy on servers
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+          ssh -o StrictHostKeyChecking=no root@${{ env.PRODUCTION_IP }} "
             cd ~/minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
             docker compose pull &&
             docker compose up -d --remove-orphans
           " &
-          ssh -o StrictHostKeyChecking=no root@165.22.66.118 "
+          ssh -o StrictHostKeyChecking=no root@${{ env.STAGING_IP }} "
             cd ~/minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
             docker compose pull &&
@@ -76,19 +79,19 @@ jobs:
         id: healthcheck
         run: |
           sleep 10
-          curl --fail http://46.101.201.186:5001 || exit 1
-          curl --fail http://165.22.66.118:5001 || exit 1
+          curl --fail http://${{ env.PRODUCTION_IP }}:5001 || exit 1
+          curl --fail http://${{ env.STAGING_IP }}:5001 || exit 1
 
       - name: Rollback on health check failure
         if: failure() && steps.healthcheck.conclusion == 'failure'
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+          ssh -o StrictHostKeyChecking=no root@${{ env.PRODUCTION_IP }} "
             cd ~/minitwit &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
             docker compose up -d --remove-orphans
           " &
-          ssh -o StrictHostKeyChecking=no root@165.22.66.118 "
+          ssh -o StrictHostKeyChecking=no root@${{ env.STAGING_IP }} "
             cd ~/minitwit &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
