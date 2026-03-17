@@ -20,7 +20,6 @@ public class AuthorRepository : IAuthorRepository
     {
         var newAuthor = new Author()
         {
-            AuthorId = FindNewAuthorId().Result,
             Name = name,
             Email = email,
             Cheeps = new List<Cheep>(),
@@ -61,26 +60,6 @@ public class AuthorRepository : IAuthorRepository
 
         await _dbContext.SaveChangesAsync();
     }
-
-    #region Helper methods
-
-    public async Task<int> FindNewAuthorId()
-    {
-        var length = _dbContext.Authors.Count();
-        var newId = length + 1;
-
-        var idExists = await CheckIfAuthorIdIsAvailable(newId);
-        while (idExists == false)
-        {
-            Console.WriteLine("CURRENT ID TO CHECK:" + newId);
-            newId++;
-            idExists = await CheckIfAuthorIdIsAvailable(newId);
-        }
-
-        return newId;
-    }
-
-    #endregion
 
     public async Task<List<Author>> ReturnBasedOnEmailAsync(string email, int page = 0)
     {

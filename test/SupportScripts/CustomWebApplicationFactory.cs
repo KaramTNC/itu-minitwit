@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Web;
 
 namespace SupportScripts;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    //MemoryDBFactory mem = new MemoryDBFactory();
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
@@ -24,5 +24,15 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             services.AddDbContext<ChatDbContext>(options => options.UseInMemoryDatabase("TestDB"));
         });
+    }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        var host = base.CreateHost(builder);
+        using var scope = host.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
+        context.Database.EnsureCreated();
+        DbInitializer.SeedDatabase(context);
+        return host;
     }
 }

@@ -21,6 +21,7 @@
 [Oo]bj/
 .fake
 .env
+
 .local_vm/*
 .vagrant/*
 **/__pycache__/*

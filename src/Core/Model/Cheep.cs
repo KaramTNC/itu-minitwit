@@ -7,7 +7,8 @@ namespace Core.Model;
 /// </summary>
 public class Cheep
 {
-    public required int CheepId { get; set; }
+    [Key]
+    public int CheepId { get; set; }
 
     [StringLength((160))]
     public required string Text { get; set; }
