@@ -1,10 +1,15 @@
 using Core.Interfaces;
+using DotNetEnv;
+using Infrastructure;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
 
 namespace Web;
 
@@ -16,7 +21,19 @@ public class Program
     /// <param name="args">Optional arguments</param>
     public static void Main(string[] args)
     {
+        Env.Load("../../.env");
         var app = BuildWebApplication(args);
+        var metricsUriPrefix =
+            Environment.GetEnvironmentVariable("OTEL_PROMETHEUS_URI_PREFIX") ?? "http://*:9184/";
+
+        // Necessary for monitoring metrics
+        // Initialises a metrics endpoint where Prometheus can scrape (and store) the metrics gathered by OpenTelemetry.
+        using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+            .AddMeter("Web.Public") // This meter is currently the only one used. We'll need to add more meters using .AddMeter later on.
+            .AddPrometheusHttpListener(options =>
+                options.UriPrefixes = new string[] { metricsUriPrefix }
+            ) // endpoint is http://<host>:9184/metrics
+            .Build();
 
         //Initialise Database
         if (!app.Environment.IsEnvironment("Testing"))
@@ -26,7 +43,7 @@ public class Program
 
             try
             {
-                if (context.Database.IsSqlite())
+                if (context.Database.IsNpgsql())
                 {
                     context.Database.OpenConnection();
                 }
@@ -155,11 +172,26 @@ public class Program
         }
         else
         {
-            string? connectionString = builder.Configuration.GetConnectionString(
-                "DefaultConnection"
-            );
+            string? envVarName = builder.Configuration.GetConnectionString("DefaultConnection");
+            if (envVarName == null)
+                throw new Exception("DefaultConnection key not found in appsettings");
+
+            var rawUri =
+                Environment.GetEnvironmentVariable(envVarName)
+                ?? builder.Configuration.GetConnectionString("DefaultConnection"); // fallback
+
+            if (rawUri == null)
+                throw new Exception($"Environment variable '{envVarName}' is not set");
+
+            var connectionString =
+                Environment.GetEnvironmentVariable(envVarName)
+                ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+            if (connectionString == null)
+                throw new Exception($"Environment variable '{envVarName}' is not set");
+
             builder.Services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite(connectionString)
+                options.UseNpgsql(connectionString)
             );
         }
 
@@ -254,5 +286,16 @@ public class Program
         app.MapRazorPages();
 
         return app;
+    }
+
+    static string ToNpgsqlConnectionString(string uri)
+    {
+        var u = new Uri(uri);
+        var userInfo = u.UserInfo.Split(':');
+        var db = u.AbsolutePath.TrimStart('/');
+        var query = System.Web.HttpUtility.ParseQueryString(u.Query);
+        var sslMode = query["sslmode"] ?? "Require";
+
+        return $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
     }
 }

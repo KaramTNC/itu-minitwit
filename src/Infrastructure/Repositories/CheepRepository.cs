@@ -21,7 +21,7 @@ public class CheepRepository : ICheepRepository
         var cheep = new Cheep()
         {
             Text = msg,
-            TimeStamp = DateTime.Now,
+            TimeStamp = DateTime.UtcNow,
             AuthorId = author.AuthorId,
             Author = author,
         };
