@@ -69,6 +69,17 @@ jobs:
           sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
           scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:~/minitwit/
 
+      - name: Copy files to server
+        run: |
+          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:~/minitwit/
+
+      - name: Create .env file on server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
+            echo 'DB_URL=${{ secrets.DB_URL }}' > ~/minitwit/.env
+          "
+
       - name: Pull and redeploy on server
         # Notice we export IMAGE_TAG before running docker compose pull and up
         run: |
