@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using DotNetEnv;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -108,10 +109,11 @@ namespace Org.OpenAPITools
                 // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                 c.OperationFilter<GeneratePathParamsValidationFilter>();
             });
+
+            Env.Load("../../.env");
+            var connectionString = Environment.GetEnvironmentVariable("DB_URL");
             services.AddSwaggerGenNewtonsoftSupport();
-            services.AddDbContext<ChatDbContext>(options =>
-                options.UseSqlite("Data Source=../Web/chat.db")
-            );
+            services.AddDbContext<ChatDbContext>(options => options.UseNpgsql(connectionString));
         }
 
         /// <summary>

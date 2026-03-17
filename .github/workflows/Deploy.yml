@@ -1,19 +1,32 @@
 name: Deploy
 
-# Run only on Main and when the BuildTest workflow succeeds
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Build & Test]
+    workflows: [Docker Build & Publish]
     types: [completed]
-    branches: [main]
 
 jobs:
-  vagrant-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: >
+      github.event_name == 'workflow_dispatch' || 
+      (github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main') ||
+      (github.event.workflow_run.event == 'pull_request')   
 
     steps:
+      - name: Set Target Environment & Tag
+        run: |
+          if [[ "${{ github.event.workflow_run.event }}" == "pull_request" ]]; then
+            echo "SERVER_IP=134.122.71.241" >> $GITHUB_ENV
+            echo "IMAGE_TAG=staging" >> $GITHUB_ENV
+            echo "Deploying to Staging Environment with :staging tag"
+          else
+            echo "SERVER_IP=46.101.201.186" >> $GITHUB_ENV
+            echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+            echo "Deploying to Production Environment with :latest tag"
+          fi
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -25,7 +38,71 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Copy repository files to server
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Check for migration changes
+        id: migrations
         run: |
-          scp -o StrictHostKeyChecking=no -r ./* root@46.101.201.186:/vagrant/
-          scp -o StrictHostKeyChecking=no -r ./* root@165.22.66.118:/vagrant/
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q 'Migrations/' && echo "changed=true" >> $GITHUB_OUTPUT || echo "changed=false" >> $GITHUB_OUTPUT
+
+      - name: Apply database migrations
+        if: steps.migrations.outputs.changed == 'true'
+        run: |
+          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+
+      - name: Copy files to server
+        run: |
+          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:~/minitwit/
+
+      - name: Pull and redeploy on server
+        # Notice we export IMAGE_TAG before running docker compose pull and up
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
+            cd ~/minitwit &&
+            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
+            export IMAGE_TAG=${{ env.IMAGE_TAG }} &&
+            docker compose pull &&
+            docker compose up -d --remove-orphans
+          "
+
+      - name: Health check
+        id: healthcheck
+        run: |
+          sleep 10
+          curl --fail http://${{ env.SERVER_IP }}:5001 || exit 1
+
+      - name: Rollback on health check failure
+        if: failure() && steps.healthcheck.conclusion == 'failure'
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
+            cd ~/minitwit &&
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
+            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
+            export IMAGE_TAG=${{ github.event.before }} &&
+            docker compose up -d --remove-orphans
+          "
+
+      - name: Notify on failure
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          status: ${{ job.status }}
+          title: "Deploy failed"
+          description: "[${{ github.repository }}] ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          color: 0xff0000

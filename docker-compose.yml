@@ -1,17 +1,62 @@
+networks:
+  itu-minitwit-network:
+    name: itu-minitwit-network
+
+volumes:
+  prometheus_data:
+  grafana-storage:
+
 services:
-  webserver:
-    image: itu-minitwit/myserver
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - itu-minitwit-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - itu-minitwit-network
+
+  itu-api-server:
+    image: ${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: api
     ports:
       - "8080:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - "9185:9185"
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - OTEL_PROMETHEUS_URI_PREFIX=http://*:9185/
+    networks:
+      - itu-minitwit-network
 
-  clidownload:
-    image: appropriate/curl
-    depends_on:
-      webserver:
-        condition: service_healthy
-    entrypoint: sh -c "curl -s http://webserver:8080"
+  itu-web-server:
+    image: ${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    container_name: web
+    ports:
+      - "5001:5001"
+      - "9184:9184"
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
+      - OTEL_PROMETHEUS_URI_PREFIX=http://*:9184/
+    networks:
+      - itu-minitwit-network

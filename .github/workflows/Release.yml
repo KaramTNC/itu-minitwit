@@ -1,0 +1,30 @@
+﻿name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: |
+          echo "date=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+          echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.date }}-${{ steps.version.outputs.sha }}
+          name: Release v${{ steps.version.outputs.date }}-${{ steps.version.outputs.sha }}
+          generate_release_notes: true
+          token: ${{ secrets.GITHUB_TOKEN }}

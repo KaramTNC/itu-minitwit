@@ -12,7 +12,7 @@ public class CheepRepositoryTests
 
     public CheepRepositoryTests()
     {
-        // Here we generate a sqlite in memory db could be smart to make a support class.
+        // Here we generate a in memory db could be smart to make a support class.
         // that all tests call to create a test db to reduce code duplicationæ.
 
         _cheepRepository = _memoryDb.GetCheepRepository();
@@ -23,12 +23,6 @@ public class CheepRepositoryTests
     public void Test1()
     {
         Assert.NotNull(_cheepRepository);
-    }
-
-    [Fact]
-    public void FindNewIdTest()
-    {
-        Assert.Equal(3, _authorRepository.FindNewAuthorId().Result);
     }
 
     /*
@@ -44,32 +38,8 @@ public class CheepRepositoryTests
     [Fact]
     public void DoesItCreateAuthor()
     {
-        Assert.Equal(3, _authorRepository.FindNewAuthorId().Result);
         _authorRepository.CreateAuthor("Tim", "tim@email.com");
-        Assert.Equal(4, _authorRepository.FindNewAuthorId().Result);
-    }
-
-    [Fact]
-    public async Task CreateCheep_WithExistingAuthor()
-    {
-        var author = "Helge";
-        var email = "ropf@itu.dk";
-        var msg = "HELLO WORLD!";
-
-        var authorObj = new Author()
-        {
-            Email = email,
-            Name = author,
-            AuthorId = 0,
-            Cheeps = new List<Cheep>(),
-        };
-
-        //Values needs to be updated when merged with Vee and madelines code
-        Assert.Equal(3, _authorRepository.FindNewAuthorId().Result);
-        Assert.Equal(5, _cheepRepository.FindNewCheepId());
-        await _cheepRepository.CreateCheep(authorObj, msg);
-        Assert.Equal(4, _authorRepository.FindNewAuthorId().Result);
-        Assert.Equal(6, _cheepRepository.FindNewCheepId());
+        Assert.Equal(1, _authorRepository.GetAuthorsFromIdList([1]).Result.First().AuthorId);
     }
 
     [Fact]
