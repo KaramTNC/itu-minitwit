@@ -22,7 +22,7 @@ public class CheepRepository : ICheepRepository
         {
             CheepId = FindNewCheepId(),
             Text = msg,
-            TimeStamp = DateTime.Now,
+            TimeStamp = DateTime.UtcNow,
             AuthorId = author.AuthorId,
             Author = author,
         };

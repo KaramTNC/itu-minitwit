@@ -26,7 +26,7 @@ using Org.OpenAPITools.Authentication;
 using Org.OpenAPITools.Filters;
 using Org.OpenAPITools.Formatters;
 using Org.OpenAPITools.OpenApi;
-
+using DotNetEnv;
 namespace Org.OpenAPITools
 {
     /// <summary>
@@ -108,12 +108,12 @@ namespace Org.OpenAPITools
                 // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                 c.OperationFilter<GeneratePathParamsValidationFilter>();
             });
-
-            var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH") ?? "../Web/chat.db";
-
+            
+            Env.Load("../../.env");
+            var connectionString = Environment.GetEnvironmentVariable("DB_URL");
             services.AddSwaggerGenNewtonsoftSupport();
             services.AddDbContext<ChatDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseNpgsql(connectionString)
             );
         }
 

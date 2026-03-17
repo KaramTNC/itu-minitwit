@@ -29,6 +29,9 @@ services:
 
   itu-api-server:
     image: ${DOCKER_USERNAME}/itu-api-server:latest
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
     container_name: api
     ports:
       - "8080:8080"
@@ -43,6 +46,9 @@ services:
 
   itu-web-server:
     image: ${DOCKER_USERNAME}/itu-web-server:latest
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
     container_name: web
     ports:
       - "5001:5001"
