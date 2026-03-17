@@ -5,17 +5,30 @@ on:
   workflow_run:
     workflows: [Docker Build & Publish]
     types: [completed]
-    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      PRODUCTION_IP: "46.101.201.186"
-      STAGING_IP: "134.122.71.241"
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: >
+      github.event_name == 'workflow_dispatch' || 
+      (github.event.workflow_run.conclusion == 'success' && (
+        (github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main') ||
+        (github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.head_branch == 'staging')
+      ))
 
     steps:
+      - name: Set Target Environment & Tag
+        run: |
+          if [[ "${{ github.event.workflow_run.event }}" == "pull_request" ]]; then
+            echo "SERVER_IP=134.122.71.241" >> $GITHUB_ENV
+            echo "IMAGE_TAG=staging" >> $GITHUB_ENV
+            echo "Deploying to Staging Environment with :staging tag"
+          else
+            echo "SERVER_IP=46.101.201.186" >> $GITHUB_ENV
+            echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+            echo "Deploying to Production Environment with :latest tag"
+          fi
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -53,51 +66,38 @@ jobs:
         env:
           DB_URL: ${{ secrets.DB_URL }}
 
-      - name: Copy files to servers
+      - name: Copy files to server
         run: |
           sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.PRODUCTION_IP }}:~/minitwit/
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.STAGING_IP }}:~/minitwit/
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:~/minitwit/
 
-      - name: Pull and redeploy on servers
+      - name: Pull and redeploy on server
+        # Notice we export IMAGE_TAG before running docker compose pull and up
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ env.PRODUCTION_IP }} "
+          ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
             cd ~/minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
+            export IMAGE_TAG=${{ env.IMAGE_TAG }} &&
             docker compose pull &&
             docker compose up -d --remove-orphans
-          " &
-          ssh -o StrictHostKeyChecking=no root@${{ env.STAGING_IP }} "
-            cd ~/minitwit &&
-            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
-            docker compose pull &&
-            docker compose up -d --remove-orphans
-          " &
-          wait
+          "
 
       - name: Health check
         id: healthcheck
         run: |
           sleep 10
-          curl --fail http://${{ env.PRODUCTION_IP }}:5001 || exit 1
-          curl --fail http://${{ env.STAGING_IP }}:5001 || exit 1
+          curl --fail http://${{ env.SERVER_IP }}:5001 || exit 1
 
       - name: Rollback on health check failure
         if: failure() && steps.healthcheck.conclusion == 'failure'
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ env.PRODUCTION_IP }} "
+          ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
             cd ~/minitwit &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
+            export IMAGE_TAG=${{ github.event.before }} &&
             docker compose up -d --remove-orphans
-          " &
-          ssh -o StrictHostKeyChecking=no root@${{ env.STAGING_IP }} "
-            cd ~/minitwit &&
-            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
-            docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
-            docker compose up -d --remove-orphans
-          " &
-          wait
+          "
 
       - name: Notify on failure
         if: failure()

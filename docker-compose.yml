@@ -28,7 +28,7 @@ services:
       - itu-minitwit-network
 
   itu-api-server:
-    image: ${DOCKER_USERNAME}/itu-api-server:latest
+    image: ${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: docker/api/Dockerfile
@@ -45,7 +45,7 @@ services:
       - itu-minitwit-network
 
   itu-web-server:
-    image: ${DOCKER_USERNAME}/itu-web-server:latest
+    image: ${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: docker/web/Dockerfile
