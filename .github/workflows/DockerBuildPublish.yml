@@ -5,16 +5,16 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
-      - 'docker/**'
-      - 'docker-compose.yml'
+      - "src/**"
+      - "docker/**"
+      - "docker-compose.yml"
   pull_request:
     branches:
       - main
     paths:
-      - 'src/**'
-      - 'docker/**'
-      - 'docker-compose.yml'
+      - "src/**"
+      - "docker/**"
+      - "docker-compose.yml"
 
 jobs:
   build-and-push:
