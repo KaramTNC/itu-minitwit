@@ -27,3 +27,4 @@
 *.tar.gz
 megalinter-reports/
 src/Web/chat.db
+grafana.db

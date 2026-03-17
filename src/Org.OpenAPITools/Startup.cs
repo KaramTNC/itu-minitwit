@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using DotNetEnv;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -109,12 +110,10 @@ namespace Org.OpenAPITools
                 c.OperationFilter<GeneratePathParamsValidationFilter>();
             });
 
-            var dbPath = Environment.GetEnvironmentVariable("DATABASE_PATH") ?? "../Web/chat.db";
-
+            Env.Load("../../.env");
+            var connectionString = Environment.GetEnvironmentVariable("DB_URL");
             services.AddSwaggerGenNewtonsoftSupport();
-            services.AddDbContext<ChatDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
-            );
+            services.AddDbContext<ChatDbContext>(options => options.UseNpgsql(connectionString));
         }
 
         /// <summary>
