@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         with:
           fetch-depth: 0
 
@@ -24,7 +24,7 @@ jobs:
           echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         with:
           tag_name: v${{ steps.version.outputs.date }}-${{ steps.version.outputs.sha }}
           name: Release v${{ steps.version.outputs.date }}-${{ steps.version.outputs.sha }}

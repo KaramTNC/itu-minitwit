@@ -28,7 +28,7 @@ jobs:
           fi
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
       - name: Configure SSH
         run: |
@@ -39,7 +39,7 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
         with:
           dotnet-version: 8.0.x
 
@@ -110,7 +110,7 @@ jobs:
 
       - name: Notify on failure
         if: failure()
-        uses: sarisia/actions-status-discord@v1
+        uses: sarisia/actions-status-discord@eb045afee445dc055c18d3d90bd0f244fd062708 # v1.16.0
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           status: ${{ job.status }}

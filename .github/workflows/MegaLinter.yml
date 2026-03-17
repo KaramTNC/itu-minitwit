@@ -31,7 +31,7 @@ jobs:
     steps:
       # Git Checkout
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -39,7 +39,7 @@ jobs:
 
       # Cache MegaLinter Docker image to avoid re-downloading on every run
       - name: Cache MegaLinter Docker image
-        uses: ScribeMD/docker-cache@0.5.0
+        uses: ScribeMD/docker-cache@fb28c93772363301b8d0a6072ce850224b73f74e # 0.5.0
         with:
           key: docker-${{ runner.os }}-megalinter-dotnet-v9
 
@@ -47,7 +47,7 @@ jobs:
       - name: MegaLinter
         # dotnet flavor: includes C#, Python, Bash, Docker, YAML, JSON, Markdown
         # Much smaller than the full image — cuts pull time by ~60-70%
-        uses: oxsecurity/megalinter/flavors/dotnet@v9
+        uses: oxsecurity/megalinter/flavors/dotnet@8fbdead70d1409964ab3d5afa885e18ee85388bb # v9.4.0
 
         id: ml
 
@@ -69,7 +69,7 @@ jobs:
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: success() || failure()
         with:
           name: MegaLinter reports
@@ -80,7 +80,7 @@ jobs:
 
       # Create pull request if applicable
       - name: Create Pull Request with applied fixes
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
         id: cpr
         if: >-
           steps.ml.outputs.has_updated_sources == 1 &&
@@ -135,7 +135,7 @@ jobs:
         run: sudo chown -Rc $UID .git/
 
       - name: Commit and push applied linter fixes
-        uses: stefanzweifel/git-auto-commit-action@v7
+        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         if: >-
           steps.ml.outputs.has_updated_sources == 1 &&
           (
