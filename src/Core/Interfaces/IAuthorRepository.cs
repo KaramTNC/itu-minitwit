@@ -29,12 +29,6 @@ public interface IAuthorRepository
     public void RemoveFollowerId(Author author, int id);
 
     /// <summary>
-    /// Check the Author table for a uniquely unoccupied Author ID entry
-    /// </summary>
-    /// <returns>Integer representing an unoccupied entry ID</returns>
-    public Task<int> FindNewAuthorId();
-
-    /// <summary>
     /// Query the Author table for a list of entries matching an Email
     /// </summary>
     /// <param name="email">Author entry's email</param>

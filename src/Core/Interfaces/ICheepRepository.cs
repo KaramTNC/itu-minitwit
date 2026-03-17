@@ -39,12 +39,6 @@ public interface ICheepRepository
     Task<List<Cheep>> ReadCheepsFollowed(List<int> follows, int page);
 
     /// <summary>
-    /// Query the table for an available Cheep id
-    /// </summary>
-    /// <returns>Unoccupied Cheep Id</returns>
-    public int FindNewCheepId();
-
-    /// <summary>
     /// Query for a list of Author IDs who liked a given Cheep ID
     /// </summary>
     /// <param name="cheepId">Cheep ID to query for</param>
