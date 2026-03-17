@@ -67,24 +67,24 @@ jobs:
       - name: Copy files to server
         run: |
           sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:~/minitwit/
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:/itu-minitwit/
 
       - name: Copy files to server
         run: |
           sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:~/minitwit/
+          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@${{ env.SERVER_IP }}:/itu-minitwit/
 
       - name: Create .env file on server
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
-            echo 'DB_URL=${{ secrets.DB_URL }}' > ~/minitwit/.env
+            echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
 
       - name: Pull and redeploy on server
         # Notice we export IMAGE_TAG before running docker compose pull and up
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
-            cd ~/minitwit &&
+            cd /itu-minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
             export IMAGE_TAG=${{ env.IMAGE_TAG }} &&
             docker compose pull &&
@@ -101,7 +101,7 @@ jobs:
         if: failure() && steps.healthcheck.conclusion == 'failure'
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ env.SERVER_IP }} "
-            cd ~/minitwit &&
+            cd /itu-minitwit &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.event.before }} &&
             docker compose pull ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.event.before }} &&
             export IMAGE_TAG=${{ github.event.before }} &&
