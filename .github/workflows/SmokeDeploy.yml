@@ -2,7 +2,7 @@
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
     paths:
       - "src/**"
       - "docker/**"
@@ -57,19 +57,6 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Install EF Core tools
-        run: dotnet tool install --global dotnet-ef
-
-      - name: Restore & Build
-        run: |
-          dotnet restore
-          dotnet build --no-restore --configuration Release
-
       - name: Check for migration changes
         id: migrations
         run: |
@@ -77,9 +64,19 @@ jobs:
             && echo "changed=true" >> $GITHUB_OUTPUT \
             || echo "changed=false" >> $GITHUB_OUTPUT
 
+      - name: Setup .NET & Apply migrations
+        if: steps.migrations.outputs.changed == 'true'
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
       - name: Apply database migrations
         if: steps.migrations.outputs.changed == 'true'
-        run: dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
         env:
           DB_URL: ${{ secrets.DB_URL }}
 
@@ -101,7 +98,8 @@ jobs:
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
             export IMAGE_TAG=staging &&
             docker compose pull &&
-            docker compose up -d --remove-orphans --force-recreate
+            docker compose down &&
+            docker compose up -d --remove-orphans
           "
 
       - name: Smoke test
