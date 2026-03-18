@@ -5,6 +5,7 @@ networks:
 volumes:
   prometheus_data:
   grafana-storage:
+  loki-data:
 
 services:
   prometheus:
@@ -27,6 +28,31 @@ services:
       - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - grafana-storage:/var/lib/grafana
+    networks:
+      - itu-minitwit-network
+  
+  grafana-alloy:
+    image: grafana/alloy
+    container_name: grafana-alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./grafana/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      - itu-minitwit-network
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+
+  grafana-loki:
+    image: grafana/loki
+    container_name: grafana-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./grafana/loki-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
     networks:
       - itu-minitwit-network
 

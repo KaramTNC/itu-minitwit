@@ -16,3 +16,20 @@ datasources:
     jsonData:
       pdcInjected: false
     readOnly: false
+  - name: Loki
+    id: 2
+    uid: cfgf1g8xfbhfkf
+    orgId: 1
+    type: loki
+    typeName: Loki
+    typeLogoUrl: public/plugins/loki/img/loki_icon.svg
+    access: proxy
+    url: http://grafana-loki:3100
+    user: 
+    database: 
+    basicAuth: false
+    isDefault: false
+    jsonData: {
+      pdcInjected: false
+    }
+    readOnly: false
