@@ -10,7 +10,7 @@ datasources:
     access: proxy
     url: http://prometheus:9090
     user:
-    database: 
+    database:
     basicAuth: false
     isDefault: true
     jsonData:
