@@ -25,11 +25,9 @@ datasources:
     typeLogoUrl: public/plugins/loki/img/loki_icon.svg
     access: proxy
     url: http://grafana-loki:3100
-    user: 
-    database: 
+    user:
+    database:
     basicAuth: false
     isDefault: false
-    jsonData: {
-      pdcInjected: false
-    }
+    jsonData: { pdcInjected: false }
     readOnly: false

@@ -30,7 +30,7 @@ services:
       - grafana-storage:/var/lib/grafana
     networks:
       - itu-minitwit-network
-  
+
   grafana-alloy:
     image: grafana/alloy
     container_name: grafana-alloy
