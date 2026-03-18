@@ -424,10 +424,11 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(403, default);
-            await _cheepRepository.CreateCheep(
-                await _authorRepository.ReturnBasedOnNameAsync(username),
-                payload.Content
-            );
+            var author = await _authorRepository.ReturnBasedOnNameAsync(username);
+            if (author == null)
+                return StatusCode(404);
+
+            await _cheepRepository.CreateCheep(author, payload.Content);
             single.latest = (int)latest;
 
             var statusCode = 204;
