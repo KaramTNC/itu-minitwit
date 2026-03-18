@@ -10,7 +10,6 @@ namespace SupportScripts;
 
 public class ApiCustom : WebApplicationFactory<Program>
 {
-    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
