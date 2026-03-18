@@ -3,51 +3,52 @@ using System.Diagnostics.Metrics;
 
 public sealed class Singleton
 {
+    private const string REQUESTS_UNIT = "requests";
     private static readonly Singleton instance = new Singleton();
 
     public int latest = 0;
     static Meter s_meter = new("API", "1.0.0");
 
     static Counter<int> s_getFollowersRequestCounter = s_meter.CreateCounter<int>(
-        name: "get_followers_request_count",
+        name: "get_followers",
         description: "Number of GET requests to the /fllws endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
     static Counter<int> s_postFollowersRequestCounter = s_meter.CreateCounter<int>(
-        name: "post_followers_request_count",
+        name: "post_followers",
         description: "Number of POST requests to the /fllws endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
     static Counter<int> s_getLatestRequestCounter = s_meter.CreateCounter<int>(
-        name: "get_latest_request_count",
+        name: "get_latest",
         description: "Number of requests to the /latest endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
     static Counter<int> s_getMessagesRequestCounter = s_meter.CreateCounter<int>(
-        name: "get_messages_request_count",
+        name: "get_messages",
         description: "Number of GET requests to the /msgs endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
-    static Counter<int> s_getMessagesPerUserCounter = s_meter.CreateCounter<int>(
-        name: "get_messages_per_user_count",
+    static Counter<int> s_getMessagesPerUserRequestCounter = s_meter.CreateCounter<int>(
+        name: "get_messages_per_user",
         description: "Number of GET requests to the /msgs/{username} endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
     static Counter<int> s_postMessagesPerUserRequestCounter = s_meter.CreateCounter<int>(
-        name: "post_messages_per_user_request_count",
+        name: "post_messages_per_user",
         description: "Number of POST requests to the /msgs/{username} endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
     static Counter<int> s_postRegisterRequestCounter = s_meter.CreateCounter<int>(
-        name: "post_register_request_count",
+        name: "post_register",
         description: "Number of POST requests to the /register endpoint",
-        unit: "requests"
+        unit: REQUESTS_UNIT
     );
 
     // Explicit static constructor to tell C# compiler
@@ -95,7 +96,7 @@ public sealed class Singleton
 
     public void IncrementGetMessagesPerUserCounter(int statusCode)
     {
-        s_getMessagesPerUserCounter.Add(
+        s_getMessagesPerUserRequestCounter.Add(
             1,
             new KeyValuePair<string, object?>("status_code", statusCode.ToString())
         );
