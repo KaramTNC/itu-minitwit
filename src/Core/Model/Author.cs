@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Core.Model;
 
 /// <summary>
-/// Model representing a registered user in the application's Author table
+/// Model representing a registered user in the application's Author table.
 /// </summary>
 public class Author
 {
