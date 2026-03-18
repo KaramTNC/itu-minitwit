@@ -24,19 +24,6 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Install EF Core tools
-        run: dotnet tool install --global dotnet-ef
-
-      - name: Restore & Build
-        run: |
-          dotnet restore
-          dotnet build --no-restore --configuration Release
-
       - name: Check for migration changes
         id: migrations
         run: |
@@ -44,9 +31,19 @@ jobs:
             && echo "changed=true" >> $GITHUB_OUTPUT \
             || echo "changed=false" >> $GITHUB_OUTPUT
 
+      - name: Setup .NET
+        if: steps.migrations.outputs.changed == 'true'
+        uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
+        with:
+          dotnet-version: 8.0.x
+
       - name: Apply database migrations
         if: steps.migrations.outputs.changed == 'true'
-        run: dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
         env:
           DB_URL: ${{ secrets.DB_URL }}
 

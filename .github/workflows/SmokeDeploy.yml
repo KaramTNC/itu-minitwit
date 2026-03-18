@@ -2,16 +2,15 @@
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - "src/**"
       - "docker/**"
       - "docker-compose.yml"
 
 jobs:
-  build-and-deploy-staging:
+  build-web:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,8 +33,23 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/itu-web-server:staging
             ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
+
+  build-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build & Push API image
         uses: docker/build-push-action@v5
@@ -46,8 +60,15 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/itu-api-server:staging
             ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-web, build-api]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Configure SSH
         run: |
@@ -64,7 +85,7 @@ jobs:
             && echo "changed=true" >> $GITHUB_OUTPUT \
             || echo "changed=false" >> $GITHUB_OUTPUT
 
-      - name: Setup .NET & Apply migrations
+      - name: Setup .NET
         if: steps.migrations.outputs.changed == 'true'
         uses: actions/setup-dotnet@v3
         with:
