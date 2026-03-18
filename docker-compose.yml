@@ -32,6 +32,7 @@ services:
     build:
       context: .
       dockerfile: docker/api/Dockerfile
+    container_name: api
     ports:
       - "8080:8080"
       - "9185:9185"
@@ -48,6 +49,7 @@ services:
     build:
       context: .
       dockerfile: docker/web/Dockerfile
+    container_name: web
     ports:
       - "5001:5001"
       - "9184:9184"
