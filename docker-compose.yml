@@ -7,8 +7,17 @@ volumes:
   grafana-storage:
   loki-data:
 
+# Limit log size per container
+x-logging: &default_logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
 services:
   prometheus:
+    <<: *default_logging
     image: prom/prometheus
     container_name: prometheus
     volumes:
@@ -20,6 +29,7 @@ services:
       - itu-minitwit-network
 
   grafana:
+    <<: *default_logging
     image: grafana/grafana
     container_name: grafana
     ports:
@@ -32,6 +42,7 @@ services:
       - itu-minitwit-network
 
   grafana-alloy:
+    <<: *default_logging
     image: grafana/alloy
     container_name: grafana-alloy
     ports:
@@ -45,6 +56,7 @@ services:
     command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
 
   grafana-loki:
+    <<: *default_logging
     image: grafana/loki
     container_name: grafana-loki
     ports:
@@ -57,6 +69,7 @@ services:
       - itu-minitwit-network
 
   itu-api-server:
+    <<: *default_logging
     image: ${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG:-latest}
     build:
       context: .
@@ -74,6 +87,7 @@ services:
       - itu-minitwit-network
 
   itu-web-server:
+    <<: *default_logging
     image: ${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG:-latest}
     build:
       context: .
