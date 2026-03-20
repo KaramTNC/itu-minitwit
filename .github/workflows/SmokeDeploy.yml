@@ -104,27 +104,28 @@ jobs:
       - name: Copy files to staging server
         run: |
           sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml root@134.122.71.241:~/minitwit/
+          scp -r -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml grafana root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            echo 'DB_URL=${{ secrets.DB_URL }}' > ~/minitwit/.env
+            echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
 
       - name: Pull and redeploy on staging
         run: |
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            cd ~/minitwit &&
+            cd /itu-minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
             export IMAGE_TAG=staging &&
-            docker compose pull &&
-            docker compose down 2>/dev/null || true &&
-            docker compose config | grep 'container_name:' | awk '{print \$2}' | xargs -r docker rm -f 2>/dev/null || true &&
-            docker compose up -d --remove-orphans
+            docker compose up -d --pull always --remove-orphans
           "
 
       - name: Smoke test
         run: |
-          sleep 10
-          curl --fail http://134.122.71.241:5001 || exit 1
+          for i in {1..12}; do
+            curl --fail http://134.122.71.241:5001 && exit 0
+            sleep 2
+          done
+          echo "Health check failed."
+          exit 1
