@@ -66,6 +66,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [build-web, build-api]
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      GF_SECURITY_ADMIN_USER: ${{ secrets.GF_SECURITY_ADMIN_USER }}
+      GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -98,8 +102,6 @@ jobs:
           dotnet restore
           dotnet build --no-restore --configuration Release
           dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
-        env:
-          DB_URL: ${{ secrets.DB_URL }}
 
       - name: Copy files to staging server
         run: |

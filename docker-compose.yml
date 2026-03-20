@@ -7,6 +7,12 @@ volumes:
   grafana-storage:
   loki-data:
 
+secrets:
+  grafana_admin_user:
+    environment: GF_SECURITY_ADMIN_USER
+  grafana_admin_password:
+    environment: GF_SECURITY_ADMIN_PASSWORD
+
 # Limit log size per container
 x-logging: &default_logging
   logging:
@@ -32,6 +38,12 @@ services:
     <<: *default_logging
     image: grafana/grafana
     container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
     ports:
       - "3000:3000"
     volumes:
