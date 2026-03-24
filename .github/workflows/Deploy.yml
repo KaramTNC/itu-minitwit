@@ -75,8 +75,12 @@ jobs:
       - name: Health check
         id: healthcheck
         run: |
-          sleep 10
-          curl --fail http://46.101.201.186:5001 || exit 1
+          for i in {1..20}; do
+            curl --fail http://134.122.71.241:5001 && exit 0
+            sleep 2
+          done
+          echo "Health check failed."
+          exit 1
 
       - name: Rollback on health check failure
         if: failure() && steps.healthcheck.conclusion == 'failure'
