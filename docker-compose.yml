@@ -5,9 +5,25 @@ networks:
 volumes:
   prometheus_data:
   grafana-storage:
+  loki-data:
+
+secrets:
+  grafana_admin_user:
+    environment: GF_SECURITY_ADMIN_USER
+  grafana_admin_password:
+    environment: GF_SECURITY_ADMIN_PASSWORD
+
+# Limit log size per container
+x-logging: &default_logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
 
 services:
   prometheus:
+    <<: *default_logging
     image: prom/prometheus
     container_name: prometheus
     volumes:
@@ -19,16 +35,53 @@ services:
       - itu-minitwit-network
 
   grafana:
+    <<: *default_logging
     image: grafana/grafana
     container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
     ports:
       - "3000:3000"
     volumes:
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - grafana-storage:/var/lib/grafana
     networks:
       - itu-minitwit-network
 
+  grafana-alloy:
+    <<: *default_logging
+    image: grafana/alloy
+    container_name: grafana-alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./grafana/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      - itu-minitwit-network
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+
+  grafana-loki:
+    <<: *default_logging
+    image: grafana/loki
+    container_name: grafana-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./grafana/loki-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - itu-minitwit-network
+
   itu-api-server:
+    <<: *default_logging
     image: ${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG:-latest}
     build:
       context: .
@@ -46,6 +99,7 @@ services:
       - itu-minitwit-network
 
   itu-web-server:
+    <<: *default_logging
     image: ${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG:-latest}
     build:
       context: .
