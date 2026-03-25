@@ -8,7 +8,6 @@ FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build
 WORKDIR /src
 
 COPY /src .
-RUN dotnet add package Microsoft.AspNetCore --version 2.3.6
 RUN dotnet restore "Web/Web.csproj"
 
 COPY /src .
