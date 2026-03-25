@@ -16,7 +16,7 @@ public class ApiIntegration
     private readonly ApiCustom _factory;
 
     protected const string Username = "simulator";
-    protected const string Password = "super_safe!";
+    protected const string NotAPassword = "super_safe!"; 
 
     public ApiIntegration(ApiCustom factory)
     {
@@ -28,7 +28,7 @@ public class ApiIntegration
     {
         // Post something to update LATEST
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -62,7 +62,7 @@ public class ApiIntegration
     public async Task TestRegister()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -97,7 +97,7 @@ public class ApiIntegration
     public async Task TestCreateMsg()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -128,7 +128,7 @@ public class ApiIntegration
     public async Task TestGetLatestUserMsgs()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -168,7 +168,7 @@ public class ApiIntegration
     public async Task TestGetLatestMsgs()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -208,7 +208,7 @@ public class ApiIntegration
     public async Task TestRegisterB()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -243,7 +243,7 @@ public class ApiIntegration
     public async Task TestRegisterC()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -277,7 +277,7 @@ public class ApiIntegration
     public async Task TestFollowUser()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
@@ -328,7 +328,7 @@ public class ApiIntegration
     public async Task TestAUnfollowsB()
     {
         var client = _factory.CreateClient();
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{NotAPassword}"));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic",
             credentials
