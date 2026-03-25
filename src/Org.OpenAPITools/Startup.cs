@@ -20,7 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Org.OpenAPITools.Authentication;

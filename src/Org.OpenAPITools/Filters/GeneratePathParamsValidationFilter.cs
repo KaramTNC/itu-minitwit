@@ -11,7 +11,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Org.OpenAPITools.Filters
@@ -43,13 +43,16 @@ namespace Org.OpenAPITools.Filters
                 // Basically OpenAPI v3 body parameters are split out into RequestBody and the properties have moved to schema
                 if (attributes.Any() && openapiParam != null)
                 {
+                    var param = (OpenApiParameter)openapiParam;
+                    var schema = (OpenApiSchema)param.Schema;
+
                     // Required - [Required]
                     var requiredAttr = attributes.FirstOrDefault(p =>
                         p.AttributeType == typeof(RequiredAttribute)
                     );
                     if (requiredAttr != null)
                     {
-                        openapiParam.Required = true;
+                        param.Required = true;
                     }
 
                     // Regex Pattern [RegularExpression]
@@ -59,7 +62,7 @@ namespace Org.OpenAPITools.Filters
                     if (regexAttr != null)
                     {
                         var regex = (string)regexAttr.ConstructorArguments[0].Value;
-                        openapiParam.Schema.Pattern = regex;
+                        schema.Pattern = regex;
                     }
 
                     // String Length [StringLength]
@@ -98,12 +101,12 @@ namespace Org.OpenAPITools.Filters
 
                     if (minLength != null)
                     {
-                        openapiParam.Schema.MinLength = minLength;
+                        schema.MinLength = minLength;
                     }
 
                     if (maxLength != null)
                     {
-                        openapiParam.Schema.MaxLength = maxLength;
+                        schema.MaxLength = maxLength;
                     }
 
                     // Range [Range]
@@ -115,8 +118,8 @@ namespace Org.OpenAPITools.Filters
                         var rangeMin = (int)rangeAttr.ConstructorArguments[0].Value;
                         var rangeMax = (int)rangeAttr.ConstructorArguments[1].Value;
 
-                        openapiParam.Schema.MinLength = rangeMin;
-                        openapiParam.Schema.MaxLength = rangeMax;
+                        schema.MinLength = rangeMin;
+                        schema.MaxLength = rangeMax;
                     }
                 }
             }
