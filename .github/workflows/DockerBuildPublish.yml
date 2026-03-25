@@ -30,7 +30,7 @@ jobs:
           context: .
           file: docker/web/Dockerfile
           push: false
-          load: true                          # loads image into local Docker daemon for Scout
+          load: true # loads image into local Docker daemon for Scout
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/itu-web-server:latest
             ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
@@ -45,11 +45,11 @@ jobs:
           command: cves
           image: ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
           only-severities: critical,high
-          exit-code: true                     # aborts pipeline on findings
+          exit-code: true # aborts pipeline on findings
           sarif-file: scout-web-results.sarif
 
       - name: Upload Scout results to GitHub Security tab
-        if: always()                          # upload even if scan failed, so findings are visible
+        if: always() # upload even if scan failed, so findings are visible
         uses: github/codeql-action/upload-sarif@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3 # v3.34.1
         with:
           sarif_file: scout-web-results.sarif
@@ -58,7 +58,6 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/itu-web-server:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
-
 
       # ENDED
 
