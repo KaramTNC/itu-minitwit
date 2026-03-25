@@ -36,8 +36,8 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # CKV_DOCKER_3: Create and use a non-root user
-# RUN adduser --disabled-password --gecos "" appuser
-# USER appuser
+RUN adduser --disabled-password --gecos "" appuser
+USER appuser
 
 # CKV_DOCKER_2: Add healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
