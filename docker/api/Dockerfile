@@ -2,7 +2,7 @@
 
 # Container we use for final publish
 FROM dhi.io/aspnetcore:8 AS base
-RUN dotnet add package Microsoft.AspNetCore --version 2.3.6
+
 
 WORKDIR /app
 EXPOSE 80
@@ -17,6 +17,7 @@ COPY src/Core/Core.csproj Core/
 COPY src/Web/Web.csproj Web/
 COPY src/Infrastructure/Infrastructure.csproj Infrastructure/
 COPY src/Org.OpenAPITools/Org.OpenAPITools.csproj Org.OpenAPITools/
+RUN dotnet add package Microsoft.AspNetCore --version 2.3.6
 # NuGet restore
 RUN dotnet restore "Org.OpenAPITools/Org.OpenAPITools.csproj"
 
