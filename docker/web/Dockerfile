@@ -5,6 +5,9 @@ WORKDIR /app
 
 FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build
 
+# Create non-root user here since the final image has no shell
+RUN adduser --disabled-password --gecos "" appuser
+
 WORKDIR /src
 
 COPY /src .
@@ -23,8 +26,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# CKV_DOCKER_3: Create and use a non-root user
-RUN adduser --disabled-password --gecos "" appuser
+# CKV_DOCKER_3: Copy user info from build stage and switch to non-root user
+COPY --from=build /etc/passwd /etc/passwd
+COPY --from=build /etc/group /etc/group
 USER appuser
 
 # CKV_DOCKER_2: Add healthcheck
