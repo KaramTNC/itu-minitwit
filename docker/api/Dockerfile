@@ -11,6 +11,9 @@ EXPOSE 443
 # Build container
 FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build
 
+# Create non-root user here since the final image has no shell
+RUN adduser --disabled-password --gecos "" appuser
+
 # Copy the code into the container
 WORKDIR /src
 COPY src/Core/Core.csproj Core/
@@ -35,8 +38,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# CKV_DOCKER_3: Create and use a non-root user
-RUN adduser --disabled-password --gecos "" appuser
+# CKV_DOCKER_3: Copy user info from build stage and switch to non-root user
+COPY --from=build /etc/passwd /etc/passwd
+COPY --from=build /etc/group /etc/group
 USER appuser
 
 # CKV_DOCKER_2: Add healthcheck
