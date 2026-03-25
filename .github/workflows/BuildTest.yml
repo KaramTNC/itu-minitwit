@@ -62,7 +62,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3 # v3.34.1
         with:
           languages: csharp
           queries: security-and-quality  # includes OWASP Top 10 and CWE rules
@@ -71,7 +71,7 @@ jobs:
         run: dotnet build --configuration Release  # CodeQL hooks into this build
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3 # v3.34.1
   #  END ADDED 
 
   check-migrations:

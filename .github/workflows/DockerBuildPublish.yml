@@ -40,7 +40,7 @@ jobs:
       #  ADDED
       # 'exit-code: true' means the job fails and the push step below is skipped
       - name: Docker Scout vulnerability scan
-        uses: docker/scout-action@v1
+        uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de # v1.18.2
         with:
           command: cves
           image: ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload Scout results to GitHub Security tab
         if: always()                          # upload even if scan failed, so findings are visible
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3 # v3.34.1
         with:
           sarif_file: scout-web-results.sarif
       # Only reached if Scout passed — image is clean
@@ -92,7 +92,7 @@ jobs:
 
       # Added
       - name: Docker Scout vulnerability scan
-        uses: docker/scout-action@v1
+        uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de # v1.18.2
         with:
           command: cves
           image: ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
@@ -102,7 +102,7 @@ jobs:
 
       - name: Upload Scout results to GitHub Security tab
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@ebcb5b36ded6beda4ceefea6a8bc4cc885255bb3 # v3.34.1
         with:
           sarif_file: scout-api-results.sarif
       # END
