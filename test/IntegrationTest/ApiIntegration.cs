@@ -42,7 +42,7 @@ public class ApiIntegration
             email = "test@test",
             pwd = "Test123!",
         };
-        using var content = new StringContent(
+            using var content = new StringContent(
             JsonSerializer.Serialize(data),
             Encoding.UTF8,
             "application/json"
@@ -79,7 +79,7 @@ public class ApiIntegration
             email = "a@a.a",
             pwd = "a",
         };
-        var content = new StringContent(
+        using var content = new StringContent(
             JsonSerializer.Serialize(data),
             Encoding.UTF8,
             "application/json"
@@ -112,7 +112,7 @@ public class ApiIntegration
         // Post a message for user 'a'
         var username = "a";
         var data = new { content = "Blub!" };
-        var content = new StringContent(
+        using var content = new StringContent(
             JsonSerializer.Serialize(data),
             Encoding.UTF8,
             "application/json"
@@ -233,7 +233,7 @@ public class ApiIntegration
             email = "b@b.b",
             pwd = "b",
         };
-        var content = new StringContent(
+        using var content = new StringContent(
             JsonSerializer.Serialize(data),
             Encoding.UTF8,
             "application/json"
@@ -269,7 +269,7 @@ public class ApiIntegration
             email = "c@c.c",
             pwd = "c",
         };
-        var content = new StringContent(
+        using var content = new StringContent(
             JsonSerializer.Serialize(data),
             Encoding.UTF8,
             "application/json"
@@ -303,7 +303,7 @@ public class ApiIntegration
         var url = $"/fllws/{username}";
 
         // Follow 'b'
-        var followB = new StringContent(
+        using var followB = new StringContent(
             JsonSerializer.Serialize(new { follow = "b" }),
             Encoding.UTF8,
             "application/json"
@@ -312,7 +312,7 @@ public class ApiIntegration
         Assert.True(response.IsSuccessStatusCode);
 
         // Follow 'c'
-        var followC = new StringContent(
+        using var followC = new StringContent(
             JsonSerializer.Serialize(new { follow = "c" }),
             Encoding.UTF8,
             "application/json"
@@ -356,7 +356,7 @@ public class ApiIntegration
         var url = $"/fllws/{username}";
 
         // Unfollow 'b'
-        var unfollowB = new StringContent(
+        using var unfollowB = new StringContent(
             JsonSerializer.Serialize(new { unfollow = "b" }),
             Encoding.UTF8,
             "application/json"
