@@ -1,12 +1,13 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM dhi.io/aspnetcore:8 AS base
+
+
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build
 
 WORKDIR /src
 
 COPY /src .
-
 RUN dotnet restore "Web/Web.csproj"
 
 COPY /src .
