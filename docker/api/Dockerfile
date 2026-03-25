@@ -1,13 +1,18 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # Container we use for final publish
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM dhi.io/aspnetcore:8 AS base
+
+
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 # Build container
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build
+
+# Create non-root user here since the final image has no shell
+RUN adduser --disabled-password --gecos "" appuser
 
 # Copy the code into the container
 WORKDIR /src
@@ -33,8 +38,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# CKV_DOCKER_3: Create and use a non-root user
-RUN adduser --disabled-password --gecos "" appuser
+# CKV_DOCKER_3: Copy user info from build stage and switch to non-root user
+COPY --from=build /etc/passwd /etc/passwd
+COPY --from=build /etc/group /etc/group
 USER appuser
 
 # CKV_DOCKER_2: Add healthcheck

@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <RootNamespace>test</RootNamespace>
+    <!-- Suppress unavoidable vulnerabilities from Xunit.Extensions.Ordering 1.4.5 (latest version) which has a legacy .NETCoreApp1.0 dependency group -->
+    <NuGetAuditSuppress>https://github.com/advisories/GHSA-7mfr-774f-w5r9;https://github.com/advisories/GHSA-8884-xcr4-r68p;https://github.com/advisories/GHSA-xcvr-qv8h-m7xw</NuGetAuditSuppress>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +15,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="Xunit.Extensions.Ordering" Version="1.4.5" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
 
