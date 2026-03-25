@@ -1,4 +1,6 @@
 FROM dhi.io/aspnetcore:8 AS base
+RUN dotnet add package Microsoft.AspNetCore.Server.Kestrel.Core --version 2.3.6
+
 WORKDIR /app
 
 FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build

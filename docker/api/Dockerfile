@@ -2,6 +2,8 @@
 
 # Container we use for final publish
 FROM dhi.io/aspnetcore:8 AS base
+RUN dotnet add package Microsoft.AspNetCore.Server.Kestrel.Core --version 2.3.6
+
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
