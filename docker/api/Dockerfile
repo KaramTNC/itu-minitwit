@@ -1,13 +1,13 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # Container we use for final publish
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM dhi.io/aspnetcore:8 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 # Build container
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM dhi.io/dotnet:8-sdk-alpine3.23 AS build
 
 # Copy the code into the container
 WORKDIR /src
