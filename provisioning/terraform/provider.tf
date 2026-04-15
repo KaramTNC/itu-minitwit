@@ -12,10 +12,15 @@ variable "do_token" {}
 variable "pvt_key" {}
 variable "do_ssh_key_name" {}
 
+variable "region" {
+  description = "DigitalOcean server region"
+  default = "fra1"
+}
+
 provider "digitalocean" {
   token = var.do_token
 }
 
 data "digitalocean_ssh_key" "ssh_key" {
-    name = var.do_ssh_key_name
+  name = var.do_ssh_key_name
 }
