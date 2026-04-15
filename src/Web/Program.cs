@@ -1,9 +1,9 @@
 using Core.Interfaces;
 using DotNetEnv;
 using Infrastructure;
-using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -50,9 +50,10 @@ public class Program
             }
             catch (InvalidOperationException) { }
 
-            context.Database.EnsureCreated();
-            //has to say commented out for working with the devops
-            //DbInitializer.SeedDatabase(context);
+            if (!context.Database.CanConnect())
+            {
+                throw new InvalidOperationException("Database connection failed.");
+            }
         }
 
         app.Run();
@@ -162,6 +163,17 @@ public class Program
 
         builder.Services.AddSession();
         builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
+
+        var dataProtectionKeysPath = Environment.GetEnvironmentVariable(
+            "ASPNETCORE_DATA_PROTECTION_KEYS"
+        );
+        if (!string.IsNullOrWhiteSpace(dataProtectionKeysPath))
+        {
+            builder
+                .Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
+        }
 
         // Configure database based on environment
         if (builder.Environment.IsEnvironment("Testing"))
@@ -283,6 +295,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
+        app.MapHealthChecks("/health");
         app.MapRazorPages();
 
         return app;
