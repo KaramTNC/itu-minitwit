@@ -24,6 +24,7 @@ x-logging: &default_logging
     options:
       max-size: "10m"
       max-file: "3"
+      labels: "com.docker.swarm.service.name,com.docker.stack.namespace,com.docker.swarm.task.name,com.docker.compose.service"
 
 x-rolling-update: &rolling_update
   replicas: 2
@@ -88,7 +89,6 @@ services:
       - "12345:12345"
     volumes:
       - ./grafana/config.alloy:/etc/alloy/config.alloy:ro
-      - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
     networks:
       - itu-minitwit-network
