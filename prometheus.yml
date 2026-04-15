@@ -20,10 +20,16 @@ scrape_configs:
 
   - job_name: "OpenTelemetryTest-frontend"
     scrape_interval: 1s # poll very quickly for a more responsive demo
-    static_configs:
-      - targets: ["itu-web-server:9184"]
+    dns_sd_configs:
+      - names:
+          - tasks.itu-web-server
+        type: A
+        port: 9184
 
   - job_name: "OpenTelemetryTest-API"
     scrape_interval: 1s # poll very quickly for a more responsive demo
-    static_configs:
-      - targets: ["itu-api-server:9185"]
+    dns_sd_configs:
+      - names:
+          - tasks.itu-api-server
+        type: A
+        port: 9185

@@ -8,6 +8,8 @@ on:
       - "docker/**"
       - "docker-compose.yml"
       - "docker-stack.yml"
+      - "prometheus.yml"
+      - "grafana/**"
 
 jobs:
   build-web:
@@ -84,21 +86,12 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Check for migration changes
-        id: migrations
-        run: |
-          git diff --name-only origin/main HEAD | grep -q 'Migrations/' \
-            && echo "changed=true" >> $GITHUB_OUTPUT \
-            || echo "changed=false" >> $GITHUB_OUTPUT
-
       - name: Setup .NET
-        if: steps.migrations.outputs.changed == 'true'
         uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
         with:
           dotnet-version: 8.0.x
 
       - name: Apply database migrations
-        if: steps.migrations.outputs.changed == 'true'
         run: |
           dotnet tool install --global dotnet-ef
           dotnet restore
@@ -146,10 +139,22 @@ jobs:
           "
 
       - name: Smoke test
+        id: smoketest
         run: |
           for i in {1..20}; do
-            curl --fail http://134.122.71.241:5001 && exit 0
+            curl --fail http://134.122.71.241:5001/health &&
+            curl --fail http://134.122.71.241:8080/health &&
+            exit 0
             sleep 2
           done
           echo "Health check failed."
           exit 1
+
+      - name: Rollback on smoke test failure
+        if: failure() && steps.smoketest.conclusion == 'failure'
+        run: |
+          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
+            cd /itu-minitwit &&
+            docker service rollback itu-minitwit_itu-web-server || true &&
+            docker service rollback itu-minitwit_itu-api-server || true
+          "

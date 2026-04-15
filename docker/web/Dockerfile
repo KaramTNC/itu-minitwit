@@ -21,6 +21,7 @@ RUN dotnet build "Web.csproj" -c Release -o /app/build
 # Publish it
 FROM build AS publish
 RUN dotnet publish "Web.csproj" -c Release -o /app/publish
+RUN mkdir -p /app/publish/DataProtection-Keys && chown appuser /app/publish/DataProtection-Keys
 
 FROM base AS final
 WORKDIR /app

@@ -8,6 +8,7 @@ volumes:
   prometheus_data:
   grafana-storage:
   loki-data:
+  web-data-protection:
 
 secrets:
   grafana_admin_user:
@@ -132,7 +133,10 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5001
       - OTEL_PROMETHEUS_URI_PREFIX=http://*:9184/
+      - ASPNETCORE_DATA_PROTECTION_KEYS=/app/DataProtection-Keys
       - DB_URL=${DB_URL}
+    volumes:
+      - web-data-protection:/app/DataProtection-Keys
     networks:
       - itu-minitwit-network
     deploy: *rolling_update

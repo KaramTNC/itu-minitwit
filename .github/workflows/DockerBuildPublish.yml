@@ -9,6 +9,8 @@ on:
       - "docker/**"
       - "docker-compose.yml"
       - "docker-stack.yml"
+      - "prometheus.yml"
+      - "grafana/**"
 
 jobs:
   build-web:
