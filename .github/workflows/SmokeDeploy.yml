@@ -118,8 +118,14 @@ jobs:
       - name: Ensure Docker Swarm is active
         run: |
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            docker info --format '{{.Swarm.LocalNodeState}}' | grep -q active ||
-            docker swarm init --advertise-addr 134.122.71.241
+            swarm_state=\$(docker info --format '{{.Swarm.LocalNodeState}}') &&
+            control_available=\$(docker info --format '{{.Swarm.ControlAvailable}}') &&
+            if [ \"\$swarm_state\" != 'active' ]; then
+              docker swarm init --advertise-addr 134.122.71.241
+            elif [ \"\$control_available\" != 'true' ]; then
+              docker swarm leave --force &&
+              docker swarm init --advertise-addr 134.122.71.241
+            fi
           "
 
       - name: Create Docker secrets on staging server
