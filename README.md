@@ -46,3 +46,15 @@ For a manual server deployment, export `DOCKER_USERNAME`, `IMAGE_TAG`, and
 `DB_URL`, make sure the `itu_grafana_admin_user` and
 `itu_grafana_admin_password` Docker secrets exist, then run the same command from
 the repository directory on the server.
+
+Database migrations must stay compatible with rolling upgrades. Use an
+expand/contract sequence: add backward-compatible schema first, deploy code that
+works with both schemas, backfill data, and only remove or rename old schema in
+a later deployment. CI checks newly changed EF migrations for destructive
+operations such as drops, renames, raw destructive SQL, and column alterations.
+If a contraction migration is intentional and has been reviewed for rollout
+safety, mark the migration with:
+
+```csharp
+// rolling-upgrade-reviewed
+```
