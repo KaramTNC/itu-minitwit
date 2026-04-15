@@ -70,7 +70,7 @@ namespace Org.OpenAPITools
                         new StringEnumConverter { NamingStrategy = new CamelCaseNamingStrategy() }
                     );
                 });
-            services.AddHealthChecks();
+            services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations(
