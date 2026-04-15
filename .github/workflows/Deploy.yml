@@ -17,6 +17,7 @@ jobs:
       DB_URL: ${{ secrets.DB_URL }}
       GF_SECURITY_ADMIN_USER: ${{ secrets.GF_SECURITY_ADMIN_USER }}
       GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}
+      IMAGE_TAG: ${{ github.event.workflow_run.head_sha || github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -52,8 +53,7 @@ jobs:
 
       - name: Copy files to production server
         run: |
-          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml grafana root@46.101.201.186:/itu-minitwit/
+          scp -r -o StrictHostKeyChecking=no docker-compose.yml docker-stack.yml prometheus.yml grafana root@46.101.201.186:/itu-minitwit/
 
       - name: Create .env file on production server
         run: |
@@ -61,22 +61,41 @@ jobs:
             echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
 
-      - name: Pull and redeploy on production
+      - name: Ensure Docker Swarm is active
+        run: |
+          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+            docker info --format '{{.Swarm.LocalNodeState}}' | grep -q active ||
+            docker swarm init --advertise-addr 46.101.201.186
+          "
+
+      - name: Create Docker secrets on production server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+            if ! docker secret inspect itu_grafana_admin_user >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_USER }}' | docker secret create itu_grafana_admin_user -
+            fi
+            if ! docker secret inspect itu_grafana_admin_password >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' | docker secret create itu_grafana_admin_password -
+            fi
+          "
+
+      - name: Rolling deploy on production
         run: |
           ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
             cd /itu-minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
-            export IMAGE_TAG=latest &&
-            export GF_SECURITY_ADMIN_USER='${{ secrets.GF_SECURITY_ADMIN_USER }}' &&
-            export GF_SECURITY_ADMIN_PASSWORD='${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' &&
-            docker compose up -d --pull always --remove-orphans --force-recreate
+            export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}' &&
+            export IMAGE_TAG='${{ env.IMAGE_TAG }}' &&
+            export DB_URL='${{ secrets.DB_URL }}' &&
+            (docker compose down --remove-orphans || true) &&
+            docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=false itu-minitwit
           "
 
       - name: Health check
         id: healthcheck
         run: |
           for i in {1..20}; do
-            curl --fail http://134.122.71.241:5001 && exit 0
+            curl --fail http://46.101.201.186:5001 && exit 0
             sleep 2
           done
           echo "Health check failed."
@@ -87,8 +106,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
             cd /itu-minitwit &&
-            export IMAGE_TAG=${{ github.event.workflow_run.head_commit.id }} &&
-            docker compose up -d --pull always --remove-orphans --force-recreate
+            docker service rollback itu-minitwit_itu-web-server || true &&
+            docker service rollback itu-minitwit_itu-api-server || true
           "
 
       - name: Notify on failure

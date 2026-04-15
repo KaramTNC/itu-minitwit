@@ -70,6 +70,7 @@ namespace Org.OpenAPITools
                         new StringEnumConverter { NamingStrategy = new CamelCaseNamingStrategy() }
                     );
                 });
+            services.AddHealthChecks();
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations(
@@ -152,6 +153,7 @@ namespace Org.OpenAPITools
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
         }

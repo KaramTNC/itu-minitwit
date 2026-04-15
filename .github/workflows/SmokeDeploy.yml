@@ -7,6 +7,7 @@ on:
       - "src/**"
       - "docker/**"
       - "docker-compose.yml"
+      - "docker-stack.yml"
 
 jobs:
   build-web:
@@ -70,6 +71,7 @@ jobs:
       DB_URL: ${{ secrets.DB_URL }}
       GF_SECURITY_ADMIN_USER: ${{ secrets.GF_SECURITY_ADMIN_USER }}
       GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}
+      IMAGE_TAG: ${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -105,8 +107,7 @@ jobs:
 
       - name: Copy files to staging server
         run: |
-          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml grafana root@134.122.71.241:/itu-minitwit/
+          scp -r -o StrictHostKeyChecking=no docker-compose.yml docker-stack.yml prometheus.yml grafana root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
@@ -114,15 +115,34 @@ jobs:
             echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
 
-      - name: Pull and redeploy on staging
+      - name: Ensure Docker Swarm is active
+        run: |
+          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
+            docker info --format '{{.Swarm.LocalNodeState}}' | grep -q active ||
+            docker swarm init --advertise-addr 134.122.71.241
+          "
+
+      - name: Create Docker secrets on staging server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
+            if ! docker secret inspect itu_grafana_admin_user >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_USER }}' | docker secret create itu_grafana_admin_user -
+            fi
+            if ! docker secret inspect itu_grafana_admin_password >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' | docker secret create itu_grafana_admin_password -
+            fi
+          "
+
+      - name: Rolling deploy on staging
         run: |
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
             cd /itu-minitwit &&
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
-            export IMAGE_TAG=staging &&
-            export GF_SECURITY_ADMIN_USER='${{ secrets.GF_SECURITY_ADMIN_USER }}' &&
-            export GF_SECURITY_ADMIN_PASSWORD='${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' &&
-            docker compose up -d --pull always --remove-orphans
+            export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}' &&
+            export IMAGE_TAG='${{ env.IMAGE_TAG }}' &&
+            export DB_URL='${{ secrets.DB_URL }}' &&
+            (docker compose down --remove-orphans || true) &&
+            docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=false itu-minitwit
           "
 
       - name: Smoke test

@@ -162,6 +162,7 @@ public class Program
 
         builder.Services.AddSession();
         builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddHealthChecks();
 
         // Configure database based on environment
         if (builder.Environment.IsEnvironment("Testing"))
@@ -283,6 +284,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
+        app.MapHealthChecks("/health");
         app.MapRazorPages();
 
         return app;

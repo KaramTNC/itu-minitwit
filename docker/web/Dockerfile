@@ -33,6 +33,6 @@ USER appuser
 
 # CKV_DOCKER_2: Add healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:80/health || exit 1
+  CMD curl -f http://localhost:5001/health || exit 1
 
 ENTRYPOINT ["dotnet", "Web.dll"]

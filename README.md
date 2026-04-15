@@ -26,3 +26,23 @@ The server can be provisioned by simply cloning our repository and running the s
 git clone git@github.com:KaramTNC/itu-minitwit.git
 vagrant up
 ```
+
+## Rolling Deployments
+
+Production and staging deployments use Docker Swarm through `docker-stack.yml`.
+The `itu-web-server` and `itu-api-server` services run two replicas each and are
+updated one task at a time with `start-first` ordering. If a task fails during
+the update monitor window, Swarm rolls the service back automatically.
+
+The GitHub deployment workflows initialize Swarm on the target server if needed,
+create the external Grafana secrets expected by the stack, and deploy immutable
+image tags with:
+
+```console
+docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=false itu-minitwit
+```
+
+For a manual server deployment, export `DOCKER_USERNAME`, `IMAGE_TAG`, and
+`DB_URL`, make sure the `itu_grafana_admin_user` and
+`itu_grafana_admin_password` Docker secrets exist, then run the same command from
+the repository directory on the server.

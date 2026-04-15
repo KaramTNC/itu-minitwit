@@ -1,0 +1,138 @@
+version: "3.8"
+
+networks:
+  itu-minitwit-network:
+    driver: overlay
+
+volumes:
+  prometheus_data:
+  grafana-storage:
+  loki-data:
+
+secrets:
+  grafana_admin_user:
+    external: true
+    name: itu_grafana_admin_user
+  grafana_admin_password:
+    external: true
+    name: itu_grafana_admin_password
+
+x-logging: &default_logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+x-rolling-update: &rolling_update
+  replicas: 2
+  update_config:
+    parallelism: 1
+    delay: 10s
+    order: start-first
+    failure_action: rollback
+    monitor: 30s
+    max_failure_ratio: 0
+  rollback_config:
+    parallelism: 1
+    delay: 10s
+    order: start-first
+    failure_action: pause
+    monitor: 30s
+    max_failure_ratio: 0
+  restart_policy:
+    condition: any
+    delay: 5s
+    max_attempts: 3
+    window: 60s
+
+services:
+  prometheus:
+    <<: *default_logging
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - itu-minitwit-network
+    deploy:
+      replicas: 1
+
+  grafana:
+    <<: *default_logging
+    image: grafana/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - itu-minitwit-network
+    deploy:
+      replicas: 1
+
+  grafana-alloy:
+    <<: *default_logging
+    image: grafana/alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./grafana/config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      - itu-minitwit-network
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    deploy:
+      replicas: 1
+
+  grafana-loki:
+    <<: *default_logging
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./grafana/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - itu-minitwit-network
+    deploy:
+      replicas: 1
+
+  itu-api-server:
+    <<: *default_logging
+    image: ${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG:-latest}
+    ports:
+      - "8080:8080"
+      - "9185:9185"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - OTEL_PROMETHEUS_URI_PREFIX=http://*:9185/
+      - DB_URL=${DB_URL}
+    networks:
+      - itu-minitwit-network
+    deploy: *rolling_update
+
+  itu-web-server:
+    <<: *default_logging
+    image: ${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG:-latest}
+    ports:
+      - "5001:5001"
+      - "9184:9184"
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
+      - OTEL_PROMETHEUS_URI_PREFIX=http://*:9184/
+      - DB_URL=${DB_URL}
+    networks:
+      - itu-minitwit-network
+    deploy: *rolling_update

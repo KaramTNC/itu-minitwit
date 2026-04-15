@@ -8,6 +8,7 @@ on:
       - "src/**"
       - "docker/**"
       - "docker-compose.yml"
+      - "docker-stack.yml"
 
 jobs:
   build-web:
