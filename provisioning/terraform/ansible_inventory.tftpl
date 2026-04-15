@@ -1,0 +1,16 @@
+[prod]
+%{ for index, ip in prod_ips ~}
+${prod_names[index]} ansible_host=${ip}
+%{ endfor ~}
+
+[staging]
+%{ for index, ip in staging_ips ~}
+${staging_names[index]} ansible_host=${ip}
+%{ endfor ~}
+
+[loadbalancer]
+${lb_name} ansible_host=${lb_ip}
+
+[all:vars]
+ansible_user=root
+ansible_ssh_private_key_file=${pvt_key}

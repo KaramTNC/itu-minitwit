@@ -57,3 +57,25 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
     script = "itu-minitwit.sh"
   }
 }
+
+# Write the Ansible inventory file with the Droplets' IP addresses
+resource "local_file" "ansible_inventory" {
+  filename = "${path.module}/../ansible/inventory.ini"
+  
+  # First argument is the template file; second argument is a map with the values of the variables in that template
+  content = templatefile("${path.module}/ansible_inventory.tftpl", {
+    # Select only the prod Droplets by slicing the list from index 0 until N, where N = num_instances["prod"] 
+    prod_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, 0, var.num_instances["prod"])
+    prod_names = slice(digitalocean_droplet.itu-minitwit[*].name, 0, var.num_instances["prod"])
+    
+    staging_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
+    staging_names = slice(digitalocean_droplet.itu-minitwit[*].name, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
+    
+    # Add the standalone Load Balancer
+    lb_ip   = digitalocean_droplet.itu-minitwit-load-balancer.ipv4_address
+    lb_name = digitalocean_droplet.itu-minitwit-load-balancer.name
+    
+    # Pass the private key variable
+    pvt_key = var.pvt_key
+  })
+}

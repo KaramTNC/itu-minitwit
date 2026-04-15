@@ -9,7 +9,6 @@ terraform {
 
     state {
       method = method.aes_gcm.my_method
-    ## Step 4: Run "tofu apply".
       enforced = true
     }
   }
