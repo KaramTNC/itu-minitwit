@@ -141,15 +141,55 @@ jobs:
 
       - name: Rolling deploy on staging
         run: |
-          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            cd /itu-minitwit &&
-            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
-            export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}' &&
-            export IMAGE_TAG='${{ env.IMAGE_TAG }}' &&
-            export DB_URL='${{ secrets.DB_URL }}' &&
-            (docker compose down --remove-orphans || true) &&
-            docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=false itu-minitwit
-          "
+          ssh -o StrictHostKeyChecking=no root@134.122.71.241 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          diagnose_service() {
+            service="$1"
+            echo "::group::${service} tasks"
+            docker service ps --no-trunc "$service" || true
+            echo "::endgroup::"
+            echo "::group::${service} recent logs"
+            docker service logs --tail 80 "$service" || true
+            echo "::endgroup::"
+          }
+
+          wait_service() {
+            service="$1"
+            expected="$2"
+
+            for attempt in $(seq 1 36); do
+              replicas=$(docker service ls --filter "name=${service}" --format '{{.Replicas}}' | head -n 1)
+              update_state=$(docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
+              echo "${service}: replicas=${replicas:-missing}, update=${update_state}, attempt=${attempt}/36"
+
+              if [ "$replicas" = "${expected}/${expected}" ] && [ "$update_state" = "completed" ]; then
+                return 0
+              fi
+
+              if [ "$update_state" = "paused" ] || [ "$update_state" = "rollback_paused" ]; then
+                diagnose_service "$service"
+                return 1
+              fi
+
+              sleep 5
+            done
+
+            diagnose_service "$service"
+            return 1
+          }
+
+          cd /itu-minitwit
+          echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
+          export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
+          export IMAGE_TAG='${{ env.IMAGE_TAG }}'
+          export DB_URL='${{ secrets.DB_URL }}'
+          docker compose down --remove-orphans || true
+          docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
+
+          wait_service itu-minitwit_itu-web-server 2
+          wait_service itu-minitwit_itu-api-server 2
+          REMOTE
 
       - name: Smoke test
         id: smoketest
