@@ -24,10 +24,7 @@ public sealed class DatabaseHealthCheck(ChatDbContext dbContext) : IHealthCheck
         }
         catch (Exception exception)
         {
-            return HealthCheckResult.Unhealthy(
-                "Database health check failed.",
-                exception
-            );
+            return HealthCheckResult.Unhealthy("Database health check failed.", exception);
         }
     }
 }
