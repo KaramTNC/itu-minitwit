@@ -37,21 +37,28 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Apply database migrations
+      - name: Build database migration bundle
         run: |
-          dotnet tool install --global dotnet-ef
-          dotnet restore
-          dotnet build --no-restore --configuration Release
-          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+          dotnet tool install --global dotnet-ef --version 8.0.22
+          dotnet restore src/Web/Web.csproj
+          dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output ./efbundle
 
       - name: Copy files to production server
         run: |
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml docker-stack.yml prometheus.yml grafana root@46.101.201.186:/itu-minitwit/
+          scp -r -o StrictHostKeyChecking=no docker-compose.yml docker-stack.yml prometheus.yml grafana efbundle root@46.101.201.186:/itu-minitwit/
 
       - name: Create .env file on production server
         run: |
           ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
             echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
+          "
+
+      - name: Apply database migrations on production server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+            cd /itu-minitwit &&
+            chmod +x ./efbundle &&
+            ./efbundle --connection '${{ secrets.DB_URL }}'
           "
 
       - name: Ensure Docker Swarm is active
