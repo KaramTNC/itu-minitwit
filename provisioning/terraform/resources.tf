@@ -1,14 +1,15 @@
 variable "num_instances" {
-  description = "Number of Droplets to create (behind the load balancer)"
+  description = "Number of Droplets to create for each environment + total load balancers"
   default = {
-    "prod" = 2,
-    "staging" = 1
+    "prod" = 0,
+    "staging" = 0,
+    "lb" = 1
   }
   type = map(number)
 
   validation {
-    condition = contains(keys(var.num_instances), "prod") && contains(keys(var.num_instances), "staging")
-    error_message = "Number of instances must be specified for \"prod\" and \"staging\"."
+    condition = contains(keys(var.num_instances), "prod") && contains(keys(var.num_instances), "staging") && contains(keys(var.num_instances), "lb")
+    error_message = "Number of instances must be specified for \"prod\" and \"staging\", as well as the load balancers with \"lb\"."
   }
 }
 
@@ -33,13 +34,14 @@ resource "digitalocean_droplet" "itu-minitwit" {
     timeout = "2m"
   }
   
-  provisioner "remote-exec" {
-    script = "itu-minitwit.sh"
-  }
+  # provisioner "remote-exec" {
+  #   script = "itu-minitwit.sh"
+  # }
 }
 
 resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
-  name = "itu-minitwit-load-balancer"
+  count = var.num_instances["lb"]
+  name = "${var.instance_prefix}-load-balancer-${count.index + 1}"
   region = var.region
   image = "ubuntu-22-04-x64"
   size = "s-1vcpu-1gb"
@@ -53,9 +55,9 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
     timeout = "2m"
   }
   
-  provisioner "remote-exec" {
-    script = "itu-minitwit.sh"
-  }
+  # provisioner "remote-exec" {
+  #   script = "itu-minitwit.sh"
+  # }
 }
 
 # Write the Ansible inventory file with the Droplets' IP addresses
@@ -71,11 +73,9 @@ resource "local_file" "ansible_inventory" {
     staging_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
     staging_names = slice(digitalocean_droplet.itu-minitwit[*].name, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
     
-    # Add the standalone Load Balancer
-    lb_ip   = digitalocean_droplet.itu-minitwit-load-balancer.ipv4_address
-    lb_name = digitalocean_droplet.itu-minitwit-load-balancer.name
+    lb_ip   = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address
+    lb_name = digitalocean_droplet.itu-minitwit-load-balancer[*].name
     
-    # Pass the private key variable
     pvt_key = var.pvt_key
   })
 }

@@ -9,7 +9,9 @@ ${staging_names[index]} ansible_host=${ip}
 %{ endfor ~}
 
 [loadbalancer]
-${lb_name} ansible_host=${lb_ip}
+%{ for index, ip in lb_ip ~}
+${lb_name[index]} ansible_host=${ip}
+%{ endfor ~}
 
 [all:vars]
 ansible_user=root
