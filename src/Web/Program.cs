@@ -188,19 +188,14 @@ public class Program
             if (envVarName == null)
                 throw new Exception("DefaultConnection key not found in appsettings");
 
-            var rawUri =
+            var rawConnectionString =
                 Environment.GetEnvironmentVariable(envVarName)
                 ?? builder.Configuration.GetConnectionString("DefaultConnection"); // fallback
 
-            if (rawUri == null)
+            if (rawConnectionString == null)
                 throw new Exception($"Environment variable '{envVarName}' is not set");
 
-            var connectionString =
-                Environment.GetEnvironmentVariable(envVarName)
-                ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
-            if (connectionString == null)
-                throw new Exception($"Environment variable '{envVarName}' is not set");
+            var connectionString = NormalizeNpgsqlConnectionString(rawConnectionString);
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
                 options.UseNpgsql(connectionString)
@@ -301,14 +296,26 @@ public class Program
         return app;
     }
 
-    static string ToNpgsqlConnectionString(string uri)
+    public static string NormalizeNpgsqlConnectionString(string connectionString)
     {
-        var u = new Uri(uri);
-        var userInfo = u.UserInfo.Split(':');
-        var db = u.AbsolutePath.TrimStart('/');
-        var query = System.Web.HttpUtility.ParseQueryString(u.Query);
+        if (
+            Uri.TryCreate(connectionString, UriKind.Absolute, out var uri)
+            && (uri.Scheme == "postgres" || uri.Scheme == "postgresql")
+        )
+        {
+            return ToNpgsqlConnectionString(uri);
+        }
+
+        return connectionString;
+    }
+
+    static string ToNpgsqlConnectionString(Uri uri)
+    {
+        var userInfo = uri.UserInfo.Split(':', 2);
+        var db = uri.AbsolutePath.TrimStart('/');
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
         var sslMode = query["sslmode"] ?? "Require";
 
-        return $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
+        return $"Host={uri.Host};Port={uri.Port};Database={db};Username={Uri.UnescapeDataString(userInfo[0])};Password={Uri.UnescapeDataString(userInfo[1])};SSL Mode={sslMode};Trust Server Certificate=true;";
     }
 }

@@ -112,7 +112,13 @@ namespace Org.OpenAPITools
             });
 
             Env.Load("../../.env");
-            var connectionString = Environment.GetEnvironmentVariable("DB_URL");
+            var rawConnectionString = Environment.GetEnvironmentVariable("DB_URL");
+            if (string.IsNullOrWhiteSpace(rawConnectionString))
+            {
+                throw new InvalidOperationException("Environment variable 'DB_URL' is not set");
+            }
+
+            var connectionString = NormalizeNpgsqlConnectionString(rawConnectionString);
             services.AddSwaggerGenNewtonsoftSupport();
             services.AddDbContext<ChatDbContext>(options => options.UseNpgsql(connectionString));
         }
@@ -156,6 +162,29 @@ namespace Org.OpenAPITools
                 endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
+        }
+
+        private static string NormalizeNpgsqlConnectionString(string connectionString)
+        {
+            if (
+                Uri.TryCreate(connectionString, UriKind.Absolute, out var uri)
+                && (uri.Scheme == "postgres" || uri.Scheme == "postgresql")
+            )
+            {
+                return ToNpgsqlConnectionString(uri);
+            }
+
+            return connectionString;
+        }
+
+        private static string ToNpgsqlConnectionString(Uri uri)
+        {
+            var userInfo = uri.UserInfo.Split(':', 2);
+            var db = uri.AbsolutePath.TrimStart('/');
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+            var sslMode = query["sslmode"] ?? "Require";
+
+            return $"Host={uri.Host};Port={uri.Port};Database={db};Username={Uri.UnescapeDataString(userInfo[0])};Password={Uri.UnescapeDataString(userInfo[1])};SSL Mode={sslMode};Trust Server Certificate=true;";
         }
     }
 }
