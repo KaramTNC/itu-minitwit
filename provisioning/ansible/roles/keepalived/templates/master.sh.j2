@@ -1,6 +1,8 @@
 ID=$(curl -s http://169.254.169.254/metadata/v1/id)
 HAS_RESERVED_IP=$(curl -s http://169.254.169.254/metadata/v1/reserved_ip/ipv4/active)
 
+export DO_TOKEN="{{ do_token }}"
+
 if [ $HAS_RESERVED_IP = "false" ]; then
     n=0
     while [ $n -lt 10 ]
