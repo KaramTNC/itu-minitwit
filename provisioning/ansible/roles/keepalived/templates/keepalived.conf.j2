@@ -1,0 +1,33 @@
+# /etc/keepalived/keepalived.conf
+
+vrrp_script chk_nginx {
+    script "pidof nginx"
+    interval 2
+}
+
+vrrp_instance VI_1 {
+    interface eth1
+    state {{ keepalived_state }}
+    priority {{ keepalived_priority }}
+
+    virtual_router_id 33
+    unicast_src_ip {{ private_ip }}
+    unicast_peer {
+        {% for host in groups['loadbalancer'] %}
+            {% if host != inventory_hostname %}
+                {{ hostvars[host]['private_ip'] }}
+            {% endif %}
+        {% endfor %}
+    }
+
+    authentication {
+        auth_type PASS
+        auth_pass {{ keepalived_password }}
+    }
+
+    track_script {
+        chk_nginx
+    }
+
+    notify_master /etc/keepalived/master.sh
+}

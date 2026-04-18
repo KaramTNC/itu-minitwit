@@ -1,0 +1,14 @@
+- name: Configure keepalived
+
+- ansible.builtin.apt:
+    name: keepalived
+    state: present
+    update_cache: yes
+
+- ansible.builtin.copy:
+    src: "templates/init_keepalived.conf"
+    dest: "/etc/init/keepalived.conf"
+
+- ansible.builtin.template:
+    src: "templates/keepalived.conf.j2"
+    dest: "/etc/keepalived/keepalived.conf"
