@@ -12,6 +12,11 @@ variable "do_token" {}
 variable "pvt_key" {}
 variable "do_ssh_key_name" {}
 
+variable "keepalived_password" {
+  description = "Password for Keepalived VRRP authentication"
+  sensitive = true
+}
+
 variable "region" {
   description = "DigitalOcean server region"
   default = "fra1"

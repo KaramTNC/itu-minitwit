@@ -88,5 +88,7 @@ resource "local_file" "ansible_inventory" {
     
     pvt_key = var.pvt_key
     reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
+    keepalived_password = var.keepalived_password
+    do_token = var.do_token
   })
 }
