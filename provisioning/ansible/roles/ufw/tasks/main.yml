@@ -1,6 +1,6 @@
 ---
 - name: Configure firewall rules with UFW
-- community.general.ufw:
+  community.general.ufw:
     rule: allow
     name: Nginx Full
 
@@ -13,4 +13,4 @@
 - name: Allow SSH traffic
   community.general.ufw:
     rule: allow
-    name: ssh
+    name: OpenSSH

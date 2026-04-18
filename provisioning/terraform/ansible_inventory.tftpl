@@ -1,6 +1,6 @@
 [prod]
 %{ for index, ip in prod_ips ~}
-${prod_names[index]} ansible_host=${ip}
+${prod_names[index]} ansible_host=${ip} private_ip=${prod_private_ips[index]}
 %{ endfor ~}
 
 [staging]
@@ -8,7 +8,7 @@ ${prod_names[index]} ansible_host=${ip}
 ${staging_names[index]} ansible_host=${ip}
 %{ endfor ~}
 
-[loadbalancer]
+[loadbalancers]
 %{ for index, ip in lb_ip ~}
 ${lb_name[index]} ansible_host=${ip} private_ip=${lb_private_ip[index]} keepalived_state=${index == 0 ? "MASTER" : "BACKUP"} keepalived_priority=${250 - (index * 10)}
 %{ endfor ~}

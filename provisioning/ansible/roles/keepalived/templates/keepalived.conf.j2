@@ -13,7 +13,7 @@ vrrp_instance VI_1 {
     virtual_router_id 33
     unicast_src_ip {{ private_ip }}
     unicast_peer {
-        {% for host in groups['loadbalancer'] %}
+        {% for host in groups['loadbalancers'] %}
             {% if host != inventory_hostname %}
                 {{ hostvars[host]['private_ip'] }}
             {% endif %}

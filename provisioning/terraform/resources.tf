@@ -33,10 +33,6 @@ resource "digitalocean_droplet" "itu-minitwit" {
     private_key = file(var.pvt_key)
     timeout = "2m"
   }
-  
-  # provisioner "remote-exec" {
-  #   script = "itu-minitwit.sh"
-  # }
 }
 
 resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
@@ -54,14 +50,10 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
     private_key = file(var.pvt_key)
     timeout = "2m"
   }
-  
-  # provisioner "remote-exec" {
-  #   script = "itu-minitwit.sh"
-  # }
 }
 
 resource "digitalocean_reserved_ip" "itu-minitwit-reserved-ip" {
-  droplet_id = itu-minitwit-load-balancer[0].id
+  droplet_id = digitalocean_droplet.itu-minitwit-load-balancer[0].id
   region = var.region
 
   lifecycle {
@@ -78,6 +70,7 @@ resource "local_file" "ansible_inventory" {
     # Select only the prod Droplets by slicing the list from index 0 until N, where N = num_instances["prod"] 
     prod_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, 0, var.num_instances["prod"])
     prod_names = slice(digitalocean_droplet.itu-minitwit[*].name, 0, var.num_instances["prod"])
+    prod_private_ips = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address_private, 0, var.num_instances["prod"])
     
     staging_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
     staging_names = slice(digitalocean_droplet.itu-minitwit[*].name, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))

@@ -1,6 +1,6 @@
+---
 - name: Configure keepalived
-
-- ansible.builtin.apt:
+  ansible.builtin.apt:
     name: keepalived
     state: present
     update_cache: yes

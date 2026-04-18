@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-if ! [ -f .env ]; then
-	echo ".env file is missing. Please duplicate env.template into .env and specify the variable values."
-	exit 1
-fi
+source _functions.sh
 
-set -a
-. .env
-set +a
+check_and_set_env
 
 cd terraform
 tofu init
 tofu apply --auto-approve
+
+cd ../ansible
+
+env ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbook.yml -i inventory.ini
