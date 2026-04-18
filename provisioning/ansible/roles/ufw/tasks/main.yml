@@ -1,0 +1,16 @@
+---
+- name: Configure firewall rules with UFW
+- community.general.ufw:
+    rule: allow
+    name: Nginx Full
+
+- name: Allow only HTTPS traffic
+  community.general.ufw:
+    rule: allow
+    name: Nginx HTTP
+    delete: true
+
+- name: Allow SSH traffic
+  community.general.ufw:
+    rule: allow
+    name: ssh

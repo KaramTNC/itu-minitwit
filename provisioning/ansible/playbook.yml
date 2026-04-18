@@ -1,6 +1,17 @@
-- name: Deploy Minitwit
+- name: Deploy web servers
   hosts: prod, staging
   become: true
-  
   roles:
-    - nginx
+    - role: nginx
+      vars:
+        nginx_template_file: "templates/bettertwitter.ninja.conf.j2"
+        nginx_site_name: "bettertwitter.ninja.conf"
+      
+- name: Deploy load balancers
+  hosts: lb
+  become: true
+  roles:
+    - role: nginx
+      vars:
+        nginx_template_file: "templates/lb.conf.j2"
+        nginx_site_name: "lb.conf"
