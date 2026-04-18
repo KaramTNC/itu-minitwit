@@ -6,9 +6,23 @@
     update_cache: yes
 
 - ansible.builtin.copy:
-    src: "templates/init_keepalived.conf"
+    src: "files/init_keepalived.conf"
     dest: "/etc/init/keepalived.conf"
 
 - ansible.builtin.template:
     src: "templates/keepalived.conf.j2"
     dest: "/etc/keepalived/keepalived.conf"
+
+- ansible.builtin.copy:
+    src: "files/reserved_ip_switch.py"
+    dest: "/usr/local/bin/assign-ip"
+
+- ansible.builtin.template:
+    src: "templates/master.sh.j2"
+    dest: "/etc/keepalived/master.sh"
+    mode: '0755'
+
+- ansible.builtin.service:
+    name: keepalived
+    state: started
+    enabled: yes

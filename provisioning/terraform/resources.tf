@@ -60,7 +60,16 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
   # }
 }
 
-# Write the Ansible inventory file with the Droplets' IP addresses
+resource "digitalocean_reserved_ip" "itu-minitwit-reserved-ip" {
+  droplet_id = itu-minitwit-load-balancer[0].id
+  region = var.region
+
+  lifecycle {
+    ignore_changes = [ droplet_id ]
+  }
+}
+
+# Write the Ansible inventory file with the Droplets' IP addresses and other variables
 resource "local_file" "ansible_inventory" {
   filename = "${path.module}/../ansible/inventory.ini"
   
@@ -78,5 +87,6 @@ resource "local_file" "ansible_inventory" {
     lb_private_ip = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address_private
     
     pvt_key = var.pvt_key
+    reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
   })
 }
