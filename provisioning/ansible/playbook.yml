@@ -1,0 +1,6 @@
+- name: Deploy Minitwit
+  hosts: prod, staging
+  become: true
+  
+  roles:
+    - nginx
