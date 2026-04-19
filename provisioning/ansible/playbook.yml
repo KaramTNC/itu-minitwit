@@ -22,7 +22,7 @@
   roles:
     - role: nginx
       vars:
-        nginx_template_file: "templates/lb.conf.j2"
-        nginx_site_name: "lb.conf"
+        nginx_template_file: "templates/loadbalancers.conf.j2"
+        nginx_site_name: "loadbalancers.conf"
     - role: keepalived
     - role: ufw
