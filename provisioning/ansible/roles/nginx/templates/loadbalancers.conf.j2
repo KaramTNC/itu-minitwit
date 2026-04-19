@@ -9,6 +9,40 @@ server {
     listen 80;
     server_name {{ app.prefix }}.{{ domain_name }}{% if app.include_root is defined and app.include_root %} {{ domain_name }}{% endif %};
 
+    {% if cert_exists | default(false) %}
+    return 301 https://$host$request_uri;
+
+    {% else %}
+    location / {
+        proxy_pass http://backend_servers;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    {% endif %}
+}
+
+{% if cert_exists | default(false) %}
+server {
+    listen 443 ssl;
+    {% if app.prefix == "" %}
+    server_name {{ domain_name }};
+    {% else %}
+    server_name {{ app.prefix }}.{{ domain_name }}{% if app.include_root is defined and app.include_root %} {{ domain_name }}{% endif %};
+    {% endif %}
+
+    ssl_certificate /etc/letsencrypt/live/{{ cert_domains[0] }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ cert_domains[0] }}/privkey.pem;
+
+    # SSL configuration settings extracted from certbot's 'certbot --nginx' command, based on https://ssl-config.mozilla.org
+    ssl_session_cache shared:le_nginx_SSL:10m;
+    ssl_session_timeout 1440m;
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305";
+
     location / {
         proxy_pass http://backend_servers;
         proxy_set_header Host $http_host;
@@ -17,4 +51,5 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+{% endif %}
 {% endfor %}

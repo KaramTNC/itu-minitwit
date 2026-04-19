@@ -1,12 +1,12 @@
 domain_name: bettertwitter.ninja
 
 subdomains:
+  - prefix: "www"
+    port: 5001
+    include_root: true
   - prefix: "api"
     port: 8080
   - prefix: "grafana"
     port: 3000
-  - prefix: "www"
-    port: 5001
-    include_root: true
 
 letsencrypt_email: 24841687+usern132@users.noreply.github.com
