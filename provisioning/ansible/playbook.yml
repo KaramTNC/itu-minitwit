@@ -19,10 +19,34 @@
 - name: Deploy load balancers
   hosts: loadbalancers
   become: true
+  
+  pre_tasks:
+    - name: Gather subdomains from vars for certbot
+      ansible.builtin.set_fact:
+        cert_domains: "{{ cert_domains | default([]) + [item.prefix ~ '.' ~ domain_name] + ([domain_name] if item.include_root | default(false) else []) }}"
+      loop: "{{ subdomains }}"
+
   roles:
     - role: nginx
       vars:
         nginx_template_file: "templates/loadbalancers.conf.j2"
         nginx_site_name: "loadbalancers.conf"
+
+    - role: geerlingguy.certbot
+      vars:
+        certbot_admin_email: "{{ letsencrypt_email }}"
+        certbot_create_if_missing: true
+        certbot_create_standalone_stop_services: 
+          - nginx
+        certbot_certs:
+          - domains: "{{ cert_domains }}"
+
     - role: keepalived
     - role: ufw
+
+  post_tasks:
+    - name: Test secure connection to SSL domain
+      uri:
+        url: "https://{{ domain_name }}/" 
+        status_code: 200
+      delegate_to: localhost
