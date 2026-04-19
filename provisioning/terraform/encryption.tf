@@ -16,8 +16,6 @@ terraform {
 
 
 variable "state_password" {
-  description = "Passphrase to encrypt the state file"
-  # Change passphrase to be at least 16 characters long:
-  default   = "changeme!12345678901234567890"
+  description = "Passphrase to encrypt the state file. It must be at least 16 characters long."
   sensitive = true
 }
