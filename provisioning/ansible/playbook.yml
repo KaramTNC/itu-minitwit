@@ -31,6 +31,17 @@
         path: "/etc/letsencrypt/live/{{ cert_domains[0] }}/fullchain.pem"
       register: ssl_cert_check
 
+    - name: Wait for DNS propagation for all domains (if DNS A records were created shortly before running this playbook)
+      ansible.builtin.command: "dig @8.8.8.8 +short {{ item }}"
+      register: dns_check
+      until: "reserved_ip in dns_check.stdout"
+      retries: 200
+      delay: 5
+      delegate_to: localhost
+      become: false
+      changed_when: false
+      loop: "{{ cert_domains }}"
+
   roles:
     - role: nginx
       vars:
@@ -64,3 +75,4 @@
         url: "https://{{ domain_name }}/" 
         status_code: 200
       delegate_to: localhost
+      become: false

@@ -78,6 +78,8 @@ resource "local_file" "ansible_inventory" {
     lb_ip   = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address
     lb_name = digitalocean_droplet.itu-minitwit-load-balancer[*].name
     lb_private_ip = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address_private
+
+    reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
     
     pvt_key = var.pvt_key
     reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
