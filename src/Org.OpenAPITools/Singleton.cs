@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using Microsoft.Extensions.Diagnostics.Metrics;
 
 public sealed class Singleton
 {
@@ -8,6 +10,9 @@ public sealed class Singleton
 
     public int latest = 0;
     static Meter s_meter = new("API", "1.0.0");
+
+    static Histogram<float> PostFollowhistogram = s_meter.CreateHistogram<float>(name: "PostFollow_request_time", unit: "ms", description: "The time taken to handle an http request for PostFollow");
+
 
     static Counter<int> s_getFollowersRequestCounter = s_meter.CreateCounter<int>(
         name: "get_followers",
@@ -116,5 +121,10 @@ public sealed class Singleton
             1,
             new KeyValuePair<string, object?>("status_code", statusCode.ToString())
         );
+    }
+
+    public void PostFollowHistogram(Stopwatch sw)
+    {
+        PostFollowhistogram.Record(sw.ElapsedMilliseconds);
     }
 }

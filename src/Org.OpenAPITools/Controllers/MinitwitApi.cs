@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
 using System.Text.Json;
@@ -322,6 +323,7 @@ namespace Org.OpenAPITools.Controllers
             [FromQuery(Name = "latest")] int? latest
         )
         {
+            var sw = Stopwatch.StartNew();
             if (!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error =
@@ -331,7 +333,9 @@ namespace Org.OpenAPITools.Controllers
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 4");
                 var result = new ObjectResult(example);
+                sw.Stop();
                 single.IncrementPostFollowersCounter(result.StatusCode ?? 200);
+                single.PostFollowHistogram(sw);
                 return result;
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
@@ -377,7 +381,9 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
 
             var statusCode = 204;
+            sw.Stop();
             single.IncrementPostFollowersCounter(statusCode);
+            single.PostFollowHistogram(sw);
             return StatusCode(statusCode);
         }
 
