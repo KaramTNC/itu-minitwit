@@ -11,7 +11,7 @@ public sealed class Singleton
     public int latest = 0;
     static Meter s_meter = new("API", "1.0.0");
 
-    static Histogram<float> PostFollowhistogram = s_meter.CreateHistogram<float>(name: "PostFollow_request_time", unit: "ms", description: "The time taken to handle an http request for PostFollow");
+    static Histogram<double> PostFollowhistogram = s_meter.CreateHistogram<double>(name: "PostFollow_request_time", unit: "ms", description: "The time taken to handle an http request for PostFollow");
 
 
     static Counter<int> s_getFollowersRequestCounter = s_meter.CreateCounter<int>(
@@ -125,6 +125,6 @@ public sealed class Singleton
 
     public void PostFollowHistogram(Stopwatch sw)
     {
-        PostFollowhistogram.Record(sw.ElapsedMilliseconds);
+        PostFollowhistogram.Record(sw.Elapsed.TotalMilliseconds);
     }
 }
