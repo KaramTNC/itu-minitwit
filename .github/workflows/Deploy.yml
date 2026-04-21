@@ -1,28 +1,26 @@
 name: Deploy Production
 
 on:
-  workflow_run:
-    workflows: [Docker Build & Publish]
-    types: [completed]
+  workflow_call:
+    inputs:
+      image_tag:
+        required: true
+        type: string
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main')
     env:
       DB_URL: ${{ secrets.DB_URL }}
       GF_SECURITY_ADMIN_USER: ${{ secrets.GF_SECURITY_ADMIN_USER }}
       GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}
-      IMAGE_TAG: ${{ github.event.workflow_run.head_sha || github.sha }}
+      IMAGE_TAG: ${{ inputs.image_tag || github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ inputs.image_tag || github.sha }}
 
       - name: Configure SSH
         run: |

@@ -122,8 +122,9 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/itu-api-server:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
 
-  publish-complete:
-    runs-on: ubuntu-latest
+  deploy:
     needs: [build-web, build-api]
-    steps:
-      - run: echo "Both images published successfully"
+    uses: ./.github/workflows/Deploy.yml
+    with:
+      image_tag: ${{ github.sha }}
+    secrets: inherit
