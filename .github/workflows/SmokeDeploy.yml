@@ -87,20 +87,34 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
+      - name: Cache migration bundle
+        id: cache-efbundle
+        uses: actions/cache@v4
+        with:
+          path: ./efbundle
+          key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
+
       - name: Setup .NET
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
         with:
           dotnet-version: 8.0.x
 
       - name: Build database migration bundle
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
           dotnet tool install --global dotnet-ef --version 8.0.22
           dotnet restore src/Web/Web.csproj
           dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output ./efbundle
 
-      - name: Copy files to staging server
+      - name: Copy config files to staging server
         run: |
-          rsync -az --checksum -e "ssh -o StrictHostKeyChecking=no" docker-compose.yml docker-stack.yml prometheus.yml grafana/ efbundle root@134.122.71.241:/itu-minitwit/
+          rsync -az -e "ssh -o StrictHostKeyChecking=no" docker-compose.yml docker-stack.yml prometheus.yml grafana/ root@134.122.71.241:/itu-minitwit/
+
+      - name: Copy migration bundle to staging server
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
+        run: |
+          rsync -az -e "ssh -o StrictHostKeyChecking=no" efbundle root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
@@ -142,7 +156,7 @@ jobs:
 
       - name: Rolling deploy on staging
         run: |
-          ssh -o StrictHostKeyChecking=no root@134.122.71.241 'bash -s' <<'REMOTE'
+          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -o ServerAliveCountMax=10 root@134.122.71.241 'bash -s' <<'REMOTE'
           set -euo pipefail
 
           diagnose_service() {
@@ -151,7 +165,7 @@ jobs:
             docker service ps --no-trunc "$service" || true
             echo "::endgroup::"
             echo "::group::${service} recent logs"
-            docker service logs --tail 80 "$service" || true
+            docker service logs --tail 80 "$service" 2>&1 || true
             echo "::endgroup::"
           }
 
@@ -160,8 +174,8 @@ jobs:
             expected="$2"
 
             for attempt in $(seq 1 36); do
-              replicas=$(docker service ls --filter "name=${service}" --format '{{.Replicas}}' | head -n 1)
-              update_state=$(docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
+              replicas=$(timeout 15 docker service ls --filter "name=${service}" --format '{{.Replicas}}' 2>/dev/null | head -n 1 || echo "0/0")
+              update_state=$(timeout 15 docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
               echo "${service}: replicas=${replicas:-missing}, update=${update_state}, attempt=${attempt}/36"
 
               if [ "$replicas" = "${expected}/${expected}" ] && [ "$update_state" = "completed" ]; then
@@ -185,6 +199,10 @@ jobs:
           export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
           export IMAGE_TAG='${{ env.IMAGE_TAG }}'
           export DB_URL='${{ secrets.DB_URL }}'
+
+          docker pull "${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG}" || true
+          docker pull "${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG}" || true
+
           docker compose down --remove-orphans || true
           docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
 
