@@ -37,7 +37,15 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Cache migration bundle
+        id: cache-efbundle
+        uses: actions/cache@v4
+        with:
+          path: ./efbundle
+          key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
+
       - name: Build database migration bundle
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
           dotnet tool install --global dotnet-ef --version 8.0.22
           dotnet restore src/Web/Web.csproj
@@ -45,7 +53,7 @@ jobs:
 
       - name: Copy files to production server
         run: |
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml docker-stack.yml prometheus.yml grafana efbundle root@46.101.201.186:/itu-minitwit/
+          rsync -az --checksum -e "ssh -o StrictHostKeyChecking=no" docker-compose.yml docker-stack.yml prometheus.yml grafana/ efbundle root@46.101.201.186:/itu-minitwit/
 
       - name: Create .env file on production server
         run: |
