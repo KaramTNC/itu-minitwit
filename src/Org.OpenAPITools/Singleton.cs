@@ -11,12 +11,13 @@ public sealed class Singleton
     public int latest = 0;
     static Meter s_meter = new("API", "1.0.0");
 
+    //Histogram for request times
     static Histogram<double> PostFollowhistogram = s_meter.CreateHistogram<double>(name: "PostFollow_request_time", unit: "ms", description: "The time taken to handle an http request for PostFollow");
     static Histogram<double> LatestHistogram = s_meter.CreateHistogram<double>(name: "GetLatest_request_time", unit: "ms", description: "The time taken to handle an http request for GetLatest");
     static Histogram<double> MsgsHistogram = s_meter.CreateHistogram<double>(name: "PostMsgs_request_time", unit: "ms", description: "The time taken to handle an http request for PostMsgs");
     static Histogram<double> RegisterHistogram = s_meter.CreateHistogram<double>(name: "PostRegister_request_time", unit: "ms", description: "The time taken to handle an http request for PostRegister");
 
-
+    //Counters for requests
     static Counter<int> s_getFollowersRequestCounter = s_meter.CreateCounter<int>(
         name: "get_followers",
         description: "Number of GET requests to the /fllws endpoint",
@@ -70,6 +71,7 @@ public sealed class Singleton
         get { return instance; }
     }
 
+    //Functions to call to increment request counters
     public void IncrementLatestCounter(int statusCode)
     {
         s_getLatestRequestCounter.Add(
@@ -126,6 +128,7 @@ public sealed class Singleton
         );
     }
 
+    //Functions to call to add to request histograms
     public void PostFollowHistogram(Stopwatch sw)
     {
         PostFollowhistogram.Record(sw.Elapsed.TotalMilliseconds);
