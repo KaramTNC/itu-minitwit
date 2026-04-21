@@ -100,7 +100,7 @@ jobs:
 
       - name: Copy files to staging server
         run: |
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml docker-stack.yml prometheus.yml grafana efbundle root@134.122.71.241:/itu-minitwit/
+          rsync -az --checksum -e "ssh -o StrictHostKeyChecking=no" docker-compose.yml docker-stack.yml prometheus.yml grafana/ efbundle root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
@@ -113,7 +113,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
             cd /itu-minitwit &&
             chmod +x ./efbundle &&
-            ./efbundle --connection '${{ secrets.DB_URL }}'
+            timeout 60 ./efbundle --connection '${{ secrets.DB_URL }}'
           "
 
       - name: Ensure Docker Swarm is active
