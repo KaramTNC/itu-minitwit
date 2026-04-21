@@ -1,9 +1,9 @@
 variable "num_instances" {
   description = "Number of Droplets to create for each environment + total load balancers"
   default = {
-    "prod" = 0,
+    "prod" = 2,
     "staging" = 0,
-    "lb" = 1
+    "lb" = 2
   }
   type = map(number)
 
