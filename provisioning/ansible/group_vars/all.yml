@@ -1,4 +1,5 @@
 domain_name: bettertwitter.ninja
+letsencrypt_email: 24841687+usern132@users.noreply.github.com
 
 subdomains:
   - prefix: "www"
@@ -8,5 +9,3 @@ subdomains:
     port: 8080
   - prefix: "grafana"
     port: 3000
-
-letsencrypt_email: 24841687+usern132@users.noreply.github.com
