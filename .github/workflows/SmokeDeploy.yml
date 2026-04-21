@@ -123,11 +123,12 @@ jobs:
           "
 
       - name: Apply database migrations on staging server
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
             cd /itu-minitwit &&
             chmod +x ./efbundle &&
-            timeout 60 ./efbundle --connection '${{ secrets.DB_URL }}'
+            timeout 120 ./efbundle --connection '${{ secrets.DB_URL }}'
           "
 
       - name: Ensure Docker Swarm is active
