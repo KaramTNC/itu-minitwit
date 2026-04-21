@@ -1,4 +1,5 @@
 upstream backend_servers {
+    ip_hash;
     {% for host in groups['prod'] %}
         server {{ hostvars[host]['private_ip'] }}:80;
     {% endfor %}
