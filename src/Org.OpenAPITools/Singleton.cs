@@ -12,6 +12,9 @@ public sealed class Singleton
     static Meter s_meter = new("API", "1.0.0");
 
     static Histogram<double> PostFollowhistogram = s_meter.CreateHistogram<double>(name: "PostFollow_request_time", unit: "ms", description: "The time taken to handle an http request for PostFollow");
+    static Histogram<double> LatestHistogram = s_meter.CreateHistogram<double>(name: "GetLatest_request_time", unit: "ms", description: "The time taken to handle an http request for GetLatest");
+    static Histogram<double> MsgsHistogram = s_meter.CreateHistogram<double>(name: "PostMsgs_request_time", unit: "ms", description: "The time taken to handle an http request for PostMsgs");
+    static Histogram<double> RegisterHistogram = s_meter.CreateHistogram<double>(name: "PostRegister_request_time", unit: "ms", description: "The time taken to handle an http request for PostRegister");
 
 
     static Counter<int> s_getFollowersRequestCounter = s_meter.CreateCounter<int>(
@@ -126,5 +129,20 @@ public sealed class Singleton
     public void PostFollowHistogram(Stopwatch sw)
     {
         PostFollowhistogram.Record(sw.Elapsed.TotalMilliseconds);
+    }
+    
+    public void GetLatestHistogram(Stopwatch sw)
+    {
+        LatestHistogram.Record(sw.Elapsed.TotalMilliseconds);
+    }
+
+    public void PostMsgsHistogram(Stopwatch sw)
+    {
+        MsgsHistogram.Record(sw.Elapsed.TotalMilliseconds);
+    }
+
+    public void PostRegisterHistogram(Stopwatch sw)
+    {
+        RegisterHistogram.Record(sw.Elapsed.TotalMilliseconds);
     }
 }

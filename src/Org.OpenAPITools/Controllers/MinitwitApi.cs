@@ -141,7 +141,7 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(200, default);
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
-
+            var sw = Stopwatch.StartNew();
             string exampleJson = null;
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
@@ -151,8 +151,10 @@ namespace Org.OpenAPITools.Controllers
                     ? JsonConvert.DeserializeObject<LatestValue>(exampleJson)
                     : default;
             //TODO: Change the data returned
-            ObjectResult result = new ObjectResult(example);
+            ObjectResult result = new ObjectResult(example);'
+            sw.Stop();
             single.IncrementLatestCounter(result.StatusCode ?? 200);
+            single.GetLatestHistogram(sw);
             return result;
         }
 
@@ -414,6 +416,7 @@ namespace Org.OpenAPITools.Controllers
             [FromQuery(Name = "latest")] int? latest
         )
         {
+            var sw = Stopwatch.StartNew();
             if (!authorization.Equals("Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh"))
             {
                 string error =
@@ -422,7 +425,9 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 Console.WriteLine("error here: 5");
+                sw.Stop();
                 single.IncrementPostMessagesPerUserCounter((int)example.Status);
+                single.PostMsgsHistogram(sw);
                 return new ObjectResult(example);
             }
 
@@ -437,7 +442,9 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
 
             var statusCode = 204;
+            sw.Stop();
             single.IncrementPostMessagesPerUserCounter(statusCode);
+            single.PostMsgsHistogram(sw);
             return StatusCode(statusCode);
         }
 
@@ -464,6 +471,7 @@ namespace Org.OpenAPITools.Controllers
             [FromQuery(Name = "latest")] int? latest
         )
         {
+            var sw = Stopwatch.StartNew();
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -474,7 +482,9 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
 
             var statusCode = 204;
+            sw.Stop();
             single.IncrementPostRegisterCounter(statusCode);
+            single.PostRegisterHistogram(sw);
             return StatusCode(204);
         }
     }
