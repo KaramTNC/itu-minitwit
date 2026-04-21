@@ -32,7 +32,7 @@
       register: ssl_cert_check
 
     - name: Wait for DNS propagation for all domains (if DNS A records were created shortly before running this playbook)
-      ansible.builtin.command: "dig @8.8.8.8 +short {{ item }}"
+      ansible.builtin.command: "dig +short {{ item }}"
       register: dns_check
       until: "reserved_ip in dns_check.stdout"
       retries: 200
