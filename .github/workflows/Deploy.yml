@@ -87,16 +87,16 @@ jobs:
 
       - name: Rolling deploy on production
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 'bash -s' <<'REMOTE'
+          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -o ServerAliveCountMax=10 root@46.101.201.186 'bash -s' <<'REMOTE'
           set -euo pipefail
 
           diagnose_service() {
             service="$1"
             echo "::group::${service} tasks"
-            docker service ps --no-trunc "$service" || true
+            timeout 30 docker service ps --no-trunc "$service" || true
             echo "::endgroup::"
             echo "::group::${service} recent logs"
-            docker service logs --tail 80 "$service" || true
+            timeout 60 docker service logs --tail 80 "$service" || true
             echo "::endgroup::"
           }
 
@@ -104,10 +104,10 @@ jobs:
             service="$1"
             expected="$2"
 
-            for attempt in $(seq 1 36); do
-              replicas=$(docker service ls --filter "name=${service}" --format '{{.Replicas}}' | head -n 1)
-              update_state=$(docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
-              echo "${service}: replicas=${replicas:-missing}, update=${update_state}, attempt=${attempt}/36"
+            for attempt in $(seq 1 60); do
+              replicas=$(timeout 20 docker service ls --filter "name=${service}" --format '{{.Replicas}}' | head -n 1 || echo "")
+              update_state=$(timeout 20 docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
+              echo "${service}: replicas=${replicas:-missing}, update=${update_state}, attempt=${attempt}/60"
 
               if [ "$replicas" = "${expected}/${expected}" ] && [ "$update_state" = "completed" ]; then
                 return 0
@@ -118,7 +118,7 @@ jobs:
                 return 1
               fi
 
-              sleep 5
+              sleep 10
             done
 
             diagnose_service "$service"
@@ -130,7 +130,8 @@ jobs:
           export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
           export IMAGE_TAG='${{ env.IMAGE_TAG }}'
           export DB_URL='${{ secrets.DB_URL }}'
-          docker compose down --remove-orphans || true
+          docker stack rm itu-minitwit || true
+          sleep 20
           docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
 
           wait_service itu-minitwit_itu-web-server 2
