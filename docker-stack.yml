@@ -33,20 +33,20 @@ x-rolling-update: &rolling_update
     delay: 10s
     order: start-first
     failure_action: rollback
-    monitor: 30s
+    monitor: 60s
     max_failure_ratio: 0
   rollback_config:
     parallelism: 1
     delay: 10s
     order: start-first
     failure_action: pause
-    monitor: 30s
+    monitor: 60s
     max_failure_ratio: 0
   restart_policy:
     condition: any
     delay: 5s
     max_attempts: 3
-    window: 60s
+    window: 120s
 
 services:
   prometheus:
@@ -120,6 +120,12 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - OTEL_PROMETHEUS_URI_PREFIX=http://*:9185/
       - DB_URL=${DB_URL}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
     networks:
       - itu-minitwit-network
     deploy: *rolling_update
@@ -135,6 +141,12 @@ services:
       - OTEL_PROMETHEUS_URI_PREFIX=http://*:9184/
       - ASPNETCORE_DATA_PROTECTION_KEYS=/app/DataProtection-Keys
       - DB_URL=${DB_URL}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5001/health/live || exit 1"]
+      interval: 10s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
     volumes:
       - web-data-protection:/app/DataProtection-Keys
     networks:

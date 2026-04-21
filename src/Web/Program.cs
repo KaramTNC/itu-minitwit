@@ -35,27 +35,6 @@ public class Program
             ) // endpoint is http://<host>:9184/metrics
             .Build();
 
-        //Initialise Database
-        if (!app.Environment.IsEnvironment("Testing"))
-        {
-            using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
-
-            try
-            {
-                if (context.Database.IsNpgsql())
-                {
-                    context.Database.OpenConnection();
-                }
-            }
-            catch (InvalidOperationException) { }
-
-            if (!context.Database.CanConnect())
-            {
-                throw new InvalidOperationException("Database connection failed.");
-            }
-        }
-
         app.Run();
     }
 
@@ -291,6 +270,10 @@ public class Program
         app.UseAuthorization();
         app.UseSession();
         app.MapHealthChecks("/health");
+        app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+        {
+            Predicate = _ => false
+        });
         app.MapRazorPages();
 
         return app;
