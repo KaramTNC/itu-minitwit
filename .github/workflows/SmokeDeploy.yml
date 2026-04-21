@@ -87,12 +87,12 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Cache migration bundle
-        id: cache-efbundle
-        uses: actions/cache@v4
-        with:
-          path: ./efbundle
-          key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
+     # - name: Cache migration bundle
+      #  id: cache-efbundle
+       # uses: actions/cache@v4
+        #with:
+         # path: ./efbundle
+          #key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
 
       - name: Setup .NET
         if: steps.cache-efbundle.outputs.cache-hit != 'true'
@@ -100,36 +100,36 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Build database migration bundle
-        if: steps.cache-efbundle.outputs.cache-hit != 'true'
-        run: |
-          dotnet tool install --global dotnet-ef --version 8.0.22
-          dotnet restore src/Web/Web.csproj
-          dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output ./efbundle
+      #- name: Build database migration bundle
+       # if: steps.cache-efbundle.outputs.cache-hit != 'true'
+        #run: |
+         # dotnet tool install --global dotnet-ef --version 8.0.22
+          #dotnet restore src/Web/Web.csproj
+          #dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output ./efbundle
 
       - name: Copy config files to staging server
         run: |
           rsync -az -e "ssh -o StrictHostKeyChecking=no" docker-compose.yml docker-stack.yml prometheus.yml grafana/ root@134.122.71.241:/itu-minitwit/
 
-      - name: Copy migration bundle to staging server
-        if: steps.cache-efbundle.outputs.cache-hit != 'true'
-        run: |
-          rsync -az -e "ssh -o StrictHostKeyChecking=no" efbundle root@134.122.71.241:/itu-minitwit/
+      ##- name: Copy migration bundle to staging server
+        #if: steps.cache-efbundle.outputs.cache-hit != 'true'
+        #run: |
+         # rsync -az -e "ssh -o StrictHostKeyChecking=no" efbundle root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
           ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
             echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
-
-      - name: Apply database migrations on staging server
-        if: steps.cache-efbundle.outputs.cache-hit != 'true'
-        run: |
-          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            cd /itu-minitwit &&
-            chmod +x ./efbundle &&
-            timeout 120 ./efbundle --connection '${{ secrets.DB_URL }}'
-          "
+#
+ #     - name: Apply database migrations on staging server
+  #      if: steps.cache-efbundle.outputs.cache-hit != 'true'
+   #     run: |
+    #      ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
+     #       cd /itu-minitwit &&
+      #      chmod +x ./efbundle &&
+       #     timeout 120 ./efbundle --connection '${{ secrets.DB_URL }}'
+        #  "
 
       - name: Ensure Docker Swarm is active
         run: |
