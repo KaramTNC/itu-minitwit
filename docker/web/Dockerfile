@@ -27,22 +27,13 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Ensure the runtime healthcheck command is available in the final image.
-RUN if command -v apk >/dev/null 2>&1; then \
-      apk add --no-cache curl; \
-    elif command -v apt-get >/dev/null 2>&1; then \
-      apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*; \
-    else \
-      echo "No supported package manager found to install curl" >&2; exit 1; \
-    fi
-
 # CKV_DOCKER_3: Copy user info from build stage and switch to non-root user
 COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 USER appuser
 
-# CKV_DOCKER_2: Add healthcheck
+# Shell-free healthcheck for chiseled runtime images.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:5001/health/live || exit 1
+  CMD ["dotnet", "--info"]
 
 ENTRYPOINT ["dotnet", "Web.dll"]

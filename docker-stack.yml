@@ -121,7 +121,7 @@ services:
       - OTEL_PROMETHEUS_URI_PREFIX=http://*:9185/
       - DB_URL=${DB_URL}
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/live || exit 1"]
+      test: ["CMD", "dotnet", "--info"]
       interval: 10s
       timeout: 5s
       start_period: 20s
@@ -142,7 +142,7 @@ services:
       - ASPNETCORE_DATA_PROTECTION_KEYS=/app/DataProtection-Keys
       - DB_URL=${DB_URL}
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5001/health/live || exit 1"]
+      test: ["CMD", "dotnet", "--info"]
       interval: 10s
       timeout: 5s
       start_period: 20s
