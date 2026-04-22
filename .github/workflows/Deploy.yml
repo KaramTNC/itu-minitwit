@@ -1,25 +1,28 @@
 name: Deploy Production
 
 on:
-  workflow_run:
-    workflows: [Docker Build & Publish]
-    types: [completed]
+  workflow_call:
+    inputs:
+      image_tag:
+        required: true
+        type: string
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main')
     env:
       DB_URL: ${{ secrets.DB_URL }}
       GF_SECURITY_ADMIN_USER: ${{ secrets.GF_SECURITY_ADMIN_USER }}
       GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}
+      IMAGE_TAG: ${{ inputs.image_tag || github.sha }}
+      PRODUCTION_HOST: root@46.101.201.186
+      SSH_COMMON_ARGS: -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=10 -o ConnectionAttempts=3 -o ServerAliveInterval=15 -o ServerAliveCountMax=4
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          ref: ${{ inputs.image_tag || github.sha }}
 
       - name: Configure SSH
         run: |
@@ -29,66 +32,163 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Check for migration changes
-        id: migrations
-        run: |
-          git diff --name-only ${{ github.event.workflow_run.head_commit.id }} origin/main | grep -q 'Migrations/' \
-            && echo "changed=true" >> $GITHUB_OUTPUT \
-            || echo "changed=false" >> $GITHUB_OUTPUT
-
       - name: Setup .NET
-        if: steps.migrations.outputs.changed == 'true'
         uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
         with:
           dotnet-version: 8.0.x
 
-      - name: Apply database migrations
-        if: steps.migrations.outputs.changed == 'true'
+      - name: Cache migration bundle
+        id: cache-efbundle
+        uses: actions/cache@v4
+        with:
+          path: ./efbundle
+          key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
+
+      - name: Build database migration bundle
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
-          dotnet tool install --global dotnet-ef
-          dotnet restore
-          dotnet build --no-restore --configuration Release
-          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+          dotnet tool install --global dotnet-ef --version 8.0.22
+          dotnet restore src/Web/Web.csproj
+          dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output ./efbundle
 
       - name: Copy files to production server
         run: |
-          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml grafana root@46.101.201.186:/itu-minitwit/
+          timeout 60 rsync -az --checksum -e "ssh $SSH_COMMON_ARGS" docker-compose.yml docker-stack.yml prometheus.yml grafana/ efbundle "$PRODUCTION_HOST:/itu-minitwit/"
 
       - name: Create .env file on production server
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+          timeout 30 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
             echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
 
-      - name: Pull and redeploy on production
+      - name: Apply database migrations on production server
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+          timeout 180 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
             cd /itu-minitwit &&
-            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
-            export IMAGE_TAG=latest &&
-            export GF_SECURITY_ADMIN_USER='${{ secrets.GF_SECURITY_ADMIN_USER }}' &&
-            export GF_SECURITY_ADMIN_PASSWORD='${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' &&
-            docker compose up -d --pull always --remove-orphans --force-recreate
+            chmod +x ./efbundle &&
+            timeout 120 ./efbundle --connection '${{ secrets.DB_URL }}'
           "
+
+      - name: Ensure Docker Swarm is active
+        run: |
+          timeout 45 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
+            swarm_state=\$(timeout 15 docker info --format '{{.Swarm.LocalNodeState}}') &&
+            control_available=\$(timeout 15 docker info --format '{{.Swarm.ControlAvailable}}') &&
+            if [ \"\$swarm_state\" != 'active' ]; then
+              timeout 20 docker swarm init --advertise-addr 46.101.201.186
+            elif [ \"\$control_available\" != 'true' ]; then
+              timeout 20 docker swarm leave --force &&
+              timeout 20 docker swarm init --advertise-addr 46.101.201.186
+            fi
+          "
+
+      - name: Create Docker secrets on production server
+        run: |
+          timeout 45 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
+            if ! timeout 15 docker secret inspect itu_grafana_admin_user >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_USER }}' | timeout 15 docker secret create itu_grafana_admin_user -
+            fi
+            if ! timeout 15 docker secret inspect itu_grafana_admin_password >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' | timeout 15 docker secret create itu_grafana_admin_password -
+            fi
+          "
+
+      - name: Rolling deploy on production
+        run: |
+          timeout 900 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          diagnose_service() {
+            service="$1"
+            echo "::group::${service} tasks"
+            timeout 30 docker service ps --no-trunc "$service" || true
+            echo "::endgroup::"
+            echo "::group::${service} recent logs"
+            timeout 60 docker service logs --tail 80 "$service" || true
+            echo "::endgroup::"
+          }
+
+          wait_service() {
+            service="$1"
+            expected="$2"
+
+            for attempt in $(seq 1 60); do
+              replicas=$(timeout 20 docker service ls --filter "name=${service}" --format '{{.Replicas}}' | head -n 1 || echo "")
+              update_state=$(timeout 20 docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
+              echo "${service}: replicas=${replicas:-missing}, update=${update_state}, attempt=${attempt}/60"
+
+              if [ "$replicas" = "${expected}/${expected}" ] && [ "$update_state" = "completed" ]; then
+                return 0
+              fi
+
+              if [ "$update_state" = "paused" ] || [ "$update_state" = "rollback_paused" ]; then
+                diagnose_service "$service"
+                return 1
+              fi
+
+              sleep 10
+            done
+
+            diagnose_service "$service"
+            return 1
+          }
+
+          cd /itu-minitwit
+          echo "::group::pre-deploy host usage"
+          df -h /
+          timeout 20 docker system df || true
+          echo "::endgroup::"
+          echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
+          export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
+          export IMAGE_TAG='${{ env.IMAGE_TAG }}'
+          export DB_URL='${{ secrets.DB_URL }}'
+          docker compose down --remove-orphans || true
+          docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
+
+          wait_service itu-minitwit_itu-web-server 2
+          wait_service itu-minitwit_itu-api-server 2
+          REMOTE
 
       - name: Health check
         id: healthcheck
         run: |
           for i in {1..20}; do
-            curl --fail http://134.122.71.241:5001 && exit 0
+            curl --fail http://46.101.201.186:5001/health &&
+            curl --fail http://46.101.201.186:8080/health &&
+            exit 0
             sleep 2
           done
           echo "Health check failed."
           exit 1
 
+      - name: Cleanup unused Docker artifacts on production
+        if: success()
+        continue-on-error: true
+        run: |
+          timeout 180 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" 'bash -s' <<'REMOTE'
+          set -u
+          echo "::group::pre-cleanup docker usage"
+          df -h /
+          timeout 20 docker system df || true
+          echo "::endgroup::"
+
+          timeout 30 docker container prune -f || true
+          timeout 60 docker image prune -a -f || true
+          timeout 60 docker builder prune -a -f || true
+
+          echo "::group::post-cleanup docker usage"
+          df -h /
+          timeout 20 docker system df || true
+          echo "::endgroup::"
+          REMOTE
+
       - name: Rollback on health check failure
         if: failure() && steps.healthcheck.conclusion == 'failure'
         run: |
-          ssh -o StrictHostKeyChecking=no root@46.101.201.186 "
+          timeout 60 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
             cd /itu-minitwit &&
-            export IMAGE_TAG=${{ github.event.workflow_run.head_commit.id }} &&
-            docker compose up -d --pull always --remove-orphans --force-recreate
+            docker service rollback itu-minitwit_itu-web-server || true &&
+            docker service rollback itu-minitwit_itu-api-server || true
           "
 
       - name: Notify on failure

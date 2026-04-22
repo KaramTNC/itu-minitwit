@@ -3,29 +3,51 @@ logging {
   format = "logfmt"
 }
 
-discovery.docker "local_containers" {
-  host             = "unix:///var/run/docker.sock"
-  refresh_interval = "5s"
+local.file_match "docker_json_logs" {
+  path_targets = [{
+    __path__ = "/var/lib/docker/containers/*/*.log",
+    job      = "docker",
+  }]
+  sync_period = "5s"
 }
 
-discovery.relabel "docker_labels" {
-  targets = discovery.docker.local_containers.targets
-
-  rule {
-    source_labels = ["__meta_docker_container_name"]
-    regex         = "/(.*)"
-    target_label  = "container"
-  }
-
-  rule {
-    source_labels = ["__meta_docker_container_log_stream"]
-    target_label  = "stream"
-  }
+loki.source.file "docker_json_logs" {
+  targets    = local.file_match.docker_json_logs.targets
+  forward_to = [loki.process.docker_json_logs.receiver]
 }
 
-loki.source.docker "docker_logs" {
-  host       = "unix:///var/run/docker.sock"
-  targets    = discovery.relabel.docker_labels.output
+loki.process "docker_json_logs" {
+  stage.json {
+    expressions = {
+      log             = "log",
+      stream          = "stream",
+      timestamp       = "time",
+      service         = "attrs.\"com.docker.swarm.service.name\"",
+      stack           = "attrs.\"com.docker.stack.namespace\"",
+      task            = "attrs.\"com.docker.swarm.task.name\"",
+      compose_service = "attrs.\"com.docker.compose.service\"",
+    }
+  }
+
+  stage.labels {
+    values = {
+      stream          = "",
+      service         = "",
+      stack           = "",
+      task            = "",
+      compose_service = "",
+    }
+  }
+
+  stage.timestamp {
+    source = "timestamp"
+    format = "RFC3339Nano"
+  }
+
+  stage.output {
+    source = "log"
+  }
+
   forward_to = [loki.write.local_loki.receiver]
 }
 

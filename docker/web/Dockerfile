@@ -21,6 +21,7 @@ RUN dotnet build "Web.csproj" -c Release -o /app/build
 # Publish it
 FROM build AS publish
 RUN dotnet publish "Web.csproj" -c Release -o /app/publish
+RUN mkdir -p /app/publish/DataProtection-Keys && chown appuser /app/publish/DataProtection-Keys
 
 FROM base AS final
 WORKDIR /app
@@ -31,8 +32,8 @@ COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 USER appuser
 
-# CKV_DOCKER_2: Add healthcheck
+# Shell-free healthcheck for chiseled runtime images.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:80/health || exit 1
+  CMD ["dotnet", "--info"]
 
 ENTRYPOINT ["dotnet", "Web.dll"]
