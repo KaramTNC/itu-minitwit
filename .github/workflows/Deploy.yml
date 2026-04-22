@@ -163,12 +163,13 @@ jobs:
 
       - name: Cleanup unused Docker artifacts on production
         if: success()
+        continue-on-error: true
         run: |
           timeout 180 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" 'bash -s' <<'REMOTE'
-          set -euo pipefail
+          set -u
           echo "::group::pre-cleanup docker usage"
           df -h /
-          docker system df || true
+          timeout 20 docker system df || true
           echo "::endgroup::"
 
           timeout 30 docker container prune -f || true
@@ -177,7 +178,7 @@ jobs:
 
           echo "::group::post-cleanup docker usage"
           df -h /
-          docker system df || true
+          timeout 20 docker system df || true
           echo "::endgroup::"
           REMOTE
 
