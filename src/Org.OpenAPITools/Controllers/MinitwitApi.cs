@@ -78,8 +78,13 @@ namespace Org.OpenAPITools.Controllers
                 var example =
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
-                Console.WriteLine("error here: 1 , authentication error calling getFollow for user: " + username + " , status code: 403 , latest : " + single.latest);
-                
+                Console.WriteLine(
+                    "error here: 1 , authentication error calling getFollow for user: "
+                        + username
+                        + " , status code: 403 , latest : "
+                        + single.latest
+                );
+
                 single.IncrementGetFollowersCounter((int)example.Status);
                 return new ObjectResult(example);
             }
@@ -151,7 +156,9 @@ namespace Org.OpenAPITools.Controllers
                     : default;
             //TODO: Change the data returned
             ObjectResult result = new ObjectResult(example);
-            Console.WriteLine("GetLatestValue request successfull: statuscode: " + result.StatusCode);
+            Console.WriteLine(
+                "GetLatestValue request successfull: statuscode: " + result.StatusCode
+            );
             sw.Stop();
             single.IncrementLatestCounter(result.StatusCode ?? 200);
             single.GetLatestHistogram(sw);
@@ -190,7 +197,10 @@ namespace Org.OpenAPITools.Controllers
                 var nuhuh =
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
-                Console.WriteLine("error here: 2 , authentication error when getting messages, status code: 403 , latest : " + single.latest);
+                Console.WriteLine(
+                    "error here: 2 , authentication error when getting messages, status code: 403 , latest : "
+                        + single.latest
+                );
                 single.IncrementGetMessagesCounter((int)nuhuh.Status);
                 return new ObjectResult(nuhuh);
             }
@@ -262,7 +272,12 @@ namespace Org.OpenAPITools.Controllers
                 var nuhuh =
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
-                Console.WriteLine("error here: 3 , authentication error when getting messages from user: " + username + " , status code: 403 , latest : " + single.latest);
+                Console.WriteLine(
+                    "error here: 3 , authentication error when getting messages from user: "
+                        + username
+                        + " , status code: 403 , latest : "
+                        + single.latest
+                );
                 single.IncrementGetMessagesPerUserCounter((int)nuhuh.Status);
                 return new ObjectResult(nuhuh);
             }
@@ -293,7 +308,12 @@ namespace Org.OpenAPITools.Controllers
                     : default;
             single.latest = (int)latest;
             var result = new ObjectResult(example);
-            Console.WriteLine("GetMessagePerUser request successfull: username: " + username + " , statuscode: " + result.StatusCode);
+            Console.WriteLine(
+                "GetMessagePerUser request successfull: username: "
+                    + username
+                    + " , statuscode: "
+                    + result.StatusCode
+            );
             single.IncrementGetMessagesPerUserCounter(result.StatusCode ?? 200);
             return result;
         }
@@ -335,7 +355,14 @@ namespace Org.OpenAPITools.Controllers
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
                 var result = new ObjectResult(example);
-                Console.WriteLine("error here: 4 , authentication error when user: " + username + " tries to PostFollow , status code: " + result.StatusCode +" , latest : " + single.latest);
+                Console.WriteLine(
+                    "error here: 4 , authentication error when user: "
+                        + username
+                        + " tries to PostFollow , status code: "
+                        + result.StatusCode
+                        + " , latest : "
+                        + single.latest
+                );
                 sw.Stop();
                 single.IncrementPostFollowersCounter(result.StatusCode ?? 200);
                 single.PostFollowHistogram(sw);
@@ -344,7 +371,9 @@ namespace Org.OpenAPITools.Controllers
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
             if (follower == null)
             {
-                Console.WriteLine("PostFollow: could not find username: " + username +" , Statuscode: 404");
+                Console.WriteLine(
+                    "PostFollow: could not find username: " + username + " , Statuscode: 404"
+                );
                 return NotFound();
             }
 
@@ -353,7 +382,11 @@ namespace Org.OpenAPITools.Controllers
                 Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Follow);
                 if (famous == null)
                 {
-                    Console.WriteLine("PostFollow: could not find user to follow. invalid follow user: " + payload.Follow +" , Statuscode: 404");
+                    Console.WriteLine(
+                        "PostFollow: could not find user to follow. invalid follow user: "
+                            + payload.Follow
+                            + " , Statuscode: 404"
+                    );
                     return NotFound();
                 }
                 _authorRepository.AddFollowerId(follower, famous.AuthorId);
@@ -363,14 +396,20 @@ namespace Org.OpenAPITools.Controllers
                 Author famous = await _authorRepository.ReturnBasedOnNameAsync(payload.Unfollow);
                 if (famous == null)
                 {
-                    Console.WriteLine("PostFollow: could not find user to unfollow. invalid unfollow user: " + payload.Unfollow +" , Statuscode: 404");
+                    Console.WriteLine(
+                        "PostFollow: could not find user to unfollow. invalid unfollow user: "
+                            + payload.Unfollow
+                            + " , Statuscode: 404"
+                    );
                     return NotFound();
                 }
                 _authorRepository.RemoveFollowerId(follower, famous.AuthorId);
             }
             else
             {
-                Console.WriteLine("Bad PostFollow request. Request does not contain either 'follow' or 'unfollow'. statuscode: 400");
+                Console.WriteLine(
+                    "Bad PostFollow request. Request does not contain either 'follow' or 'unfollow'. statuscode: 400"
+                );
                 return BadRequest(
                     new
                     {
@@ -387,7 +426,9 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
 
             var statusCode = 204;
-            Console.WriteLine("PostFollow request successful by : " + username + " , statuscode: " + single.latest);
+            Console.WriteLine(
+                "PostFollow request successful by : " + username + " , statuscode: " + single.latest
+            );
             sw.Stop();
             single.IncrementPostFollowersCounter(statusCode);
             single.PostFollowHistogram(sw);
@@ -429,7 +470,12 @@ namespace Org.OpenAPITools.Controllers
                 var example =
                     error != null ? JsonConvert.DeserializeObject<ErrorResponse>(error) : default;
                 single.latest = (int)latest;
-                Console.WriteLine("error here: 5 , authentication error when posting message from user: " + username + " , latest : " + single.latest);
+                Console.WriteLine(
+                    "error here: 5 , authentication error when posting message from user: "
+                        + username
+                        + " , latest : "
+                        + single.latest
+                );
                 sw.Stop();
                 single.IncrementPostMessagesPerUserCounter((int)example.Status);
                 single.PostMsgsHistogram(sw);
@@ -445,7 +491,7 @@ namespace Org.OpenAPITools.Controllers
                 payload.Content
             );
             single.latest = (int)latest;
-            
+
             var statusCode = 204;
             Console.WriteLine(username + " posted a msg successfully. Status code: " + statusCode);
             sw.Stop();
@@ -488,7 +534,14 @@ namespace Org.OpenAPITools.Controllers
             single.latest = (int)latest;
 
             var statusCode = 204;
-            Console.WriteLine("New user registered, username:" + payload.Username + " , email: " + payload.Email + " , statuscode: " + statusCode);
+            Console.WriteLine(
+                "New user registered, username:"
+                    + payload.Username
+                    + " , email: "
+                    + payload.Email
+                    + " , statuscode: "
+                    + statusCode
+            );
             sw.Stop();
             single.IncrementPostRegisterCounter(statusCode);
             single.PostRegisterHistogram(sw);
