@@ -9,7 +9,7 @@ terraform {
 
 # All these variables must be set as TF_VAR_<variable_name> environment variables
 variable "do_token" {}
-variable "pvt_key" {}
+variable "private_key_path" {}
 variable "do_ssh_key_name" {}
 
 variable "keepalived_password" {

@@ -7,15 +7,6 @@
         delay: 1
         timeout: 300
 
-- name: Deploy web servers
-  hosts: prod, staging
-  become: true
-  roles:
-    - role: nginx
-      vars:
-        nginx_template_file: "templates/web.conf.j2"
-        nginx_site_name: "{{ domain_name }}.conf"
-      
 - name: Deploy load balancers
   hosts: loadbalancers
   become: true
@@ -103,6 +94,16 @@
         state: restarted
       when: not ssl_cert_check.stat.exists
 
+- name: Deploy web servers
+  hosts: prod, staging
+  become: true
+  roles:
+    - role: nginx
+      vars:
+        nginx_template_file: "templates/web.conf.j2"
+        nginx_site_name: "{{ domain_name }}.conf"
+    - role: docker
+  post_tasks:
     - name: Test secure connection to SSL domain
       uri:
         url: "https://{{ domain_name }}/" 
@@ -111,3 +112,4 @@
       retries: 5
       delay: 3
       become: false
+  

@@ -27,12 +27,13 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./files/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
     networks:
       - itu-minitwit-network
+    restart: unless-stopped
 
   grafana:
     <<: *default_logging
@@ -47,11 +48,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
-      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./files/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./files/grafana/dashboards:/etc/grafana/provisioning/dashboards
       - grafana-storage:/var/lib/grafana
     networks:
       - itu-minitwit-network
+    restart: unless-stopped
 
   grafana-alloy:
     <<: *default_logging
@@ -60,12 +62,13 @@ services:
     ports:
       - "12345:12345"
     volumes:
-      - ./grafana/config.alloy:/etc/alloy/config.alloy
+      - ./files/grafana/config.alloy:/etc/alloy/config.alloy
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
     networks:
       - itu-minitwit-network
     command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    restart: unless-stopped
 
   grafana-loki:
     <<: *default_logging
@@ -74,15 +77,16 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./grafana/loki-config.yml:/etc/loki/local-config.yaml
+      - ./files/grafana/loki-config.yml:/etc/loki/local-config.yaml
       - loki-data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - itu-minitwit-network
+    restart: unless-stopped
 
   itu-api-server:
     <<: *default_logging
-    image: ${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG:-latest}
+    image: {{ docker_username }}/itu-api-server:{{ IMAGE_TAG | default("latest") }}
     build:
       context: .
       dockerfile: docker/api/Dockerfile
@@ -97,10 +101,11 @@ services:
       - OTEL_PROMETHEUS_URI_PREFIX=http://*:9185/
     networks:
       - itu-minitwit-network
+    restart: unless-stopped
 
   itu-web-server:
     <<: *default_logging
-    image: ${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG:-latest}
+    image: {{ docker_username }}/itu-web-server:${IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: docker/web/Dockerfile
@@ -115,3 +120,4 @@ services:
       - OTEL_PROMETHEUS_URI_PREFIX=http://*:9184/
     networks:
       - itu-minitwit-network
+    restart: unless-stopped

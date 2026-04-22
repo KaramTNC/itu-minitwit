@@ -1,0 +1,159 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Ensure dependencies are installed
+  ansible.builtin.package:
+    name:
+      - bc
+      - curl
+      - expect
+      - git
+      - ca-certificates
+    state: present
+
+- name: Create Docker GPG key directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Download Docker's official GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+
+- name: Add Docker repository to Apt sources
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    filename: docker
+
+- name: Update apt cache after adding Docker repository
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install Docker and Docker Compose
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+
+- name: Ensure Docker service is enabled and started
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add root user to docker group
+  ansible.builtin.user:
+    name: root
+    groups: docker
+    append: yes
+
+- name: Get container info prior to pulling the latest image
+  community.docker.docker_container_info:
+    name: web
+  register: web_container_info
+
+- name: Save previous image tag
+  ansible.builtin.set_fact:
+    previous_image_tag: "{{ web_container_info.container.Config.Image.split(':')[1] }}"
+  when: web_container_info.exists and web_container_info.container.Config.Image is defined
+
+- name: Create application directory
+  ansible.builtin.file:
+    path: /opt/itu-minitwit
+    state: directory
+
+- name: Deploy docker-compose.yml from template
+  ansible.builtin.template:
+    src: "templates/docker-compose.yml.j2"
+    dest: "/opt/{{ app_name }}/docker-compose.yml"
+  vars:
+    IMAGE_TAG: "latest"
+
+- name: Create directory for configuration files
+  ansible.builtin.file:
+    path: "/opt/{{ app_name }}/files/"
+    state: directory
+    mode: "0755"
+
+- name: Create .env file for DB_URL
+  ansible.builtin.copy:
+    dest: /opt/{{ app_name }}/.env
+    content: |
+      DB_URL={{ lookup('env', 'DB_URL') }}
+
+- name: Copy configuration files
+  ansible.builtin.copy:
+    src: "files/"
+    dest: "/opt/{{ app_name }}/files/"
+    mode: "0644"
+    directory_mode: "0755"
+
+- name: Start all application services
+  community.docker.docker_compose_v2:
+    project_src: "/opt/{{ app_name }}"
+    state: present
+    pull: always
+    recreate: always
+    remove_orphans: true
+  environment:
+    IMAGE_TAG: "latest"
+    GF_SECURITY_ADMIN_USER: "{{ lookup('env', 'GF_SECURITY_ADMIN_USER') }}"
+    GF_SECURITY_ADMIN_PASSWORD: "{{ lookup('env', 'GF_SECURITY_ADMIN_PASSWORD') }}"
+  register: result
+
+- name: Show result
+  ansible.builtin.debug:
+    var: result
+
+- name: Check application health
+  ansible.builtin.uri:
+    url: "http://localhost:{{ subdomains[0].port }}"
+    status_code: 200
+  register: health_check
+  until: health_check.status == 200
+  retries: 50
+  delay: 5
+  ignore_errors: true
+
+- name: Rollback if health check failed
+  when: health_check is failed
+  block:
+    - name: Ensure previous image tag is known
+      ansible.builtin.fail:
+        msg: "Health check failed, but no previous image tag was found to roll back to"
+      when: previous_image_tag is not defined
+
+    - name: Report rollback initialization
+      ansible.builtin.debug:
+        msg: "Health check failed. Rolling back to previous image tag: {{ previous_image_tag }}"
+
+    - name: Re-template docker-compose.yml with previous image tag
+      ansible.builtin.template:
+        src: "templates/docker-compose.yml.j2"
+        dest: "/opt/{{ app_name }}/docker-compose.yml"
+      vars:
+        IMAGE_TAG: "{{ previous_image_tag }}"
+
+    - name: Apply rollback via Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: "/opt/{{ app_name }}"
+        state: present
+        pull: always
+        recreate: always
+        remove_orphans: true
+      environment:
+        IMAGE_TAG: "{{ previous_image_tag }}"
+
+    - name: Fail the playbook
+      ansible.builtin.fail:
+        msg: "Deployment failed the health check. Rollback to previous image tag '{{ previous_image_tag }}' completed successfully."

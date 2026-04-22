@@ -9,3 +9,6 @@ subdomains:
     port: 8080
   - prefix: "grafana"
     port: 3000
+
+docker_username: 98w43rh48h8h
+app_name: itu-minitwit

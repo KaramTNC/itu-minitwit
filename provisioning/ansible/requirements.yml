@@ -1,1 +1,5 @@
-- name: geerlingguy.certbot
+roles:
+  - name: geerlingguy.certbot
+
+collections:
+  - name: community.docker

@@ -15,7 +15,7 @@ variable "num_instances" {
 
 variable "instance_prefix" {
   description = "Prefix for Droplet names"
-  default = "itu-minitwit"
+  default = "itu-minitwit-DEPLOY-TEST"
 }
 
 resource "digitalocean_droplet" "itu-minitwit" {
@@ -25,12 +25,13 @@ resource "digitalocean_droplet" "itu-minitwit" {
   image = "ubuntu-22-04-x64"
   size = "s-1vcpu-1gb"
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
+  tags = ["itu-minitwit"]
 
   connection {
     host = self.ipv4_address
     user = "root"
     type = "ssh"
-    private_key = file(var.pvt_key)
+    private_key = file(var.private_key_path)
     timeout = "2m"
   }
 }
@@ -47,7 +48,7 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
     host = self.ipv4_address
     user = "root"
     type = "ssh"
-    private_key = file(var.pvt_key)
+    private_key = file(var.private_key_path)
     timeout = "2m"
   }
 }
@@ -81,7 +82,7 @@ resource "local_file" "ansible_inventory" {
 
     reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
     
-    pvt_key = var.pvt_key
+    private_key_path = var.private_key_path
     reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
     keepalived_password = var.keepalived_password
     do_token = var.do_token

@@ -9,20 +9,28 @@
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
+  notify: Reload Nginx
 
 - name: Add custom Nginx site
   ansible.builtin.template:
     src: "{{ nginx_template_file }}"
     dest: "/etc/nginx/sites-available/{{ nginx_site_name }}"
+  notify: Reload Nginx
 
 - name: Enable custom Nginx site
   ansible.builtin.file:
     src: "/etc/nginx/sites-available/{{ nginx_site_name }}"
     dest: "/etc/nginx/sites-enabled/{{ nginx_site_name }}"
     state: link
+  notify: Reload Nginx
 
 - name: Start and enable Nginx service
   ansible.builtin.service:
     name: nginx
     state: started
     enabled: yes
+
+- name: Ensure Nginx is running with the latest changes
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
