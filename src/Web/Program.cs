@@ -1,9 +1,9 @@
 using Core.Interfaces;
 using DotNetEnv;
 using Infrastructure;
-using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -34,26 +34,6 @@ public class Program
                 options.UriPrefixes = new string[] { metricsUriPrefix }
             ) // endpoint is http://<host>:9184/metrics
             .Build();
-
-        //Initialise Database
-        if (!app.Environment.IsEnvironment("Testing"))
-        {
-            using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
-
-            try
-            {
-                if (context.Database.IsNpgsql())
-                {
-                    context.Database.OpenConnection();
-                }
-            }
-            catch (InvalidOperationException) { }
-
-            context.Database.EnsureCreated();
-            //has to say commented out for working with the devops
-            //DbInitializer.SeedDatabase(context);
-        }
 
         app.Run();
     }
@@ -162,6 +142,17 @@ public class Program
 
         builder.Services.AddSession();
         builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
+
+        var dataProtectionKeysPath = Environment.GetEnvironmentVariable(
+            "ASPNETCORE_DATA_PROTECTION_KEYS"
+        );
+        if (!string.IsNullOrWhiteSpace(dataProtectionKeysPath))
+        {
+            builder
+                .Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
+        }
 
         // Configure database based on environment
         if (builder.Environment.IsEnvironment("Testing"))
@@ -176,19 +167,14 @@ public class Program
             if (envVarName == null)
                 throw new Exception("DefaultConnection key not found in appsettings");
 
-            var rawUri =
+            var rawConnectionString =
                 Environment.GetEnvironmentVariable(envVarName)
                 ?? builder.Configuration.GetConnectionString("DefaultConnection"); // fallback
 
-            if (rawUri == null)
+            if (rawConnectionString == null)
                 throw new Exception($"Environment variable '{envVarName}' is not set");
 
-            var connectionString =
-                Environment.GetEnvironmentVariable(envVarName)
-                ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
-            if (connectionString == null)
-                throw new Exception($"Environment variable '{envVarName}' is not set");
+            var connectionString = NormalizeNpgsqlConnectionString(rawConnectionString);
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
                 options.UseNpgsql(connectionString)
@@ -283,19 +269,36 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
+        app.MapHealthChecks("/health");
+        app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+        {
+            Predicate = _ => false
+        });
         app.MapRazorPages();
 
         return app;
     }
 
-    static string ToNpgsqlConnectionString(string uri)
+    public static string NormalizeNpgsqlConnectionString(string connectionString)
     {
-        var u = new Uri(uri);
-        var userInfo = u.UserInfo.Split(':');
-        var db = u.AbsolutePath.TrimStart('/');
-        var query = System.Web.HttpUtility.ParseQueryString(u.Query);
+        if (
+            Uri.TryCreate(connectionString, UriKind.Absolute, out var uri)
+            && (uri.Scheme == "postgres" || uri.Scheme == "postgresql")
+        )
+        {
+            return ToNpgsqlConnectionString(uri);
+        }
+
+        return connectionString;
+    }
+
+    static string ToNpgsqlConnectionString(Uri uri)
+    {
+        var userInfo = uri.UserInfo.Split(':', 2);
+        var db = uri.AbsolutePath.TrimStart('/');
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
         var sslMode = query["sslmode"] ?? "Require";
 
-        return $"Host={u.Host};Port={u.Port};Database={db};Username={userInfo[0]};Password={userInfo[1]};SSL Mode={sslMode};Trust Server Certificate=true;";
+        return $"Host={uri.Host};Port={uri.Port};Database={db};Username={Uri.UnescapeDataString(userInfo[0])};Password={Uri.UnescapeDataString(userInfo[1])};SSL Mode={sslMode};Trust Server Certificate=true;";
     }
 }
