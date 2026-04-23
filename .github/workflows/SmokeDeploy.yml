@@ -116,7 +116,7 @@ jobs:
       - name: Copy migration bundle to staging server
         #if: steps.cache-efbundle.outputs.cache-hit != 'true'
         #run: |
-         # rsync -az -e "ssh -o StrictHostKeyChecking=no" efbundle root@134.122.71.241:/itu-minitwit/
+        # rsync -az -e "ssh -o StrictHostKeyChecking=no" efbundle root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
