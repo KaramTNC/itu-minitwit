@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Publish PDF
     permissions:
-      contents: write 
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,10 +18,13 @@ jobs:
         with:
           sources: 'report/report.md'
 
+      - name: Debug - find PDF
+        run: find . -name "*.pdf" 2>/dev/null
+
       - name: Commit and Push PDF
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add report/*.pdf
+          git add "${{ steps.publish-document.outputs.path }}"
           git diff --cached --quiet || git commit -m "chore: update generated PDF"
           git push
