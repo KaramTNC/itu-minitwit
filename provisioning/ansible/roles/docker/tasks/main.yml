@@ -69,7 +69,7 @@
 
 - name: Create application directory
   ansible.builtin.file:
-    path: /opt/itu-minitwit
+    path: /opt/{{ app_name }}
     state: directory
 
 - name: Deploy docker-compose.yml from template
@@ -151,8 +151,6 @@
         pull: always
         recreate: always
         remove_orphans: true
-      environment:
-        IMAGE_TAG: "{{ previous_image_tag }}"
 
     - name: Fail the playbook
       ansible.builtin.fail:
