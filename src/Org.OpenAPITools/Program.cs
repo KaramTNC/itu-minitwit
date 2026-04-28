@@ -33,9 +33,22 @@ namespace Org.OpenAPITools
                     {
                         Boundaries = new double[]
                         {
-                            0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 20
-                        }
-                })
+                            0.005,
+                            0.01,
+                            0.025,
+                            0.05,
+                            0.1,
+                            0.25,
+                            0.5,
+                            1,
+                            2,
+                            5,
+                            10,
+                            15,
+                            20,
+                        },
+                    }
+                )
                 .AddPrometheusHttpListener(options =>
                     options.UriPrefixes = new string[] { metricsUriPrefix }
                 ) // endpoint is http://<host>:9185/metrics
