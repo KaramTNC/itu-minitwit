@@ -9,14 +9,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Publish PDF Document
         uses: shrink/actions-document-publish@v1
         id: publish-document
         with:
           sources: 'report/report.md'
-      - name: Upload Document
-        uses: actions/upload-artifact@v4
-        id: upload-document
-        with:
-          name: 'BSc_group_d.pdf'
-          path: report/
+
+      - name: Commit and Push PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add report/*.pdf
+          git diff --cached --quiet || git commit -m "chore: update generated PDF"
+          git push
