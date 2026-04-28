@@ -33,7 +33,7 @@ namespace Org.OpenAPITools
                     {
                         Boundaries = new double[]
                         {
-                            5, 10, 25, 50, 100, 250, 500, 1000, 2000
+                            0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 20
                         }
                 })
                 .AddPrometheusHttpListener(options =>
