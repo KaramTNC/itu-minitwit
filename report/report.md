@@ -11,3 +11,6 @@
 </div> Section Tim, 
 
 [END frontpage layout]: #
+
+
+**Hello there Gamers!**
