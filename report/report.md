@@ -13,4 +13,4 @@
 [END frontpage layout]: #
 
 
-**Hello there Gamers!**
+**Hello there Gamers! we are trying again**
