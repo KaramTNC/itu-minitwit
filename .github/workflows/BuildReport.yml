@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          cp .publish-docs/document.pdf report/BSc_group_d.pdf
-          git add -f report/BSc_group_d.pdf
+          cp .publish-docs/document.pdf report/build/BSc_group_d.pdf
+          git add -f report/build/BSc_group_d.pdf
           git diff --cached --quiet || git commit -m "chore: update generated PDF"
           git push
