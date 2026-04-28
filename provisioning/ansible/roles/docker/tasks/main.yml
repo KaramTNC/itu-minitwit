@@ -98,6 +98,12 @@
     mode: "0644"
     directory_mode: "0755"
 
+- name: Deploy config.alloy from template
+  ansible.builtin.template:
+    src: "templates/grafana/config.alloy.j2"
+    dest: "/opt/{{ app_name }}/files/grafana/config.alloy"
+    mode: "0644"
+
 - name: Start all application services
   community.docker.docker_compose_v2:
     project_src: "/opt/{{ app_name }}"

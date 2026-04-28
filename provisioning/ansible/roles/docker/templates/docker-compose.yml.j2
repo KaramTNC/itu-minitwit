@@ -27,10 +27,12 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./files/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./files/prometheus.yml:/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
+    command:
+      - --web.enable-remote-write-receiver
     networks:
       - {{ app_name }}-network
     restart: unless-stopped

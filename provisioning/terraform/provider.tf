@@ -8,7 +8,9 @@ terraform {
 }
 
 # All these variables must be set as TF_VAR_<variable_name> environment variables
-variable "do_token" {}
+variable "do_token" {
+  sensitive = true
+}
 variable "private_key_path" {}
 variable "do_ssh_key_name" {}
 
@@ -20,6 +22,16 @@ variable "keepalived_password" {
 variable "region" {
   description = "DigitalOcean server region"
   default = "fra1"
+}
+
+variable "image" {
+  description = "OS image to use for the Droplets"
+  default = "ubuntu-22-04-x64"
+}
+
+variable "size" {
+  description = "Size to use for the Droplets"
+  default = "s-1vcpu-1gb"
 }
 
 provider "digitalocean" {

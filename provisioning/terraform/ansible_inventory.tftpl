@@ -13,6 +13,9 @@ ${staging_names[index]} ansible_host=${ip}
 ${lb_name[index]} ansible_host=${ip} private_ip=${lb_private_ip[index]} keepalived_state=${index == 0 ? "MASTER" : "BACKUP"} keepalived_priority=${250 - (index * 10)}
 %{ endfor ~}
 
+[monitoring]
+${monitoring_name} ansible_host=${monitoring_ip} private_ip=${monitoring_private_ip}
+
 [reserved_ip]
 ${reserved_ip}
 

@@ -22,8 +22,25 @@ resource "digitalocean_droplet" "itu-minitwit" {
   count = var.num_instances["prod"] + var.num_instances["staging"]
   name = (count.index < var.num_instances["prod"]) ? "${var.instance_prefix}-${count.index + 1}" : "${var.instance_prefix}-staging-${count.index - var.num_instances["prod"] + 1}"
   region = var.region
-  image = "ubuntu-22-04-x64"
-  size = "s-1vcpu-1gb"
+  image = var.image
+  size = var.size
+  ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
+  tags = ["itu-minitwit"]
+
+  connection {
+    host = self.ipv4_address
+    user = "root"
+    type = "ssh"
+    private_key = file(var.private_key_path)
+    timeout = "2m"
+  }
+}
+
+resource "digitalocean_droplet" "itu-minitwit-monitoring" {
+  name = "${var.instance_prefix}-monitoring"
+  region = var.region
+  image = var.image
+  size = var.size
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
   tags = ["itu-minitwit"]
 
@@ -40,9 +57,10 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
   count = var.num_instances["lb"]
   name = "${var.instance_prefix}-load-balancer-${count.index + 1}"
   region = var.region
-  image = "ubuntu-22-04-x64"
-  size = "s-1vcpu-1gb"
+  image = var.image
+  size = var.size
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
+  tags = ["itu-minitwit"]
 
   connection {
     host = self.ipv4_address
@@ -79,6 +97,10 @@ resource "local_file" "ansible_inventory" {
     lb_ip   = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address
     lb_name = digitalocean_droplet.itu-minitwit-load-balancer[*].name
     lb_private_ip = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address_private
+
+    monitoring_ip   = digitalocean_droplet.itu-minitwit-monitoring.ipv4_address
+    monitoring_name = digitalocean_droplet.itu-minitwit-monitoring.name
+    monitoring_private_ip = digitalocean_droplet.itu-minitwit-monitoring.ipv4_address_private
 
     reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
     

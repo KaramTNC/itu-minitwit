@@ -1,0 +1,55 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+discovery.docker "local_containers" {
+  host             = "unix:///var/run/docker.sock"
+  refresh_interval = "5s"
+}
+
+discovery.relabel "docker_labels" {
+  targets = discovery.docker.local_containers.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_log_stream"]
+    target_label  = "stream"
+  }
+}
+
+loki.source.docker "docker_logs" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.docker_labels.output
+  labels     = {"hostname" = "{{ inventory_hostname }}"}
+  forward_to = [loki.write.remote_loki.receiver]
+}
+
+loki.write "remote_loki" {
+  endpoint {
+    url = "http://{{ hostvars[groups['monitoring'][0]]['private_ip'] }}:3100/loki/api/v1/push"
+  }
+}
+
+prometheus.exporter.unix "local_system" { }
+
+prometheus.scrape "scrape_metrics" {
+  targets = [
+    {"__address__" = "itu-web-server:9184", "instance" = "{{ inventory_hostname }}-web"},
+    {"__address__" = "itu-api-server:9185", "instance" = "{{ inventory_hostname }}-api"},
+  ]
+  forward_to      = [prometheus.remote_write.metrics_service.receiver]
+  scrape_interval = "5s"
+  scrape_timeout  = "5s"
+}
+
+prometheus.remote_write "metrics_service" {
+  endpoint {
+      url = "http://{{ hostvars[groups['monitoring'][0]]['private_ip'] }}:9090/api/v1/write"
+  }
+}
