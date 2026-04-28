@@ -14,11 +14,6 @@ A DevOps project made by Group D, composed of:
   - The key must be created using RSA and named `id_rsa`, as the script will read the private key's contents from `~/.ssh/id_rsa`
 - You must either create or have access to an existing personal access **token** to control your DigitalOcean resources ([official documentation page](https://docs.digitalocean.com/reference/api/create-personal-access-token/)).
 
-
-With that done, set the following two environment variables:
-- `SSH_KEY_NAME` with the name of the **SSH key** previously added to your DigitalOcean Team.
-- `DIGITAL_OCEAN_TOKEN` with the **token** previously created.
-
 ### Deploying the infrastructure
 Before deploying, review the following files to adjust the configuration to your needs:
 - [**`resources.tf`**](provisioning/terraform/resources.tf): adjust the number of instances to be created for each component and their naming pattern.
