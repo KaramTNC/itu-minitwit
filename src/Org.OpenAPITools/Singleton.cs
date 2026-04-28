@@ -14,22 +14,22 @@ public sealed class Singleton
     //Histogram for request times
     static Histogram<double> PostFollowhistogram = s_meter.CreateHistogram<double>(
         name: "PostFollow_request_time",
-        unit: "ms",
+        unit: "s",
         description: "The time taken to handle an http request for PostFollow"
     );
     static Histogram<double> LatestHistogram = s_meter.CreateHistogram<double>(
         name: "GetLatest_request_time",
-        unit: "ms",
+        unit: "s",
         description: "The time taken to handle an http request for GetLatest"
     );
     static Histogram<double> MsgsHistogram = s_meter.CreateHistogram<double>(
         name: "PostMsgs_request_time",
-        unit: "ms",
+        unit: "s",
         description: "The time taken to handle an http request for PostMsgs"
     );
     static Histogram<double> RegisterHistogram = s_meter.CreateHistogram<double>(
         name: "PostRegister_request_time",
-        unit: "ms",
+        unit: "s",
         description: "The time taken to handle an http request for PostRegister"
     );
 
@@ -147,21 +147,21 @@ public sealed class Singleton
     //Functions to call to add to request histograms
     public void PostFollowHistogram(Stopwatch sw)
     {
-        PostFollowhistogram.Record(sw.Elapsed.TotalMilliseconds);
+        PostFollowhistogram.Record(sw.Elapsed.TotalSeconds);
     }
 
     public void GetLatestHistogram(Stopwatch sw)
     {
-        LatestHistogram.Record(sw.Elapsed.TotalMilliseconds);
+        LatestHistogram.Record(sw.Elapsed.TotalSeconds);
     }
 
     public void PostMsgsHistogram(Stopwatch sw)
     {
-        MsgsHistogram.Record(sw.Elapsed.TotalMilliseconds);
+        MsgsHistogram.Record(sw.Elapsed.TotalSeconds);
     }
 
     public void PostRegisterHistogram(Stopwatch sw)
     {
-        RegisterHistogram.Record(sw.Elapsed.TotalMilliseconds);
+        RegisterHistogram.Record(sw.Elapsed.TotalSeconds);
     }
 }
