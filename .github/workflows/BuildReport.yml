@@ -25,6 +25,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          mv .publish-docs/document.pdf report/report.pdf
           git add "${{ steps.publish-document.outputs.path }}"
           git diff --cached --quiet || git commit -m "chore: update generated PDF"
           git push
