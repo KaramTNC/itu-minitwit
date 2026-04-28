@@ -160,10 +160,13 @@ namespace Org.OpenAPITools
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
-                endpoints.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
-                {
-                    Predicate = _ => false
-                });
+                endpoints.MapHealthChecks(
+                    "/health/live",
+                    new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+                    {
+                        Predicate = _ => false,
+                    }
+                );
                 endpoints.MapControllers();
             });
         }

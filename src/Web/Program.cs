@@ -270,10 +270,13 @@ public class Program
         app.UseAuthorization();
         app.UseSession();
         app.MapHealthChecks("/health");
-        app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
-        {
-            Predicate = _ => false
-        });
+        app.MapHealthChecks(
+            "/health/live",
+            new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                Predicate = _ => false,
+            }
+        );
         app.MapRazorPages();
 
         return app;
