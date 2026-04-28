@@ -1,0 +1,22 @@
+name: Upload Document as PDF
+
+on: [push]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish PDF
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Publish PDF Document
+        uses: shrink/actions-document-publish@v1
+        id: publish-document
+        with:
+          sources: 'report/report.md'
+      - name: Upload Document
+        uses: actions/upload-artifact@v2
+        id: upload-document
+        with:
+          name: 'BSc_group_d.pdf'
+          path: report/
