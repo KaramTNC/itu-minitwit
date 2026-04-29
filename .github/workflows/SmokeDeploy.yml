@@ -12,6 +12,10 @@ on:
       - "prometheus.yml"
       - "grafana/**"
 
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: true
+
 jobs:
   build-web:
     runs-on: ubuntu-latest

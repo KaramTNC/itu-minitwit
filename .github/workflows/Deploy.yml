@@ -8,6 +8,10 @@ on:
         type: string
   workflow_dispatch:
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
