@@ -23,7 +23,7 @@ resource "digitalocean_droplet" "itu-minitwit" {
   name = (count.index < var.num_instances["prod"]) ? "${var.instance_prefix}-${count.index + 1}" : "${var.instance_prefix}-staging-${count.index - var.num_instances["prod"] + 1}"
   region = var.region
   image = var.image
-  size = var.size
+  size = "s-2vcpu-2gb"
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
   tags = ["itu-minitwit"]
 
@@ -40,7 +40,7 @@ resource "digitalocean_droplet" "itu-minitwit-monitoring" {
   name = "${var.instance_prefix}-monitoring"
   region = var.region
   image = var.image
-  size = var.size
+  size = "s-1vcpu-1gb"
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
   tags = ["itu-minitwit"]
 
@@ -58,7 +58,7 @@ resource "digitalocean_droplet" "itu-minitwit-load-balancer" {
   name = "${var.instance_prefix}-load-balancer-${count.index + 1}"
   region = var.region
   image = var.image
-  size = var.size
+  size = "s-1vcpu-1gb"
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
   tags = ["itu-minitwit"]
 

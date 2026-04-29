@@ -29,11 +29,6 @@ variable "image" {
   default = "ubuntu-22-04-x64"
 }
 
-variable "size" {
-  description = "Size to use for the Droplets"
-  default = "s-1vcpu-1gb"
-}
-
 provider "digitalocean" {
   token = var.do_token
 }
