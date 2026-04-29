@@ -30,7 +30,7 @@ x-rolling-update: &rolling_update
   replicas: 2
   update_config:
     parallelism: 1
-    delay: 10s
+    delay: 30s
     order: start-first
     failure_action: rollback
     monitor: 60s
@@ -47,6 +47,15 @@ x-rolling-update: &rolling_update
     delay: 5s
     max_attempts: 3
     window: 120s
+
+x-app-resources: &app_resources
+  resources:
+    reservations:
+      cpus: "0.10"
+      memory: 96M
+    limits:
+      cpus: "0.60"
+      memory: 192M
 
 services:
   prometheus:
@@ -128,7 +137,8 @@ services:
       retries: 3
     networks:
       - itu-minitwit-network
-    deploy: *rolling_update
+    deploy:
+      <<: [*rolling_update, *app_resources]
 
   itu-web-server:
     <<: *default_logging
@@ -151,4 +161,5 @@ services:
       - web-data-protection:/app/DataProtection-Keys
     networks:
       - itu-minitwit-network
-    deploy: *rolling_update
+    deploy:
+      <<: [*rolling_update, *app_resources]

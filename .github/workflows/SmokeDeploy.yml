@@ -209,7 +209,6 @@ jobs:
           docker pull "${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG}" || true
           docker pull "${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG}" || true
 
-          docker compose down --remove-orphans || true
           docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
 
           wait_service itu-minitwit_itu-web-server 2
