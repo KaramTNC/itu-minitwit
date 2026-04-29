@@ -1,7 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=99dfd5cc_002D9582_002D48e4_002D87d1_002D2ed460f72367/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DoesItCreateAuthor" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::79EE8ACE-620E-4612-B7EF-315E7926354F::net8.0::UnitTest.CheepRepositoryTests.DoesItCreateAuthor&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::0B09F94F-9EC4-4897-ADC2-C23579D82990::net8.0::test.IntegrationTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=99dfd5cc_002D9582_002D48e4_002D87d1_002D2ed460f72367/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DoesItCreateAuthor" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::79EE8ACE-620E-4612-B7EF-315E7926354F::net8.0::UnitTest.CheepRepositoryTests.DoesItCreateAuthor&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::0B09F94F-9EC4-4897-ADC2-C23579D82990::net8.0::test.IntegrationTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
