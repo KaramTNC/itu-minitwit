@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-# All these variables must be set as TF_VAR_<variable_name> environment variables
+# All these variables must be set as TF_VAR_<variable_name> environment variables (which deploy.sh handles automatically)
 variable "do_token" {
   sensitive = true
 }

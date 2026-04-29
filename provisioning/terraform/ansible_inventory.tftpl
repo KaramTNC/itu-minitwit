@@ -1,11 +1,6 @@
-[prod]
-%{ for index, ip in prod_ips ~}
-${prod_names[index]} ansible_host=${ip} private_ip=${prod_private_ips[index]}
-%{ endfor ~}
-
-[staging]
-%{ for index, ip in staging_ips ~}
-${staging_names[index]} ansible_host=${ip}
+[web]
+%{ for index, ip in web_ips ~}
+${web_names[index]} ansible_host=${ip} private_ip=${web_private_ips[index]}
 %{ endfor ~}
 
 [loadbalancers]

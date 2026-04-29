@@ -95,7 +95,7 @@
       when: not ssl_cert_check.stat.exists
 
 - name: Deploy web servers
-  hosts: prod, staging
+  hosts: web
   become: true
   roles:
     - role: nginx

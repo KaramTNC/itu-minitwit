@@ -19,8 +19,7 @@ Before deploying, review the following files to adjust the configuration to your
 - [**`resources.tf`**](provisioning/terraform/resources.tf): adjust the number of instances to be created for each component and their naming pattern.
   ```
   default = {
-    "prod" = 2,
-    "staging" = 0,
+    "web" = 2,
     "lb" = 2
   }
   ```

@@ -1,15 +1,14 @@
 variable "num_instances" {
   description = "Number of Droplets to create for each environment + total load balancers"
   default = {
-    "prod" = 2,
-    "staging" = 0,
+    "web" = 2,
     "lb" = 2
   }
   type = map(number)
 
   validation {
-    condition = contains(keys(var.num_instances), "prod") && contains(keys(var.num_instances), "staging") && contains(keys(var.num_instances), "lb")
-    error_message = "Number of instances must be specified for \"prod\" and \"staging\", as well as the load balancers with \"lb\"."
+    condition = contains(keys(var.num_instances), "web") && contains(keys(var.num_instances), "lb")
+    error_message = "Number of instances must be specified for \"web\", as well as the load balancers with \"lb\"."
   }
 }
 
@@ -19,8 +18,8 @@ variable "instance_prefix" {
 }
 
 resource "digitalocean_droplet" "itu-minitwit" {
-  count = var.num_instances["prod"] + var.num_instances["staging"]
-  name = (count.index < var.num_instances["prod"]) ? "${var.instance_prefix}-${count.index + 1}" : "${var.instance_prefix}-staging-${count.index - var.num_instances["prod"] + 1}"
+  count = var.num_instances["web"]
+  name = "${var.instance_prefix}-${count.index + 1}"
   region = var.region
   image = var.image
   size = "s-2vcpu-2gb"
@@ -86,13 +85,10 @@ resource "local_file" "ansible_inventory" {
   
   # First argument is the template file; second argument is a map with the values of the variables in that template
   content = templatefile("${path.module}/ansible_inventory.tftpl", {
-    # Select only the prod Droplets by slicing the list from index 0 until N, where N = num_instances["prod"] 
-    prod_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, 0, var.num_instances["prod"])
-    prod_names = slice(digitalocean_droplet.itu-minitwit[*].name, 0, var.num_instances["prod"])
-    prod_private_ips = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address_private, 0, var.num_instances["prod"])
-    
-    staging_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
-    staging_names = slice(digitalocean_droplet.itu-minitwit[*].name, var.num_instances["prod"], length(digitalocean_droplet.itu-minitwit))
+    # Select only the web Droplets by slicing the list from index 0 until N, where N = num_instances["web"] 
+    web_ips   = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address, 0, var.num_instances["web"])
+    web_names = slice(digitalocean_droplet.itu-minitwit[*].name, 0, var.num_instances["web"])
+    web_private_ips = slice(digitalocean_droplet.itu-minitwit[*].ipv4_address_private, 0, var.num_instances["web"])
     
     lb_ip   = digitalocean_droplet.itu-minitwit-load-balancer[*].ipv4_address
     lb_name = digitalocean_droplet.itu-minitwit-load-balancer[*].name
