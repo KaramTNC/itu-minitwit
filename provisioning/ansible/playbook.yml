@@ -60,6 +60,14 @@
       ansible.builtin.command: tar -czf /tmp/letsencrypt.tar.gz -C /etc letsencrypt
       when: inventory_hostname == groups['loadbalancers'][0]
 
+    - name: Ensure temporary local copy of Let's Encrypt archive does not yet exist
+      ansible.builtin.file:
+        path: /tmp/letsencrypt.tar.gz
+        state: absent
+      delegate_to: localhost
+      become: false
+      when: inventory_hostname == groups['loadbalancers'][0]
+
     - name: Fetch Let's Encrypt archive to local runner
       ansible.builtin.fetch:
         src: /tmp/letsencrypt.tar.gz
@@ -113,23 +121,12 @@
       delay: 3
       become: false
 
-# TODO: deploy only monitoring services
 - name: Deploy monitoring server
   hosts: monitoring
   become: true
   roles:
     - role: nginx
       vars:
-        nginx_template_file: "templates/web.conf.j2"
+        nginx_template_file: "templates/monitoring.conf.j2"
         nginx_site_name: "{{ domain_name }}.conf"
     - role: docker
-  post_tasks:
-    - name: Test secure connection to SSL domain
-      uri:
-        url: "https://{{ domain_name }}/" 
-        status_code: 200
-      delegate_to: localhost
-      retries: 20
-      delay: 3
-      become: false
-  

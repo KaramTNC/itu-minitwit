@@ -1,61 +1,6 @@
 ---
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: yes
-
-- name: Ensure dependencies are installed
-  ansible.builtin.package:
-    name:
-      - bc
-      - curl
-      - expect
-      - git
-      - ca-certificates
-    state: present
-
-- name: Create Docker GPG key directory
-  ansible.builtin.file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: "0755"
-
-- name: Download Docker's official GPG key
-  ansible.builtin.get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /etc/apt/keyrings/docker.asc
-    mode: "0644"
-
-- name: Add Docker repository to Apt sources
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    state: present
-    filename: docker
-
-- name: Update apt cache after adding Docker repository
-  ansible.builtin.apt:
-    update_cache: yes
-
 - name: Install Docker and Docker Compose
-  ansible.builtin.package:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
-    state: present
-
-- name: Ensure Docker service is enabled and started
-  ansible.builtin.service:
-    name: docker
-    state: started
-    enabled: yes
-
-- name: Add root user to docker group
-  ansible.builtin.user:
-    name: root
-    groups: docker
-    append: yes
+  include_tasks: install.yml
 
 - name: Get container info prior to pulling the latest image
   community.docker.docker_container_info:
@@ -67,44 +12,15 @@
     previous_image_tag: "{{ web_container_info.container.Config.Image.split(':')[1] }}"
   when: web_container_info.exists and web_container_info.container.Config.Image is defined
 
-- name: Create application directory
-  ansible.builtin.file:
-    path: /opt/{{ app_name }}
-    state: directory
-
-- name: Deploy docker-compose.yml from template
-  ansible.builtin.template:
-    src: "templates/docker-compose.yml.j2"
-    dest: "/opt/{{ app_name }}/docker-compose.yml"
-  vars:
-    IMAGE_TAG: "latest"
-
-- name: Create directory for configuration files
-  ansible.builtin.file:
-    path: "/opt/{{ app_name }}/files/"
-    state: directory
-    mode: "0755"
+- name: Copy configuration files and deploy templates
+  include_tasks: copy.yml
 
 - name: Create .env file for DB_URL
   ansible.builtin.copy:
     dest: /opt/{{ app_name }}/.env
     content: |
       DB_URL={{ lookup('env', 'DB_URL') }}
-
-
-
-- name: Copy configuration files
-  ansible.builtin.copy:
-    src: "files/"
-    dest: "/opt/{{ app_name }}/files/"
-    mode: "0644"
-    directory_mode: "0755"
-
-- name: Deploy config.alloy from template
-  ansible.builtin.template:
-    src: "templates/monitoring/grafana/config.alloy.j2"
-    dest: "/opt/{{ app_name }}/files/monitoring/grafana/config.alloy"
-    mode: "0644"
+  when: group_names[0] == "web"
 
 - name: Start all application services
   community.docker.docker_compose_v2:
@@ -115,6 +31,7 @@
     remove_orphans: true
   environment:
     IMAGE_TAG: "latest"
+    # Only needed for Grafana on the monitoring server
     GF_SECURITY_ADMIN_USER: "{{ lookup('env', 'GF_SECURITY_ADMIN_USER') }}"
     GF_SECURITY_ADMIN_PASSWORD: "{{ lookup('env', 'GF_SECURITY_ADMIN_PASSWORD') }}"
   register: result
@@ -131,10 +48,11 @@
   until: health_check.status == 200
   retries: 50
   delay: 5
+  when: group_names[0] == "web"
   ignore_errors: true
 
 - name: Rollback if health check failed
-  when: health_check is failed
+  when: group_names[0] == "web" and health_check is failed
   block:
     - name: Ensure previous image tag is known
       ansible.builtin.fail:

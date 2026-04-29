@@ -1,0 +1,72 @@
+networks:
+  {{ app_name }}-network:
+    name: {{ app_name }}-network
+
+volumes:
+  prometheus_data:
+  grafana-storage:
+  loki-data:
+
+secrets:
+  grafana_admin_user:
+    environment: GF_SECURITY_ADMIN_USER
+  grafana_admin_password:
+    environment: GF_SECURITY_ADMIN_PASSWORD
+
+# Limit log size per container
+x-logging: &default_logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  grafana:
+    <<: *default_logging
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - {{ app_name }}-network
+    restart: unless-stopped
+
+  grafana-loki:
+    <<: *default_logging
+    image: grafana/loki
+    container_name: grafana-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./grafana/loki-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - {{ app_name }}-network
+    restart: unless-stopped
+
+  prometheus:
+    <<: *default_logging
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - --web.enable-remote-write-receiver
+    networks:
+      - {{ app_name }}-network
+    restart: unless-stopped

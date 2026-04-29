@@ -1,0 +1,24 @@
+---
+- name: Create application directory
+  ansible.builtin.file:
+    path: /opt/{{ app_name }}
+    state: directory
+    mode: "0755"
+  tags: always
+
+- name: Copy configuration files
+  ansible.builtin.copy:
+    src: "files/{{ group_names[0] }}/"
+    dest: "/opt/{{ app_name }}"
+    mode: "0644"
+    directory_mode: "0755"
+
+- name: Deploy templates
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "/opt/{{ app_name }}/{{ item.path | regex_replace('\\.j2$', '') }}"
+    mode: "0644"
+  with_community.general.filetree: "templates/{{ group_names[0] }}/"
+  when: item.state == "file"
+  vars:
+    IMAGE_TAG: "latest"
