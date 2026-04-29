@@ -142,7 +142,6 @@ jobs:
           export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
           export IMAGE_TAG='${{ env.IMAGE_TAG }}'
           export DB_URL='${{ secrets.DB_URL }}'
-          docker compose down --remove-orphans || true
           docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
 
           wait_service itu-minitwit_itu-web-server 2
