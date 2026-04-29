@@ -13,4 +13,25 @@
 [END frontpage layout]: #
 
 
-**Hello there Gamers! we are trying again**
+[Index]: #
+
+<div>
+
+</div>
+
+[End of Index]:#
+
+
+**System's perspective**
+
+
+
+**Process' perspective**
+
+
+
+**Reflection' perspective**
+
+
+
+**Use of Generative AI**
