@@ -31,14 +31,14 @@ x-rolling-update: &rolling_update
   update_config:
     parallelism: 1
     delay: 30s
-    order: start-first
+    order: stop-first
     failure_action: rollback
     monitor: 60s
     max_failure_ratio: 0
   rollback_config:
     parallelism: 1
     delay: 10s
-    order: start-first
+    order: stop-first
     failure_action: pause
     monitor: 60s
     max_failure_ratio: 0
