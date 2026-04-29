@@ -1,5 +1,5 @@
 variable "num_instances" {
-  description = "Number of Droplets to create for each environment + total load balancers"
+  description = "Number of Droplets to create for each component"
   default = {
     "web" = 2,
     "lb" = 2
@@ -8,13 +8,34 @@ variable "num_instances" {
 
   validation {
     condition = contains(keys(var.num_instances), "web") && contains(keys(var.num_instances), "lb")
-    error_message = "Number of instances must be specified for \"web\", as well as the load balancers with \"lb\"."
+    error_message = "Number of instances must be specified for \"web\" and the load balancers with \"lb\"."
   }
 }
 
 variable "instance_prefix" {
   description = "Prefix for Droplet names"
   default = "itu-minitwit-DEPLOY-TEST"
+}
+
+variable "environment" {
+  description = "Deployment environment (Development, Staging, Production)"
+  default = "Staging"
+  validation {
+    condition = contains(["Development", "Staging", "Production"], var.environment)
+    error_message = "Environment must be one of: Development, Staging, Production."
+  }
+}
+
+resource "digitalocean_project" "itu-minitwit-project" {
+  name = "${var.instance_prefix}-${lower(var.environment)}"
+  environment = var.environment
+  purpose = "Web Application"
+  resources = flatten([
+    digitalocean_droplet.itu-minitwit[*].urn,
+    [digitalocean_droplet.itu-minitwit-monitoring.urn],
+    digitalocean_droplet.itu-minitwit-load-balancer[*].urn,
+    [digitalocean_reserved_ip.itu-minitwit-reserved-ip.urn]
+  ])
 }
 
 resource "digitalocean_droplet" "itu-minitwit" {
