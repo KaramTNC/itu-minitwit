@@ -91,6 +91,8 @@
     content: |
       DB_URL={{ lookup('env', 'DB_URL') }}
 
+
+
 - name: Copy configuration files
   ansible.builtin.copy:
     src: "files/"
@@ -100,8 +102,8 @@
 
 - name: Deploy config.alloy from template
   ansible.builtin.template:
-    src: "templates/grafana/config.alloy.j2"
-    dest: "/opt/{{ app_name }}/files/grafana/config.alloy"
+    src: "templates/monitoring/grafana/config.alloy.j2"
+    dest: "/opt/{{ app_name }}/files/monitoring/grafana/config.alloy"
     mode: "0644"
 
 - name: Start all application services
