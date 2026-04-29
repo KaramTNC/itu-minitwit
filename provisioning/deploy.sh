@@ -3,15 +3,16 @@ source _functions.sh
 
 check_and_set_env
 
+choose_deployment_environment "Enter the number of the deployment environment you'd like to use:"
+
 cd terraform
+tofu workspace select -or-create $DEPLOYMENT_ENVIRONMENT
 tofu init
-tofu apply --auto-approve
+env TF_VAR_environment=$DEPLOYMENT_ENVIRONMENT tofu apply --auto-approve
 
 cd ../ansible
 
 printf '\n%.0s' {1,8}
-YELLOW='\033[1;33m'
-RESET='\033[0m'
 
 printf "${YELLOW}ATTENTION: Cloud infrastructure has been successfully acquired.
 However, before installing and configuring software, you must access your
