@@ -28,4 +28,4 @@ printf "\n${YELLOW}Once you've created the records, press Enter to proceed with 
 read -p "Press Enter to continue..."
 
 ansible-galaxy install -r requirements.yml
-env ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbook.yml -i inventory.ini
+ansible-playbook playbook.yml
