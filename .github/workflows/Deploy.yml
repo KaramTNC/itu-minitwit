@@ -67,11 +67,35 @@ jobs:
 
       - name: Apply database migrations on production server
         run: |
-          timeout 180 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
-            cd /itu-minitwit &&
-            chmod +x ./efbundle &&
-            timeout 120 ./efbundle --connection '${{ secrets.DB_URL }}'
-          "
+          timeout 420 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          cd /itu-minitwit
+          chmod +x ./efbundle
+
+          echo "::group::migration host diagnostics"
+          date -Is
+          uptime || true
+          free -h || true
+          df -h / || true
+          echo "::endgroup::"
+
+          for attempt in 1 2 3; do
+            echo "Running migrations attempt ${attempt}/3"
+            if timeout 180 ./efbundle --verbose --connection '${{ secrets.DB_URL }}'; then
+              exit 0
+            fi
+
+            exit_code=$?
+            echo "Migration attempt ${attempt} failed with exit code ${exit_code}"
+            if [ "$attempt" -lt 3 ]; then
+              echo "Retrying migrations in 15 seconds..."
+              sleep 15
+            fi
+          done
+
+          echo "Migration failed after 3 attempts"
+          exit 1
+          REMOTE
 
       - name: Ensure Docker Swarm is active
         run: |
