@@ -130,24 +130,54 @@ jobs:
       - name: Apply database migrations on staging server
         if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
-          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            cd /itu-minitwit &&
-            chmod +x ./efbundle &&
-            timeout 120 ./efbundle --connection '${{ secrets.DB_URL }}'
-          "
+          timeout 420 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          cd /itu-minitwit
+          chmod +x ./efbundle
+
+          echo "::group::migration host diagnostics"
+          date -Is
+          uptime || true
+          free -h || true
+          df -h / || true
+          echo "::endgroup::"
+
+          for attempt in 1 2 3; do
+            echo "Running migrations attempt ${attempt}/3"
+            if timeout 180 ./efbundle --verbose --connection '${{ secrets.DB_URL }}'; then
+              exit 0
+            fi
+
+            exit_code=$?
+            echo "Migration attempt ${attempt} failed with exit code ${exit_code}"
+            if [ "$attempt" -lt 3 ]; then
+              echo "Retrying migrations in 15 seconds..."
+              sleep 15
+            fi
+          done
+
+          echo "Migration failed after 3 attempts"
+          exit 1
+          REMOTE
 
       - name: Ensure Docker Swarm is active
         run: |
-          timeout 45 ssh $SSH_COMMON_ARGS "$STAGING_HOST" "
-            swarm_state=\$(timeout 15 docker info --format '{{.Swarm.LocalNodeState}}') &&
-            control_available=\$(timeout 15 docker info --format '{{.Swarm.ControlAvailable}}') &&
-            if [ \"\$swarm_state\" != 'active' ]; then
-              timeout 20 docker swarm init --advertise-addr 134.122.71.241
-            elif [ \"\$control_available\" != 'true' ]; then
-              timeout 20 docker swarm leave --force &&
-              timeout 20 docker swarm init --advertise-addr 134.122.71.241
-            fi
-          "
+          timeout 75 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          swarm_state="$(timeout 20 docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || echo unknown)"
+          control_available="$(timeout 20 docker info --format '{{.Swarm.ControlAvailable}}' 2>/dev/null || echo false)"
+
+          if [ "$swarm_state" != "active" ] || [ "$control_available" != "true" ]; then
+            timeout 15 docker swarm leave --force >/dev/null 2>&1 || true
+            timeout 25 docker swarm init --advertise-addr 134.122.71.241 >/dev/null 2>&1 || true
+          fi
+
+          final_state="$(timeout 20 docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || echo unknown)"
+          final_control="$(timeout 20 docker info --format '{{.Swarm.ControlAvailable}}' 2>/dev/null || echo false)"
+          echo "swarm_state=${final_state}, control_available=${final_control}"
+          [ "$final_state" = "active" ] && [ "$final_control" = "true" ]
+          REMOTE
 
       - name: Create Docker secrets on staging server
         run: |
@@ -223,12 +253,24 @@ jobs:
         id: smoketest
         run: |
           for i in {1..20}; do
-            curl --fail http://134.122.71.241:5001/health &&
-            curl --fail http://134.122.71.241:8080/health &&
+            curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://134.122.71.241:5001/health &&
+            curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://134.122.71.241:8080/health &&
             exit 0
             sleep 2
           done
           echo "Health check failed."
+          timeout 90 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set +e
+          echo "::group::staging service states"
+          docker service ls
+          docker service ps --no-trunc itu-minitwit_itu-web-server
+          docker service ps --no-trunc itu-minitwit_itu-api-server
+          echo "::endgroup::"
+          echo "::group::staging recent logs"
+          docker service logs --tail 120 itu-minitwit_itu-web-server 2>&1 || true
+          docker service logs --tail 120 itu-minitwit_itu-api-server 2>&1 || true
+          echo "::endgroup::"
+          REMOTE
           exit 1
 
       - name: Cleanup unused Docker artifacts on staging
