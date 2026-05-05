@@ -22,19 +22,19 @@
 [End of Index]:#
 
 
-**System's perspective**
+## **System's perspective**
 
 
 
-**Process' perspective**
+## **Process' perspective**
 
 
 
-**Reflection' perspective**
+## **Reflection' perspective**
 
 
 
-**Use of Generative AI** -Tim 73 words
+## **Use of Generative AI** -Tim 73 words
 
 Generative AI has been used throughout the project to help us, complete the weekly tasks. AI has been used as a debug tool / sparring partner, when a person was stuck. AI has also been used to generate a starting point for task with new technologies. The group has their own preferences in AIs so Gemini, Chatgpt, Claude and Copilot has been used during the project All have been marked as co-author when used. Pro and cons follows in the use of AI. For our purpose it has been a great tool that has saved us countless hours searching on the web, however this "easy" way could also be a hinderance in the sense it might halluciate a solution to our problem that does not work, and us taking the "easy" made harder to catch that. All in all it can be good, but we have found limiting the amount of usage is benefitial. 
   
