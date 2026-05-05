@@ -75,16 +75,22 @@ jobs:
 
       - name: Ensure Docker Swarm is active
         run: |
-          timeout 45 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" "
-            swarm_state=\$(timeout 15 docker info --format '{{.Swarm.LocalNodeState}}') &&
-            control_available=\$(timeout 15 docker info --format '{{.Swarm.ControlAvailable}}') &&
-            if [ \"\$swarm_state\" != 'active' ]; then
-              timeout 20 docker swarm init --advertise-addr 46.101.201.186
-            elif [ \"\$control_available\" != 'true' ]; then
-              timeout 20 docker swarm leave --force &&
-              timeout 20 docker swarm init --advertise-addr 46.101.201.186
-            fi
-          "
+          timeout 75 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          swarm_state="$(timeout 10 docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || echo unknown)"
+          control_available="$(timeout 10 docker info --format '{{.Swarm.ControlAvailable}}' 2>/dev/null || echo false)"
+
+          if [ "$swarm_state" != "active" ] || [ "$control_available" != "true" ]; then
+            timeout 15 docker swarm leave --force >/dev/null 2>&1 || true
+            timeout 20 docker swarm init --advertise-addr 46.101.201.186
+          fi
+
+          final_state="$(timeout 10 docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || echo unknown)"
+          final_control="$(timeout 10 docker info --format '{{.Swarm.ControlAvailable}}' 2>/dev/null || echo false)"
+          echo "swarm_state=${final_state}, control_available=${final_control}"
+          [ "$final_state" = "active" ] && [ "$final_control" = "true" ]
+          REMOTE
 
       - name: Create Docker secrets on production server
         run: |
