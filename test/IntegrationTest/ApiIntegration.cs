@@ -42,7 +42,7 @@ public class ApiIntegration
             email = "test@test",
             pwd = "Test123!",
         };
-            using var content = new StringContent(
+        using var content = new StringContent(
             JsonSerializer.Serialize(data),
             Encoding.UTF8,
             "application/json"

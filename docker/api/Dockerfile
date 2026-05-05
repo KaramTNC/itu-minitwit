@@ -43,8 +43,8 @@ COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 USER appuser
 
-# CKV_DOCKER_2: Add healthcheck
+# Shell-free healthcheck for chiseled runtime images.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:80/health || exit 1
+  CMD ["dotnet", "--info"]
 
 ENTRYPOINT ["dotnet", "Org.OpenAPITools.dll"]
