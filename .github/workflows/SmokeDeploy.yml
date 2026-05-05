@@ -253,12 +253,24 @@ jobs:
         id: smoketest
         run: |
           for i in {1..20}; do
-            curl --fail http://134.122.71.241:5001/health &&
-            curl --fail http://134.122.71.241:8080/health &&
+            curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://134.122.71.241:5001/health &&
+            curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://134.122.71.241:8080/health &&
             exit 0
             sleep 2
           done
           echo "Health check failed."
+          timeout 90 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set +e
+          echo "::group::staging service states"
+          docker service ls
+          docker service ps --no-trunc itu-minitwit_itu-web-server
+          docker service ps --no-trunc itu-minitwit_itu-api-server
+          echo "::endgroup::"
+          echo "::group::staging recent logs"
+          docker service logs --tail 120 itu-minitwit_itu-web-server 2>&1 || true
+          docker service logs --tail 120 itu-minitwit_itu-api-server 2>&1 || true
+          echo "::endgroup::"
+          REMOTE
           exit 1
 
       - name: Cleanup unused Docker artifacts on staging
