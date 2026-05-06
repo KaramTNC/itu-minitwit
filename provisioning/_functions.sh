@@ -6,6 +6,9 @@ set_env() {
     set -a
     . .env
     set +a
+
+    export AWS_ACCESS_KEY_ID=$TF_VAR_spaces_access_id
+    export AWS_SECRET_ACCESS_KEY=$TF_VAR_spaces_secret_key
 }
 
 choose_deployment_environment() {

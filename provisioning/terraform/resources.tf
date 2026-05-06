@@ -122,7 +122,6 @@ resource "local_file" "ansible_inventory" {
     reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
     
     private_key_path = var.private_key_path
-    reserved_ip = digitalocean_reserved_ip.itu-minitwit-reserved-ip.ip_address
     keepalived_password = var.keepalived_password
     do_token = var.do_token
   })

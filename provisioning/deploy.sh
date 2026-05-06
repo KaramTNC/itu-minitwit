@@ -4,11 +4,19 @@ source _functions.sh
 check_and_set_env
 
 choose_deployment_environment "Enter the number of the deployment environment you'd like to use:"
+export TF_VAR_environment=$DEPLOYMENT_ENVIRONMENT
 
 cd terraform
-tofu workspace select -or-create $DEPLOYMENT_ENVIRONMENT
+
+cd remote_state
 tofu init
-env TF_VAR_environment=$DEPLOYMENT_ENVIRONMENT tofu apply --auto-approve
+tofu apply --auto-approve
+
+cd ..
+
+tofu init
+tofu workspace select -or-create $DEPLOYMENT_ENVIRONMENT
+tofu apply --auto-approve
 
 cd ../ansible
 
