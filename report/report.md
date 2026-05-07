@@ -30,8 +30,6 @@
 
 The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PBI #26.
 
-## **Reflection' perspective**
-
 How do you handle availability and scaling in your systems?
 
 Docker Swarm and rolling upgrades
@@ -48,6 +46,8 @@ The deploy workflow automatically detects if any EF Core migration files changed
 
 Variable number of instances
 By using infrastructure as code, we can provision new instances and add them to the system easily. As the user base grows, new servers can be spin up without additional work other than specifying the number of instances and re-running the IaC tools. Furthermore, our load balancing setup reduces the chances of overloading specific web servers and the load balancers are monitored with keepalived, which switches the active load balancer in case the current one fails.
+
+## **Reflection' perspective**
 
 
 ## **Use of Generative AI** -Tim 73 words
