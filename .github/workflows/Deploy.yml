@@ -72,20 +72,56 @@ jobs:
           cd /itu-minitwit
           chmod +x ./efbundle
 
+          resource_guard() {
+            mem_available_kb=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
+            mem_available_mb=$((mem_available_kb / 1024))
+            load1=$(awk '{print int($1)}' /proc/loadavg)
+            cpu_count=$(nproc)
+            load_limit=$((cpu_count * 3))
+            echo "resource_guard: mem_available_mb=${mem_available_mb}, load1=${load1}, cpu_count=${cpu_count}"
+
+            if [ "$mem_available_mb" -lt 150 ] || [ "$load1" -gt "$load_limit" ]; then
+              echo "Low resources detected. Reclaiming capacity before migration."
+              timeout 20 docker ps --format '{{.ID}} {{.Names}} {{.Status}}' || true
+              ps -eo pid,pcpu,pmem,comm --sort=-pcpu | head -n 20 || true
+              timeout 30 docker container prune -f || true
+              timeout 30 docker image prune -af --filter "until=24h" || true
+              pids="$(ps -eo pid,pcpu,comm --no-headers | awk '$2 > 70 && $3 !~ /^(dockerd|containerd|sshd|systemd|bash)$/ {print $1}')"
+              if [ -n "$pids" ]; then
+                echo "$pids" | xargs -r kill -TERM || true
+                sleep 5
+                echo "$pids" | xargs -r kill -KILL || true
+              fi
+            fi
+          }
+
+          recover_server_processes() {
+            echo "Restarting server processes for recovery..."
+            timeout 30 systemctl restart docker || timeout 30 service docker restart || true
+            timeout 30 docker ps || true
+          }
+
           echo "::group::migration host diagnostics"
           date -Is
           uptime || true
           free -h || true
           df -h / || true
+          ps -eo pid,ppid,%cpu,%mem,comm --sort=-%cpu | head -n 15 || true
+          ps -eo pid,ppid,%cpu,%mem,comm --sort=-%mem | head -n 15 || true
+          timeout 10 docker stats --no-stream || true
           echo "::endgroup::"
+
+          resource_guard
 
           for attempt in 1 2 3; do
             echo "Running migrations attempt ${attempt}/3"
-            if timeout 180 ./efbundle --verbose --connection '${{ secrets.DB_URL }}'; then
+            if ASPNETCORE_ENVIRONMENT=Production DOTNET_ENVIRONMENT=Production timeout 180 ./efbundle --verbose --connection '${{ secrets.DB_URL }}'; then
+              exit_code=0
               exit 0
+            else
+              exit_code=$?
             fi
 
-            exit_code=$?
             echo "Migration attempt ${attempt} failed with exit code ${exit_code}"
             if [ "$attempt" -lt 3 ]; then
               echo "Retrying migrations in 15 seconds..."
@@ -94,6 +130,7 @@ jobs:
           done
 
           echo "Migration failed after 3 attempts"
+          recover_server_processes
           exit 1
           REMOTE
 
@@ -131,6 +168,27 @@ jobs:
         run: |
           timeout 900 ssh $SSH_COMMON_ARGS "$PRODUCTION_HOST" 'bash -s' <<'REMOTE'
           set -euo pipefail
+
+          resource_guard() {
+            mem_available_kb=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
+            mem_available_mb=$((mem_available_kb / 1024))
+            load1=$(awk '{print int($1)}' /proc/loadavg)
+            cpu_count=$(nproc)
+            load_limit=$((cpu_count * 3))
+            echo "resource_guard: mem_available_mb=${mem_available_mb}, load1=${load1}, cpu_count=${cpu_count}"
+
+            if [ "$mem_available_mb" -lt 150 ] || [ "$load1" -gt "$load_limit" ]; then
+              echo "Low resources detected. Reclaiming capacity before rollout."
+              timeout 30 docker container prune -f || true
+              timeout 30 docker image prune -af --filter "until=24h" || true
+            fi
+          }
+
+          recover_server_processes() {
+            echo "Deployment failed. Restarting server processes for recovery..."
+            timeout 30 systemctl restart docker || timeout 30 service docker restart || true
+            timeout 30 docker ps || true
+          }
 
           diagnose_service() {
             service="$1"
@@ -170,16 +228,23 @@ jobs:
           cd /itu-minitwit
           echo "::group::pre-deploy host usage"
           df -h /
+          free -h || true
+          uptime || true
           timeout 20 docker system df || true
           echo "::endgroup::"
+          resource_guard
           echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
           export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
           export IMAGE_TAG='${{ env.IMAGE_TAG }}'
           export DB_URL='${{ secrets.DB_URL }}'
-          docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit
+          if docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit && \
+             wait_service itu-minitwit_itu-web-server 2 && \
+             wait_service itu-minitwit_itu-api-server 2; then
+            exit 0
+          fi
 
-          wait_service itu-minitwit_itu-web-server 2
-          wait_service itu-minitwit_itu-api-server 2
+          recover_server_processes
+          exit 1
           REMOTE
 
       - name: Health check
@@ -202,6 +267,12 @@ jobs:
           echo "::group::production recent logs"
           docker service logs --tail 120 itu-minitwit_itu-web-server 2>&1 || true
           docker service logs --tail 120 itu-minitwit_itu-api-server 2>&1 || true
+          echo "::endgroup::"
+          echo "::group::production recovery restart"
+          timeout 30 systemctl restart docker || timeout 30 service docker restart || true
+          timeout 30 docker service update --force itu-minitwit_itu-web-server || true
+          timeout 30 docker service update --force itu-minitwit_itu-api-server || true
+          timeout 30 docker ps || true
           echo "::endgroup::"
           REMOTE
           exit 1
