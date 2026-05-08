@@ -145,7 +145,6 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(200, default);
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
-            var sw = Stopwatch.StartNew();
             string exampleJson = null;
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
@@ -159,9 +158,7 @@ namespace Org.OpenAPITools.Controllers
             Console.WriteLine(
                 "GetLatestValue request successfull: statuscode: " + result.StatusCode
             );
-            sw.Stop();
             single.IncrementLatestCounter(result.StatusCode ?? 200);
-            single.GetLatestHistogram(sw);
             return result;
         }
 
@@ -365,7 +362,13 @@ namespace Org.OpenAPITools.Controllers
                 );
                 sw.Stop();
                 single.IncrementPostFollowersCounter(result.StatusCode ?? 200);
-                single.PostFollowHistogram(sw);
+                //single.PostFollowHistogram(sw);
+                single.RecordRequestDuration(
+                    endpoint: "/fllws/{username}",
+                    method: "POST",
+                    statusCode: result.StatusCode ?? 403,
+                    sw: sw
+                );
                 return result;
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
@@ -427,11 +430,17 @@ namespace Org.OpenAPITools.Controllers
 
             var statusCode = 204;
             Console.WriteLine(
-                "PostFollow request successful by : " + username + " , statuscode: " + single.latest
+                "PostFollow request successful by : " + username + " , statuscode: " + statusCode
             );
             sw.Stop();
             single.IncrementPostFollowersCounter(statusCode);
-            single.PostFollowHistogram(sw);
+            //single.PostFollowHistogram(sw);
+            single.RecordRequestDuration(
+                endpoint: "/fllws/{username}",
+                method: "POST",
+                statusCode: statusCode,
+                sw: sw
+            );
             return StatusCode(statusCode);
         }
 
@@ -478,7 +487,13 @@ namespace Org.OpenAPITools.Controllers
                 );
                 sw.Stop();
                 single.IncrementPostMessagesPerUserCounter((int)example.Status);
-                single.PostMsgsHistogram(sw);
+                //single.PostMsgsHistogram(sw);
+                single.RecordRequestDuration(
+                    endpoint: "/msgs/{username}",
+                    method: "POST",
+                    statusCode: (int)example.Status,
+                    sw: sw
+                );
                 return new ObjectResult(example);
             }
 
@@ -496,7 +511,13 @@ namespace Org.OpenAPITools.Controllers
             Console.WriteLine(username + " posted a msg successfully. Status code: " + statusCode);
             sw.Stop();
             single.IncrementPostMessagesPerUserCounter(statusCode);
-            single.PostMsgsHistogram(sw);
+            //single.PostMsgsHistogram(sw);
+            single.RecordRequestDuration(
+                endpoint: "/msgs/{username}",
+                method: "POST",
+                statusCode: statusCode,
+                sw: sw
+            );
             return StatusCode(statusCode);
         }
 
@@ -544,7 +565,13 @@ namespace Org.OpenAPITools.Controllers
             );
             sw.Stop();
             single.IncrementPostRegisterCounter(statusCode);
-            single.PostRegisterHistogram(sw);
+            //single.PostRegisterHistogram(sw);
+            single.RecordRequestDuration(
+                endpoint: "/register",
+                method: "POST",
+                statusCode: statusCode,
+                sw: sw
+            );
             return StatusCode(204);
         }
     }
