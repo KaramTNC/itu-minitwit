@@ -28,7 +28,7 @@
 
 ## **Process' perspective**
 
-### **How do you monitor your systems and what precisely do you monitor?**
+### **How do you monitor your systems and what precisely do you monitor?** -Madeleine
 
 The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PBI #26.
 
@@ -51,6 +51,8 @@ By using infrastructure as code, we can provision new instances and add them to 
 
 ## **Reflection' perspective**
 
+We decided to use the project files from the course BDSA as the starting point for this project, this meant that any existing errors in the previous project would be also present in this project. This lead to the team getting many errors once the simulator began to run, specifically with the creation of users. The project we used indexed users in a very inefficient way, and meant that if two users were created at the same time, they could both share the same index, leading to users being overwritten in the database. The system could not handle asynchronous tasks. 
+The team fixed the issue by refactoring the way the user indexing worked, letting the database automatically assign indexes instead of doing it manually. We learned that it is important to have very in-depth testing, to see how well an application handles multiple requests and tasks at once. Stress testing can also be a good way to find failures in the system.
 
 ## **Use of Generative AI** -Tim 73 words
 
