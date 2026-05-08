@@ -24,6 +24,12 @@
 
 ## **System's perspective**
 
+### Design and Architecture
+
+### Dependencies
+
+### State of the System
+
 
 
 ## **Process' perspective**
