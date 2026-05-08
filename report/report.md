@@ -49,8 +49,8 @@ The System has been hardened with a fire wall and a proxy server so all traffic 
 **Docker Swarm and rolling upgrades**
 Docker Swarm was introduced to manage updates without taking the system offline by stopping and restarting the containers each time through docker-compose up. Swarm allowed for the updates to be applied incrementally, bringing up new containers with the updated images before stopping the old ones. This allowed for users and the simulator to have no downtime as it was deploying, which was particularly important to prevent simulator issues. 
 
-**Staging** - Jordan & Madeleine
-We wanted to prevent downtime in our application, that could occur if a push broke something in the production. A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues. The PR#09 shows us adapting workflows to run on staging. The staging branch is relevant in regards to Operation and Maintenance, as it helps keep the application healthy and running.
+**Staging** - Jordan
+A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues. 
 
 **Health check and rollback**
 After each deployment, the pipeline curls the web server image several times. If the service fails to respond, the pipeline automatically redeploys the previous commit’s image, restoring the previous state automatically.
@@ -63,6 +63,10 @@ By using infrastructure as code, we can provision new instances and add them to 
 
 ## **Reflection' perspective**
 
+### Creating staging - Madeleine
+We wanted to prevent downtime in our application, that could occur if a push broke something in the production. We created a staging branch that mirrors our Main branch closely in order to avoid those downtimes. The staging branch is connected to a staging droplet inside DigitalOcean. This branch was created for us to push new changes to, without impacting Main. Allowing us to see how Main would be impacted by the changes in a safe environment, and catch any major errors before they are deployed. There are multiple workflows that run on the staging branch, these include linting and testing steps, this can be found in the PR#09. This is relevant in regards to Operation and Maintenance, as the staging branch helps keep the application healthy and running.
+
+###  Refactoring user indexing - Madeleine
 We decided to use the project files from the course BDSA as the starting point for this project, this meant that any existing errors in the previous project would be also present in this project. This lead to the team getting many errors once the simulator began to run, specifically with the creation of users. The project we used indexed users in a very inefficient way, and meant that if two users were created at the same time, they could both share the same index, leading to users being overwritten in the database. The system could not handle asynchronous tasks. 
 The team fixed the issue by refactoring the way the user indexing worked, letting the database automatically assign indexes instead of doing it manually. We learned that it is important to have very in-depth testing, to see how well an application handles multiple requests and tasks at once. Stress testing can also be a good way to find failures in the system.
 
