@@ -4,7 +4,7 @@
     <h2>Group D</h2>
     <p>Oriol Grau Moragues - s25137@itu.dk</p>
     <p>Mohamed Karam Haybout - mhay@itu.dk</p>
-    <p>Student - xxxx@itu.dk</p>
+    <p>Student - antt@itu.dk</p>
     <p>Jordan Cherry - s25121@itu.dk</p>
     <p>Madeleine Jakobsen - majak@itu.dk</p>
     <p>Tim Vogensen Hounsgaard - thou@itu.dk</p>
@@ -43,8 +43,8 @@ The System has been hardened with a fire wall and a proxy server so all traffic 
 **Docker Swarm and rolling upgrades**
 Docker Swarm was introduced to manage updates without taking the system offline by stopping and restarting the containers each time through docker-compose up. Swarm allowed for the updates to be applied incrementally, bringing up new containers with the updated images before stopping the old ones. This allowed for users and the simulator to have no downtime as it was deploying, which was particularly important to prevent simulator issues. 
 
-**Staging**
-A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues.
+**Staging** - Jordan & Madeleine
+We wanted to prevent downtime in our application, that could occur if a push broke something in the production. A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues. The PR#09 shows us adapting workflows to run on staging. The staging branch is relevant in regards to Operation and Maintenance, as it helps keep the application healthy and running.
 
 **Health check and rollback**
 After each deployment, the pipeline curls the web server image several times. If the service fails to respond, the pipeline automatically redeploys the previous commit’s image, restoring the previous state automatically.
