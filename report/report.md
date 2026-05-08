@@ -39,9 +39,9 @@
 The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PBI #26.
 
 
-### **Brief description of how your security hardened your systems** -Tim
+### **Brief description of how your security hardened your systems** -Tim and Orial
 
-The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vunabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out vunabilities. 
+The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vulnerabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out security vunabilities. For local development to store secrets locally we used .env files so our secrets weren't shared online.  
 
 
 ### **How do you handle availability and scaling in your systems?**
@@ -69,6 +69,14 @@ We wanted to prevent downtime in our application, that could occur if a push bro
 ###  Refactoring user indexing - Madeleine
 We decided to use the project files from the course BDSA as the starting point for this project, this meant that any existing errors in the previous project would be also present in this project. This lead to the team getting many errors once the simulator began to run, specifically with the creation of users. The project we used indexed users in a very inefficient way, and meant that if two users were created at the same time, they could both share the same index, leading to users being overwritten in the database. The system could not handle asynchronous tasks. 
 The team fixed the issue by refactoring the way the user indexing worked, letting the database automatically assign indexes instead of doing it manually. We learned that it is important to have very in-depth testing, to see how well an application handles multiple requests and tasks at once. Stress testing can also be a good way to find failures in the system.
+
+
+
+### **Reflect and describe what was the "DevOps" style of your work. For example, what did you do differently to previous development projects and how did it work?**
+
+Overall the project introduced some unique challenges and new ways of working we have not been to used too. instead of having a system that just needed to work completely when handing it in. Now we had a system that needed to be live and healthy all the time. 
+We introduced a lot of new ways of working to accommodate this criteria. We created a staging environment that worked like production where we could test our code live before it hit production. We created more in depth CI pipeline to validate the quality of our code together with verifying we aren't introducing vulnerabilities when adding or updating packages.
+
 
 ### Smoke Deploy issues
 After we had implemented docker swarm and its rolling upgrade functionality in commit #f15cc59, we encountered inconsistent issues regarding the smoke deploy step in our CICD. Occasionally a smoke deploy would hang on either docker swarm activity check, applying migrations, or rolling upgrade step.
