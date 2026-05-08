@@ -4,7 +4,7 @@
     <h2>Group D</h2>
     <p>Oriol Grau Moragues - s25137@itu.dk</p>
     <p>Mohamed Karam Haybout - mhay@itu.dk</p>
-    <p>Student - antt@itu.dk</p>
+    <p>Anton Thejsen - antt@itu.dk</p>
     <p>Jordan Cherry - s25121@itu.dk</p>
     <p>Madeleine Jakobsen - majak@itu.dk</p>
     <p>Tim Vogensen Hounsgaard - thou@itu.dk</p>
