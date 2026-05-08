@@ -1,29 +1,6 @@
-variable "num_instances" {
-  description = "Number of Droplets to create for each component"
-  default = {
-    "web" = 2,
-    "lb" = 2
-  }
-  type = map(number)
-
-  validation {
-    condition = contains(keys(var.num_instances), "web") && contains(keys(var.num_instances), "lb")
-    error_message = "Number of instances must be specified for \"web\" and the load balancers with \"lb\"."
-  }
-}
-
-variable "instance_prefix" {
-  description = "Prefix for Droplet names"
-  default = "itu-minitwit-DEPLOY-TEST"
-}
-
-variable "environment" {
-  description = "Deployment environment (Development, Staging, Production)"
-  default = "Staging"
-  validation {
-    condition = contains(["Development", "Staging", "Production"], var.environment)
-    error_message = "Environment must be one of: Development, Staging, Production."
-  }
+data "digitalocean_spaces_bucket" "remote_state_bucket" {
+  name   = "remote-state-bucket-itu-minitwit-2b34b324b235b253b2"
+  region = var.region
 }
 
 resource "digitalocean_project" "itu-minitwit-project" {
@@ -34,7 +11,8 @@ resource "digitalocean_project" "itu-minitwit-project" {
     digitalocean_droplet.itu-minitwit[*].urn,
     [digitalocean_droplet.itu-minitwit-monitoring.urn],
     digitalocean_droplet.itu-minitwit-load-balancer[*].urn,
-    [digitalocean_reserved_ip.itu-minitwit-reserved-ip.urn]
+    [digitalocean_reserved_ip.itu-minitwit-reserved-ip.urn],
+    [data.digitalocean_spaces_bucket.remote_state_bucket.urn]
   ])
 }
 
