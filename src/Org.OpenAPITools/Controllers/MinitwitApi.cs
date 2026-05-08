@@ -363,7 +363,12 @@ namespace Org.OpenAPITools.Controllers
                 sw.Stop();
                 single.IncrementPostFollowersCounter(result.StatusCode ?? 200);
                 //single.PostFollowHistogram(sw);
-                single.RecordRequestDuration(endpoint: "/fllws/{username}", method: "POST", statusCode: result.StatusCode ?? 403, sw: sw);
+                single.RecordRequestDuration(
+                    endpoint: "/fllws/{username}",
+                    method: "POST",
+                    statusCode: result.StatusCode ?? 403,
+                    sw: sw
+                );
                 return result;
             }
             Author follower = await _authorRepository.ReturnBasedOnNameAsync(username);
@@ -430,7 +435,12 @@ namespace Org.OpenAPITools.Controllers
             sw.Stop();
             single.IncrementPostFollowersCounter(statusCode);
             //single.PostFollowHistogram(sw);
-            single.RecordRequestDuration(endpoint: "/fllws/{username}", method: "POST", statusCode: statusCode, sw: sw);
+            single.RecordRequestDuration(
+                endpoint: "/fllws/{username}",
+                method: "POST",
+                statusCode: statusCode,
+                sw: sw
+            );
             return StatusCode(statusCode);
         }
 
@@ -478,7 +488,12 @@ namespace Org.OpenAPITools.Controllers
                 sw.Stop();
                 single.IncrementPostMessagesPerUserCounter((int)example.Status);
                 //single.PostMsgsHistogram(sw);
-                single.RecordRequestDuration(endpoint: "/msgs/{username}", method: "POST", statusCode: (int)example.Status, sw: sw);
+                single.RecordRequestDuration(
+                    endpoint: "/msgs/{username}",
+                    method: "POST",
+                    statusCode: (int)example.Status,
+                    sw: sw
+                );
                 return new ObjectResult(example);
             }
 
@@ -497,7 +512,12 @@ namespace Org.OpenAPITools.Controllers
             sw.Stop();
             single.IncrementPostMessagesPerUserCounter(statusCode);
             //single.PostMsgsHistogram(sw);
-            single.RecordRequestDuration(endpoint: "/msgs/{username}", method: "POST", statusCode: statusCode, sw: sw);
+            single.RecordRequestDuration(
+                endpoint: "/msgs/{username}",
+                method: "POST",
+                statusCode: statusCode,
+                sw: sw
+            );
             return StatusCode(statusCode);
         }
 
@@ -546,7 +566,12 @@ namespace Org.OpenAPITools.Controllers
             sw.Stop();
             single.IncrementPostRegisterCounter(statusCode);
             //single.PostRegisterHistogram(sw);
-            single.RecordRequestDuration(endpoint: "/register", method: "POST", statusCode: statusCode, sw: sw);
+            single.RecordRequestDuration(
+                endpoint: "/register",
+                method: "POST",
+                statusCode: statusCode,
+                sw: sw
+            );
             return StatusCode(204);
         }
     }

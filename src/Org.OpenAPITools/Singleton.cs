@@ -171,7 +171,8 @@ public sealed class Singleton
     {
         RegisterHistogram.Record(sw.Elapsed.TotalSeconds);
     }*/
-    public void RecordRequestDuration( string endpoint, string method, int statusCode, Stopwatch sw){
+    public void RecordRequestDuration(string endpoint, string method, int statusCode, Stopwatch sw)
+    {
         RequestDurationHistogram.Record(
             sw.Elapsed.TotalSeconds,
             new KeyValuePair<string, object?>("endpoint", endpoint),

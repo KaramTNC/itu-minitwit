@@ -31,14 +31,7 @@ namespace Org.OpenAPITools
                     instrumentName: "*request_time",
                     new ExplicitBucketHistogramConfiguration
                     {
-                        Boundaries = new double[]
-                        {
-                            0.01,
-                            0.1,
-                            0.5,
-                            1,
-                            5
-                        },
+                        Boundaries = new double[] { 0.01, 0.1, 0.5, 1, 5 },
                     }
                 )
                 .AddPrometheusHttpListener(options =>
