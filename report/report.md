@@ -36,7 +36,7 @@
 
 ### **How do you monitor your systems and what precisely do you monitor?** -Madeleine
 
-The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PBI #26.
+The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PR#26.  In addition to this, we monitor the amount of time each API request takes using histograms, PR#38.
 
 
 ### **Brief description of how your security hardened your systems** -Tim and Oriol
