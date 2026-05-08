@@ -2,8 +2,8 @@
 <div style="text-align: center; line-height: 1;">
     <h1>BsC Devops</h1>
     <h2>Group D</h2>
-    <p>Student - xxxx@itu.dk</p>
-    <p>Student - xxxx@itu.dk</p>
+    <p>Oriol Grau Moragues - s25137@itu.dk</p>
+    <p>Mohamed Karam Haybout - mhay@itu.dk</p>
     <p>Student - xxxx@itu.dk</p>
     <p>Jordan Cherry - s25121@itu.dk</p>
     <p>Madeleine Jakobsen - majak@itu.dk</p>
