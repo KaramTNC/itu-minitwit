@@ -227,8 +227,13 @@ jobs:
           resource_guard
 
           db_url='${{ secrets.DB_URL }}'
-          db_host="$(echo "$db_url" | sed -E 's#^[^@]+@([^:/?]+).*#\1#')"
-          db_port="$(echo "$db_url" | sed -nE 's#^[^@]+@[^:/?]+:([0-9]+).*#\1#p')"
+          if echo "$db_url" | grep -q '^Host='; then
+            db_host="$(echo "$db_url" | sed -nE 's/.*Host=([^;]+).*/\1/p')"
+            db_port="$(echo "$db_url" | sed -nE 's/.*Port=([0-9]+).*/\1/p')"
+          else
+            db_host="$(echo "$db_url" | sed -nE 's#^[a-zA-Z0-9+.-]+://[^@]*@?([^:/?;]+).*#\1#p')"
+            db_port="$(echo "$db_url" | sed -nE 's#^[a-zA-Z0-9+.-]+://[^@]*@?[^:/?;]+:([0-9]+).*#\1#p')"
+          fi
           db_port="${db_port:-5432}"
           echo "Database endpoint check: ${db_host}:${db_port}"
           if timeout 10 bash -c "</dev/tcp/${db_host}/${db_port}"; then
@@ -290,7 +295,7 @@ jobs:
 
       - name: Rolling deploy on staging
         run: |
-          timeout 420 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          timeout 900 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
           set -euo pipefail
 
           resource_guard() {
