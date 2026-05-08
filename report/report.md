@@ -5,7 +5,7 @@
     <p>Student - xxxx@itu.dk</p>
     <p>Student - xxxx@itu.dk</p>
     <p>Student - xxxx@itu.dk</p>
-    <p>Student - xxxx@itu.dk</p>
+    <p>Jordan Cherry - s25121@itu.dk</p>
     <p>Madeleine Jakobsen - majak@itu.dk</p>
     <p>Tim Vogensen Hounsgaard - thou@itu.dk</p>
 </div> Section Tim, 
