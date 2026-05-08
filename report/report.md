@@ -8,7 +8,7 @@
     <p>Jordan Cherry - s25121@itu.dk</p>
     <p>Madeleine Jakobsen - majak@itu.dk</p>
     <p>Tim Vogensen Hounsgaard - thou@itu.dk</p>
-</div> Section Tim, 
+</div>
 
 [END frontpage layout]: #
 
@@ -39,7 +39,7 @@
 The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PBI #26.
 
 
-### **Brief description of how your security hardened your systems** -Tim and Orial
+### **Brief description of how your security hardened your systems** -Tim and Oriol
 
 The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vulnerabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out security vunabilities. For local development to store secrets locally we used .env files so our secrets weren't shared online.  
 
