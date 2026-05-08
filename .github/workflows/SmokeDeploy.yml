@@ -383,23 +383,24 @@ jobs:
       - name: Smoke test
         id: smoketest
         run: |
-          for i in {1..20}; do
-            curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://134.122.71.241:5001/health &&
-            curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://134.122.71.241:8080/health &&
-            exit 0
+          for i in {1..30}; do
+            if timeout 20 ssh $SSH_COMMON_ARGS "$STAGING_HOST" "curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://127.0.0.1:5001/health >/dev/null && curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://127.0.0.1:8080/health >/dev/null"; then
+              echo "Smoke check passed on attempt ${i}/30."
+              exit 0
+            fi
             sleep 2
           done
           echo "Health check failed."
           timeout 90 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
           set +e
           echo "::group::staging service states"
-          docker service ls
-          docker service ps --no-trunc itu-minitwit_itu-web-server
-          docker service ps --no-trunc itu-minitwit_itu-api-server
+          timeout 20 docker service ls || true
+          timeout 20 docker service ps --no-trunc itu-minitwit_itu-web-server || true
+          timeout 20 docker service ps --no-trunc itu-minitwit_itu-api-server || true
           echo "::endgroup::"
           echo "::group::staging recent logs"
-          docker service logs --tail 120 itu-minitwit_itu-web-server 2>&1 || true
-          docker service logs --tail 120 itu-minitwit_itu-api-server 2>&1 || true
+          timeout 20 docker service logs --tail 120 itu-minitwit_itu-web-server 2>&1 || true
+          timeout 20 docker service logs --tail 120 itu-minitwit_itu-api-server 2>&1 || true
           echo "::endgroup::"
           echo "::group::staging recovery restart"
           timeout 30 systemctl restart docker || timeout 30 service docker restart || true
@@ -434,8 +435,9 @@ jobs:
       - name: Rollback on smoke test failure
         if: failure() && steps.smoketest.conclusion == 'failure'
         run: |
-          timeout 60 ssh $SSH_COMMON_ARGS "$STAGING_HOST" "
-            cd /itu-minitwit &&
-            docker service rollback itu-minitwit_itu-web-server || true &&
-            docker service rollback itu-minitwit_itu-api-server || true
-          "
+          timeout 120 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set +e
+          cd /itu-minitwit || exit 0
+          timeout 30 docker service rollback itu-minitwit_itu-web-server || true
+          timeout 30 docker service rollback itu-minitwit_itu-api-server || true
+          REMOTE
