@@ -44,12 +44,12 @@ The team has used a combination of Prometheus and Grafana to monitor the project
 The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vulnerabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out security vunabilities. For local development to store secrets locally we used .env files so our secrets weren't shared online.  
 
 
-### **How do you handle availability and scaling in your systems?**
+### **How do you handle availability and scaling in your systems?** -Jordan
 
 **Docker Swarm and rolling upgrades**
 Docker Swarm was introduced to manage updates without taking the system offline by stopping and restarting the containers each time through docker-compose up. Swarm allowed for the updates to be applied incrementally, bringing up new containers with the updated images before stopping the old ones. This allowed for users and the simulator to have no downtime as it was deploying, which was particularly important to prevent simulator issues. 
 
-**Staging** - Jordan
+**Staging**
 A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues. 
 
 **Health check and rollback**
@@ -86,6 +86,12 @@ We had made multiple fixes but the issue would keep resurfacing later. It was on
 We managed to fix this by implementing a resource guard in commit 0620a6a to free up the servers resources during a deployment but this solution unfortunately sacrifices the full uptime that we aimed to get via rolling upgrades.
 
 Overall this entire endeavor showed us the importance of running workflows locally to validate their results instead of constantly committing code to see if it solves the problem. This approach should be aimed towards for the sake of maintainability and operation.
+
+### Workflow Concurrency issues - Jordan
+A concurrency guard was implemented to solve issues regarding deploys running simultaneously, as this would cause server overload and conflicting migrations. This concurrency guard was implemented differently in production and staging, with the production version using cancel-in-progress = false to avoid silently skipping deployments, and cancel-in-progress = true for staging, as only the most up-to-date version mattered. This is evident in the commit “ab30aa6”.
+
+The key lesson learnt was that even with a ci/cd pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits. 
+
 
 
 ## **Use of Generative AI** -Tim
