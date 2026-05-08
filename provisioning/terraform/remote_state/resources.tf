@@ -1,5 +1,5 @@
 resource "digitalocean_spaces_bucket" "remote_state_bucket" {
-  name   = "remote-state-bucket-itu-minitwit-2b34b324b235b253b2"
+  name   = "remote-state-bucket-itu-minitwit-2b34b324b235b253b23"
   region = var.region
 
   versioning {

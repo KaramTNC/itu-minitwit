@@ -21,7 +21,7 @@ resource "digitalocean_droplet" "itu-minitwit" {
   name = "${var.instance_prefix}-${count.index + 1}"
   region = var.region
   image = var.image
-  size = "s-2vcpu-2gb"
+  size = "s-1vcpu-1gb"
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
   tags = ["itu-minitwit"]
 
@@ -38,7 +38,7 @@ resource "digitalocean_droplet" "itu-minitwit-monitoring" {
   name = "${var.instance_prefix}-monitoring"
   region = var.region
   image = var.image
-  size = "s-1vcpu-1gb"
+  size = "s-2vcpu-2gb"
   ssh_keys = [ data.digitalocean_ssh_key.ssh_key.id ]
   tags = ["itu-minitwit"]
 

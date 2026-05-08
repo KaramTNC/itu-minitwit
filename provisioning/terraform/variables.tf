@@ -43,7 +43,7 @@ variable "image" {
 
 variable "instance_prefix" {
   description = "Prefix for resources names"
-  default = "itu-minitwit234-DEPLOY-TEST"
+  default = "itu-minitwit"
 }
 
 variable "environment" {
