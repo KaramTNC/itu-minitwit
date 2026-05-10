@@ -6,12 +6,14 @@
     mode: "0755"
   tags: always
 
-- name: Copy configuration files
-  ansible.builtin.copy:
+- name: Synchronize configuration files
+  ansible.posix.synchronize:
     src: "files/{{ group_names[0] }}/"
-    dest: "/opt/{{ app_name }}"
-    mode: "0644"
-    directory_mode: "0755"
+    dest: "/opt/{{ app_name }}/config_files/"
+    delete: yes
+    recursive: yes
+    rsync_opts:
+      - "--chmod=D0755,F0644"
 
 - name: Deploy templates
   ansible.builtin.template:
