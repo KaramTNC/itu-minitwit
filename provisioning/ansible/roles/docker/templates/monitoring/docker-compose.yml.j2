@@ -35,8 +35,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./config_files/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
-      - ./config_files/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./config/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards
       - grafana-storage:/var/lib/grafana
     networks:
       - {{ app_name }}-network
@@ -49,7 +49,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./config_files/grafana/loki-config.yml:/etc/loki/local-config.yaml
+      - ./config/grafana/loki-config.yml:/etc/loki/local-config.yaml
       - loki-data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
@@ -61,7 +61,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./config_files/prometheus.yml:/prometheus/prometheus.yml
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"

@@ -40,8 +40,8 @@ prometheus.exporter.unix "local_system" { }
 
 prometheus.scrape "scrape_metrics" {
   targets = [
-    {"__address__" = "itu-web-server:9184", "instance" = "{{ inventory_hostname }}-web"},
-    {"__address__" = "itu-api-server:9185", "instance" = "{{ inventory_hostname }}-api"},
+    {"__address__" = "host.docker.internal:9184", "instance" = "{{ inventory_hostname }}-web"},
+    {"__address__" = "host.docker.internal:9185", "instance" = "{{ inventory_hostname }}-api"},
   ]
   forward_to      = [prometheus.remote_write.metrics_service.receiver]
   scrape_interval = "5s"
