@@ -48,6 +48,11 @@ Overall the system is safe and could use more improvements but nothing critical 
 The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PR#26.  In addition to this, we monitor the amount of time each API request takes using histograms, PR#38.
 
 
+### **What do you log in your systems and how do you aggregate logs?** -Madeleine
+
+We logs any errors that occur when processing API requests, as well as when an API request is successful. Logs often contain variables such as status codes, usernames, the type of API request, and more... We also log all requests for the project's frontend web application. All logs can be found on the projects Grafana log page, with the logs being collected with Prometheus.
+
+
 ### **Brief description of how your security hardened your systems** -Tim and Oriol
 
 The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vulnerabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out security vunabilities. For local development to store secrets locally we used .env files so our secrets weren't shared online.  
