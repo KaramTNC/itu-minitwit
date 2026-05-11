@@ -6,25 +6,41 @@ set_env() {
     set -a
     . .env
     set +a
-
+    
     export AWS_ACCESS_KEY_ID=$TF_VAR_spaces_access_id
     export AWS_SECRET_ACCESS_KEY=$TF_VAR_spaces_secret_key
+}
+
+get_opts() {
+    while getopts ":ye:" opt; do
+        case $opt in
+            y) AUTO_APPROVE=true ;;
+            e) if [ "$OPTARG" != "Production" ] && [ "$OPTARG" != "Staging" ]; then
+                    echo "\"$OPTARG\" is not a valid environment. It must be 'Production' or 'Staging'."
+                    exit 1
+                else
+                    DEPLOYMENT_ENVIRONMENT="$OPTARG"
+            fi ;;
+            *) echo "Invalid option: -$OPTARG"
+            exit 1 ;;
+        esac
+    done
 }
 
 choose_deployment_environment() {
     local prompt="$1"
     DEPLOYMENT_ENVIRONMENT=""
     local VALID_CHOICE=false
-
+    
     until [[ "$VALID_CHOICE" == true ]]; do
         printf "${YELLOW}$prompt\n1. Production\n2. Staging${RESET}\n"
-
+        
         read -p "Enter your number of choice: " deployment_environment_input
-
+        
         if [ "$deployment_environment_input" = "1" ]; then
             DEPLOYMENT_ENVIRONMENT="Production"
             VALID_CHOICE=true
-        elif [ "$deployment_environment_input" = "2" ]; then
+            elif [ "$deployment_environment_input" = "2" ]; then
             DEPLOYMENT_ENVIRONMENT="Staging"
             VALID_CHOICE=true
         else
