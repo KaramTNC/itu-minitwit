@@ -16,7 +16,7 @@ services:
     image: grafana/alloy
     container_name: grafana-alloy
     ports:
-      - "12345:12345"
+      - "127.0.0.1:12345:12345"
     volumes:
       - ./config/config.alloy:/etc/alloy/config.alloy
       - /var/run/docker.sock:/var/run/docker.sock

@@ -33,7 +33,7 @@ services:
       - grafana_admin_user
       - grafana_admin_password
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     volumes:
       - ./config/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
       - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards
@@ -47,7 +47,7 @@ services:
     image: grafana/loki
     container_name: grafana-loki
     ports:
-      - "3100:3100"
+      - "{{ hostvars[inventory_hostname]['private_ip'] }}:3100:3100"
     volumes:
       - ./config/grafana/loki-config.yml:/etc/loki/local-config.yaml
       - loki-data:/loki
@@ -64,7 +64,7 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
-      - "9090:9090"
+      - "{{ hostvars[inventory_hostname]['private_ip'] }}:9090:9090"
     command:
       - --web.enable-remote-write-receiver
     networks:
