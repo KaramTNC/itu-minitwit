@@ -5,17 +5,8 @@ on:
   workflow_call:
     inputs:
       image_tag:
-        required: false
-        type: string
-        default: "latest"
-      environment:
         required: true
         type: string
-  push:
-    branches: [main]
-    paths:
-      - "src/**"
-      - "docker/**"
 
 jobs:
   build-web:

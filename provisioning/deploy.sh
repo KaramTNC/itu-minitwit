@@ -19,7 +19,7 @@ cd terraform
 
 cd remote_state
 tofu init
-tofu apply --auto-approve
+tofu apply --auto-approve || true # Ignore 409 HTTP error when the bucket already exists
 
 cd ..
 
