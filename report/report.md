@@ -43,6 +43,51 @@ Overall the system is safe and could use more improvements but nothing critical 
 
 ## **Process' perspective**
 
+### CI/CD Pipeline, Stages and Tools
+Our CI/CD pipeline has grown to become very comprehensive and aims to perform its tasks as quick as possible in order to minimize developer wait time and ensure code can be delivered properly towards production.
+
+![DevOps CICD.png](DevOps%20CICD.png)
+
+The system comprises of the following major stages:
+
+#### Build & Test
+1. Build and upload build artifacts
+2. Parallelize the following jobs using build artifacts:
+   * CodeQL Analysis
+     * In hindsight, it is possible to move this job into a “Code Quality” workflow alongside the MegaLinter stage and make it dependent on the uploaded build artifacts for better architectural readability
+   * Check Migrations
+     * Ensures the developer doesn't forget to create a new migration if they have made changes to the entity model
+   * Test Suite 
+     * Unit, Integration and End2End are all run in parallel for quickest job time
+
+#### MegaLinter
+
+1. Download Megalinters Docker image
+   * The biggest bottleneck remains here due to GitHub runners needing to redownload the image on every job run. Ideally we would use our own selfhosted runner to minimize download time
+2. Run static analysers
+3. Upload result artifacts to GH PR
+4. Commit and Push auto-fix to GH PR
+   * While useful, this will cause both the BuildTest and MegaLinter stages to restart, thus wasting time. We did not get around to figuring out a way to optimize this issue while retaining the benefits of auto-fixes.
+
+#### Docker Build & Publish
+1. Build and Publish web and api images in parallel:
+   * Build Image 
+   * Run Docker Scout vulnerability scan 
+   * Push image to Docker Hub
+
+#### Smoke Deploy & Deploy
+On either a PR to Main, or push to main, a deploy will happen to either the staging server or production server
+1. Build migration bundle 
+2. Install Ansible & Tofu 
+3. Run Deploy IaC
+
+
+How do you monitor your systems and what precisely do you monitor? - Madeleine
+
+
+
+
+
 ### **How do you monitor your systems and what precisely do you monitor?** -Madeleine
 
 The team has used a combination of Prometheus and Grafana to monitor the project. Prometheus is used to collect metrics, while Grafana is used to visualize the data into something that can easily be understood. We currently monitor the number of requests that certain API endpoints get, such as : the 'post' endpoint for messages. The Prometheus and Grafana systems were added with PR#26.  In addition to this, we monitor the amount of time each API request takes using histograms, PR#38.
