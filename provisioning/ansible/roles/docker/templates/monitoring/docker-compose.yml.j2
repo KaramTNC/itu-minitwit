@@ -61,7 +61,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus.yml:/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "{{ hostvars[inventory_hostname]['private_ip'] }}:9090:9090"

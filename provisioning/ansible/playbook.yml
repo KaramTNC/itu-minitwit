@@ -118,6 +118,7 @@
         url: "https://{{ domain_name }}/" 
         status_code: 200
       delegate_to: localhost
+      run_once: true
       retries: 20
       delay: 3
       become: false
