@@ -5,6 +5,9 @@ check_and_set_env
 
 choose_deployment_environment "Enter the number of the deployment environment you'd like to use:"
 export TF_VAR_environment=$DEPLOYMENT_ENVIRONMENT
+if [ "$DEPLOYMENT_ENVIRONMENT" = "Staging" ]; then
+    export TF_VAR_num_instances='{"web" = 2, "lb" = 1}'
+fi
 
 cd terraform
 
