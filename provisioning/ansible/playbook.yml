@@ -52,8 +52,8 @@
       # It then gets copied to the backup load balancers.
       when: inventory_hostname == groups['loadbalancers'][0]
 
-    - role: keepalived
     - role: ufw
+    - role: keepalived
 
   post_tasks:
     - name: Archive Let's Encrypt directory on primary load balancer
@@ -110,8 +110,10 @@
       vars:
         nginx_template_file: "templates/web.conf.j2"
         nginx_site_name: "{{ domain_name }}.conf"
-    - role: docker
     - role: ufw
+    - role: migrations
+      when: inventory_hostname == groups['web'][0]
+    - role: docker
   post_tasks:
     - name: Test secure connection to SSL domain
       uri:
@@ -131,5 +133,5 @@
       vars:
         nginx_template_file: "templates/monitoring.conf.j2"
         nginx_site_name: "{{ domain_name }}.conf"
-    - role: docker
     - role: ufw
+    - role: docker

@@ -1,0 +1,30 @@
+---
+- name: Check if migration bundle exists
+  ansible.builtin.stat:
+    path: "{{ role_path }}/files/efbundle"
+  register: efbundle_stat
+  delegate_to: localhost
+  become: false
+
+- name: Apply migrations
+  when: efbundle_stat.stat.exists
+  block:
+  - name: Copy migration bundle
+    ansible.builtin.copy:
+      src: "{{ role_path }}/files/efbundle"
+      dest: "/opt/{{ app_name }}/efbundle"
+      mode: '0755'
+
+  - name: Execute migration bundle
+    ansible.builtin.shell:
+      cmd: "/opt/{{ app_name }}/efbundle --verbose --connection $DB_URL"
+    environment:
+      DB_URL: "{{ lookup('env', 'DB_URL') }}"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      DOTNET_ENVIRONMENT: "Production"
+    register: migration_result
+    failed_when: migration_result.rc != 0
+
+  - name: Show migration result
+    ansible.builtin.debug:
+      var: migration_result
