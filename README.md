@@ -42,6 +42,17 @@ Before deploying, review the following files to adjust the configuration to your
 
 Infrastructure can be deployed by just executing the [`deploy.sh`](provisioning/deploy.sh) script, which will create the necessary resources on DigitalOcean and configure them using Ansible. The creation of DNS A records requires manual intervention. The script will output which subdomains need DNS A records and to which address they must point. Upon setting up your (sub)domain(s) on your chosen registrar, confirm your action and the provisioning process will continue.
 
+#### Note on database migrations
+Database migrations must stay compatible with rolling upgrades.
+CI checks newly changed EF migrations for destructive
+operations such as drops, renames, and column alterations.
+If a contraction migration is intentional and has been reviewed for rollout
+safety, mark the migration with:
+
+```csharp
+// rolling-upgrade-reviewed
+```
+
 ## Deletion
 To tear down all infrastructure created during deployment, execute the [`destroy.sh`](provisioning/destroy.sh) script.
 > ⚠️ **Warning**: this action is irreversible and all data stored on the VMs will be lost.

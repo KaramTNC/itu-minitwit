@@ -8,6 +8,9 @@ on:
       - "src/**"
       - "docker/**"
       - "docker-compose.yml"
+      - "docker-stack.yml"
+      - "prometheus.yml"
+      - "grafana/**"
 
 jobs:
   build-web:
@@ -15,6 +18,7 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -50,6 +54,7 @@ jobs:
           image: ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
           only-severities: critical,high
           exit-code: true # aborts pipeline on findings
+          write-comment: true
           sarif-file: scout-web-results.sarif
 
       - name: Upload Scout results to GitHub Security tab
@@ -70,6 +75,7 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -104,6 +110,7 @@ jobs:
           image: ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
           only-severities: critical,high
           exit-code: true
+          write-comment: true
           sarif-file: scout-api-results.sarif
 
       - name: Upload Scout results to GitHub Security tab
@@ -119,8 +126,9 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/itu-api-server:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
 
-  publish-complete:
-    runs-on: ubuntu-latest
+  deploy:
     needs: [build-web, build-api]
-    steps:
-      - run: echo "Both images published successfully"
+    uses: ./.github/workflows/Deploy.yml
+    with:
+      image_tag: ${{ github.sha }}
+    secrets: inherit
