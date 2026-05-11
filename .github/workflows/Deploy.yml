@@ -49,7 +49,7 @@ jobs:
 
       - name: Cache migration bundle
         id: cache-efbundle
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: provisioning/ansible/roles/migrations/files/efbundle
           key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
@@ -62,10 +62,10 @@ jobs:
           dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output provisioning/ansible/roles/migrations/files/efbundle
 
       - name: Install Ansible
-        uses: rishabhc32/install-ansible@v1.2.2
+        uses: rishabhc32/install-ansible@133dc16ae3b65bbe6b678461dfd52a72fa7d5466 # v1.2.2
 
       - name: Install OpenTofu
-        uses: cybergavin/install-opentofu@v1.0.0
+        uses: cybergavin/install-opentofu@7feb70bae756d278ffb6673b161edf9dba11a8cf # v1.0.0
 
       - name: Create .env file for deploy script
         run: |

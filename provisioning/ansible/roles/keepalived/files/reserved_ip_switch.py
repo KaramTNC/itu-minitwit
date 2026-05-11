@@ -19,7 +19,7 @@ def main(floating_ip, droplet_id):
     headers = {'Authorization': 'Bearer {0}'.format(os.environ['DO_TOKEN']),
                'Content-type': 'application/json'}
     url = api_base + "/floating_ips/{0}/actions".format(floating_ip)
-    r = requests.post(url, headers=headers,  data=json.dumps(payload))
+    r = requests.post(url, headers=headers,  data=json.dumps(payload), timeout=20)
 
     resp = r.json()
     if 'message' in resp:

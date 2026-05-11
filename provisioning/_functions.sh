@@ -14,12 +14,12 @@ set_env() {
 get_opts() {
     while getopts ":ye:" opt; do
         case $opt in
-            y) AUTO_APPROVE=true ;;
+            y) export AUTO_APPROVE=true ;;
             e) if [ "$OPTARG" != "Production" ] && [ "$OPTARG" != "Staging" ]; then
                     echo "\"$OPTARG\" is not a valid environment. It must be 'Production' or 'Staging'."
                     exit 1
                 else
-                    DEPLOYMENT_ENVIRONMENT="$OPTARG"
+                    export DEPLOYMENT_ENVIRONMENT="$OPTARG"
             fi ;;
             *) echo "Invalid option: -$OPTARG"
             exit 1 ;;
