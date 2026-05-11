@@ -25,6 +25,30 @@
 ## **System's perspective**
 
 ### Design and Architecture
+Our system consists of the following.
+
+| Component        | Count | Technologies                             |
+|------------------|-------|------------------------------------------|
+| Reserved IP      | 1     | DigitalOcean Reserved IP                 |
+| Load Balancers   | 2     | Droplet & nginx                          |
+| Web + API        | 2     | Droplet, Docker, Grafana Alloy           |
+| Monitoring       | 1     | Droplet, Loki, Promethus & Grafana       |
+| Managed Database | 1     | Digitalocean Managed Database (Postgres) |
+
+#### Reserved IP Address
+A single reserved IP Address to serve as a stable public entrypoint for all inbound traffic. It is satically assigned and does not change regardless of infrastructure state. At any given time, the reserved IP is mapped to one of the two load balancer nodes. In the event a load balancer goes offline the IP can be remapped to the second load balancer, ensuring continuing service.
+
+#### Load Balancer
+Two load balancer nodes running on DigitalOcean Droplets running nginx. Both nodes are keepalives, which continouously monitors the health of the active node and orchestrates the reassingment of the reserved IP to the secondary node if failure is detected. Each load balancer functions as a reverse proxy. Incoming requests are forwarded to any of the Web/Api Servers depending on the IP-Hashing, ensuring deterministic behaviour. (Is this correct? - Anton)
+
+#### Web and API Servers
+Two droplets serve as the application layer, each running both the Web application image and the API Image, meaning our system maintains two concurrent instances of each service, providing redundancy and enabling load distribution across both nodes. Additionally each Web & API server runs Grafana Alloy, which is responsible for collecting and forwarding logs and metrics to our centralised monitoring server.
+
+#### Monitoring Server
+A dedicated droplet hosts the monitoring stack, which centralises the collection and storage of logs and data from the applications.
+
+#### Managed Database
+Application data is persisted in a DigitalOcean Managed Database running PostreSQL. Both Web and API server instances are connected to the shared database.
 
 ### Dependencies
 
@@ -55,7 +79,7 @@ We logs any errors that occur when processing API requests, as well as when an A
 
 ### **Brief description of how your security hardened your systems** -Tim and Oriol
 
-The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vulnerabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out security vunabilities. For local development to store secrets locally we used .env files so our secrets weren't shared online.  
+The System has been hardened with a fire wall and a proxy server so all traffic coming to the web/api app goes through a proxy server. all communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to secure we not introducing new security vulnerabilities CodeQL and Docker Scout was put in place in the CI pipeline to sniff out security vulnerabilities. For local development to store secrets locally we used .env files so our secrets weren't shared online.  
 
 
 ### **How do you handle availability and scaling in your systems?** -Jordan
