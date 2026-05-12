@@ -1,0 +1,124 @@
+---
+- name: Set default deny policy for incoming traffic
+  community.general.ufw:
+    direction: incoming
+    policy: deny
+
+- name: Set default allow policy for outgoing traffic
+  community.general.ufw:
+    direction: outgoing
+    policy: allow
+
+- name: Allow SSH traffic
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Configure load balancers
+  when: "'loadbalancers' in group_names"
+  block:
+    - name: Allow HTTP traffic
+      community.general.ufw:
+        rule: allow
+        to_port: "80"
+        proto: tcp
+
+    - name: Allow HTTPS traffic
+      community.general.ufw:
+        rule: allow
+        to_port: "443"
+        proto: tcp
+
+    - name: Allow VRRP unicast between load balancers
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        proto: vrrp
+      loop: "{{ groups['loadbalancers'] | difference([inventory_hostname]) }}"
+  rescue:
+    - name: Show error configuring load balancer rules
+      ansible.builtin.debug:
+        msg: "There was an error configuring UFW rules for load balancers."
+
+- name: Configure web servers
+  when: "'web' in group_names"
+  block:
+    - name: Allow LB -> web Nginx (80/tcp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "80"
+        proto: tcp
+      loop: "{{ groups['loadbalancers'] }}"
+
+    - name: Allow Swarm manager port on manager only (2377/tcp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "2377"
+        proto: tcp
+      loop: "{{ groups['web'] | difference([inventory_hostname]) }}"
+      when: inventory_hostname == groups['web'][0]
+
+    - name: Allow Swarm gossip TCP between web nodes (7946/tcp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "7946"
+        proto: tcp
+      loop: "{{ groups['web'] | difference([inventory_hostname]) }}"
+
+    - name: Allow Swarm gossip UDP between web nodes (7946/udp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "7946"
+        proto: udp
+      loop: "{{ groups['web'] | difference([inventory_hostname]) }}"
+
+    - name: Allow Swarm overlay network between web nodes (4789/udp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "4789"
+        proto: udp
+      loop: "{{ groups['web'] | difference([inventory_hostname]) }}"
+  rescue:
+    - name: Show error configuring web server rules
+      ansible.builtin.debug:
+        msg: "There was an error configuring UFW rules for web servers."
+
+- name: Configure monitoring servers
+  when: "'monitoring' in group_names"
+  block:
+    - name: Allow LB -> monitoring Nginx (80/tcp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "80"
+        proto: tcp
+      loop: "{{ groups['loadbalancers'] }}"
+
+    - name: Allow web -> Prometheus remote-write (9090/tcp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "9090"
+        proto: tcp
+      loop: "{{ groups['web'] }}"
+
+    - name: Allow web -> Loki push API (3100/tcp)
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        to_port: "3100"
+        proto: tcp
+      loop: "{{ groups['web'] }}"
+  rescue:
+    - name: Show error configuring monitoring server rules
+      ansible.builtin.debug:
+        msg: "There was an error configuring UFW rules for monitoring servers."
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
