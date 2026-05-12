@@ -1,4 +1,3 @@
-[Frontpage layout]: #
 <div style="text-align: center; line-height: 1;">
     <h1>BsC Devops</h1>
     <h2>Group D</h2>
@@ -10,16 +9,13 @@
     <p>Tim Vogensen Hounsgaard - thou@itu.dk</p>
 </div>
 
-[END frontpage layout]: #
 
 
-[Index]: #
 
 <div>
 
 </div>
 
-[End of Index]:#
 
 
 ## **System's perspective**
@@ -81,7 +77,7 @@ The system comprises of the following major stages:
      * In hindsight, it is possible to move this job into a “Code Quality” workflow alongside the MegaLinter stage and make it dependent on the uploaded build artifacts for better architectural readability
    * Check Migrations
      * Ensures the developer doesn't forget to create a new migration if they have made changes to the entity model
-   * Test Suite 
+   * Test Suite
      * Unit, Integration and End2End are all run in parallel for quickest job time
 
 #### MegaLinter
@@ -95,13 +91,13 @@ The system comprises of the following major stages:
 
 #### Docker Build & Publish
 1. Build and Publish web and api images in parallel:
-   * Build Image 
-   * Run Docker Scout vulnerability scan 
+   * Build Image
+   * Run Docker Scout vulnerability scan
    * Push image to Docker Hub
 
 #### Smoke Deploy & Deploy
 On either a PR to Main, or push to main, a deploy will happen to either the staging server or production server
-1. Build migration bundle 
+1. Build migration bundle
 2. Install Ansible & Tofu
 3. Run Deploy IaC
 
@@ -130,16 +126,16 @@ The System has been hardened with a fire wall and a proxy server so all traffic 
 ### **How do you handle availability and scaling in your systems?** -Jordan
 
 **Docker Swarm and rolling upgrades**
-Docker Swarm was introduced to manage updates without taking the system offline by stopping and restarting the containers each time through docker-compose up. Swarm allowed for the updates to be applied incrementally, bringing up new containers with the updated images before stopping the old ones. This allowed for users and the simulator to have no downtime as it was deploying, which was particularly important to prevent simulator issues. 
+Docker Swarm was introduced to manage updates without taking the system offline by stopping and restarting the containers each time through docker-compose up. Swarm allowed for the updates to be applied incrementally, bringing up new containers with the updated images before stopping the old ones. This allowed for users and the simulator to have no downtime as it was deploying, which was particularly important to prevent simulator issues.
 
 **Staging**
-A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues. 
+A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues.
 
 **Health check and rollback**
 After each deployment, the pipeline curls the web server image several times. If the service fails to respond, the pipeline automatically redeploys the previous commit’s image, restoring the previous state automatically.
 
 **Database migration**
-The deploy workflow automatically detects if any EF Core migration files changed between the commits and applies them before bringing up new containers. This keeps the database schema in sync with the application. 
+The deploy workflow automatically detects if any EF Core migration files changed between the commits and applies them before bringing up new containers. This keeps the database schema in sync with the application.
 
 **Variable number of instances**
 By using infrastructure as code, we can provision new instances and add them to the system easily. As the user base grows, new servers can be spin up without additional work other than specifying the number of instances and re-running the IaC tools. Furthermore, our load balancing setup reduces the chances of overloading specific web servers and the load balancers are monitored with keepalived, which switches the active load balancer in case the current one fails.
@@ -149,15 +145,15 @@ By using infrastructure as code, we can provision new instances and add them to 
 ### Creating staging - Madeleine
 We wanted to prevent downtime in our application, that could occur if a push broke something in the production. We created a staging branch that mirrors our Main branch closely in order to avoid those downtimes. The staging branch is connected to a staging droplet inside DigitalOcean. This branch was created for us to push new changes to, without impacting Main. Allowing us to see how Main would be impacted by the changes in a safe environment, and catch any major errors before they are deployed. There are multiple workflows that run on the staging branch, these include linting and testing steps, this can be found in the PR#09. This is relevant in regards to Operation and Maintenance, as the staging branch helps keep the application healthy and running.
 
-###  Refactoring user indexing - Madeleine
-We decided to use the project files from the course BDSA as the starting point for this project, this meant that any existing errors in the previous project would be also present in this project. This lead to the team getting many errors once the simulator began to run, specifically with the creation of users. The project we used indexed users in a very inefficient way, and meant that if two users were created at the same time, they could both share the same index, leading to users being overwritten in the database. The system could not handle asynchronous tasks. 
+### Refactoring user indexing - Madeleine
+We decided to use the project files from the course BDSA as the starting point for this project, this meant that any existing errors in the previous project would be also present in this project. This lead to the team getting many errors once the simulator began to run, specifically with the creation of users. The project we used indexed users in a very inefficient way, and meant that if two users were created at the same time, they could both share the same index, leading to users being overwritten in the database. The system could not handle asynchronous tasks.
 The team fixed the issue by refactoring the way the user indexing worked, letting the database automatically assign indexes instead of doing it manually. We learned that it is important to have very in-depth testing, to see how well an application handles multiple requests and tasks at once. Stress testing can also be a good way to find failures in the system.
 
 
 
 ### **Reflect and describe what was the "DevOps" style of your work. For example, what did you do differently to previous development projects and how did it work?**
 
-Overall the project introduced some unique challenges and new ways of working we have not been to used too. instead of having a system that just needed to work completely when handing it in. Now we had a system that needed to be live and healthy all the time. 
+Overall the project introduced some unique challenges and new ways of working we have not been to used too. instead of having a system that just needed to work completely when handing it in. Now we had a system that needed to be live and healthy all the time.
 We introduced a lot of new ways of working to accommodate this criteria. We created a staging environment that worked like production where we could test our code live before it hit production. We created more in depth CI pipeline to validate the quality of our code together with verifying we aren't introducing vulnerabilities when adding or updating packages.
 
 
@@ -173,11 +169,11 @@ Overall this entire endeavor showed us the importance of running workflows local
 ### Workflow Concurrency issues - Jordan
 A concurrency guard was implemented to solve issues regarding deploys running simultaneously, as this would cause server overload and conflicting migrations. This concurrency guard was implemented differently in production and staging, with the production version using cancel-in-progress = false to avoid silently skipping deployments, and cancel-in-progress = true for staging, as only the most up-to-date version mattered. This is evident in the commit “ab30aa6”.
 
-The key lesson learnt was that even with a ci/cd pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits. 
+The key lesson learnt was that even with a ci/cd pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits.
 
 
 
 ## **Use of Generative AI** -Tim
 
-Generative AI has been used throughout the project to help us, complete the weekly tasks. AI has been used as a debug tool / sparring partner, when a person was stuck. AI has also been used to generate a starting point for task with new technologies. The group has their own preferences in AIs so Gemini, Chatgpt, Claude and Copilot has been used during the project All have been marked as co-author when used. Pro and cons follows in the use of AI. For our purpose it has been a great tool that has saved us countless hours searching on the web, however this "easy" way could also be a hinderance in the sense it might halluciate a solution to our problem that does not work, and us taking the "easy" made harder to catch that. All in all it can be good, but we have found limiting the amount of usage is benefitial. 
+Generative AI has been used throughout the project to help us, complete the weekly tasks. AI has been used as a debug tool / sparring partner, when a person was stuck. AI has also been used to generate a starting point for task with new technologies. The group has their own preferences in AIs so Gemini, Chatgpt, Claude and Copilot has been used during the project All have been marked as co-author when used. Pro and cons follows in the use of AI. For our purpose it has been a great tool that has saved us countless hours searching on the web, however this "easy" way could also be a hinderance in the sense it might halluciate a solution to our problem that does not work, and us taking the "easy" made harder to catch that. All in all it can be good, but we have found limiting the amount of usage is benefitial.
   
