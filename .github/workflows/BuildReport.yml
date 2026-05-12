@@ -16,7 +16,7 @@ jobs:
         uses: shrink/actions-document-publish@v1
         id: publish-document
         with:
-          sources: 'report/report.md'
+          sources: 'report/'
 
       - name: Debug - find PDF
         run: find . -name "*.pdf" 2>/dev/null
