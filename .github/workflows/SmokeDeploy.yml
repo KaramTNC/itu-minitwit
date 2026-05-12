@@ -15,4 +15,8 @@ jobs:
     with:
       image_tag: staging
       environment: Staging
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
     secrets: inherit
