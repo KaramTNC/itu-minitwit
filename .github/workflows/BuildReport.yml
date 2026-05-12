@@ -12,20 +12,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Publish PDF Document
-        uses: shrink/actions-document-publish@v1
-        id: publish-document
-        with:
-          sources: 'report/report.md'
-          resource-path: 'report'
+      - name: Install Pandoc + LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended texlive-plain-generic
 
-      - name: Debug - find PDF
-        run: find . -name "*.pdf" 2>/dev/null
+      - name: Build PDF
+        working-directory: report
+        run: |
+          mkdir -p build
+          pandoc report.md \
+            --pdf-engine=xelatex \
+            --resource-path=. \
+            -o build/BSc_group_d.pdf
 
       - name: Commit and Push PDF
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          cp .publish-docs/document.pdf report/build/BSc_group_d.pdf
           git add -f report/build/BSc_group_d.pdf
           git diff --cached --quiet || (git commit -m "chore: update generated PDF" && git pull --rebase && git push)
