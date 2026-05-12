@@ -121,13 +121,12 @@ On any commit where the report.md file has been modified, the file will convert 
 
 
 ### **How do you monitor your systems and what precisely do you monitor?** - Madeleine
-- Notes: Create hyperlinks on the PR mentions
 
 The team has used a combination of Prometheus and Grafana to monitor the project:
 - Prometheus is used to collect metrics
 - Grafana is used to visualize the data into something that can easily be understood. 
 
-We currently monitor the number of requests that certain API endpoints get, such as the `/msgs/{username}` endpoint  for messages. The Prometheus and Grafana systems were added with `PR#26`.  In addition to this, we monitor the amount of time each API request takes using histograms, `PR#38`.
+We currently monitor the number of requests that certain API endpoints get, such as the `/msgs/{username}` endpoint  for messages. The Prometheus and Grafana systems were added with [PR#26](https://github.com/KaramTNC/itu-minitwit/pull/26).  In addition to this, we monitor the amount of time each API request takes using histograms, [PR#38](https://github.com/KaramTNC/itu-minitwit/pull/38).
 
 
 ### **What do you log in your systems and how do you aggregate logs?** - Madeleine
@@ -163,11 +162,10 @@ By using infrastructure as code, we can provision new instances and add them to 
 ## **Reflection' perspective**
 
 ### Creating staging - Madeleine
-Notes: - Add hyperlink to PR
 
 We wanted to prevent downtime in our application if a push were to break something in production. The staging branch was made to mirror our Main branch closely in order to avoid those downtimes, it is also connected to a staging droplet inside DigitalOcean. 
 
-This branch was created for us to push new changes without impacting Main, thus allows us to see how Main would be impacted, and catch any major errors before they are deployed. There are multiple workflows that run on the staging branch, these include linting and testing steps, this can be found in the `PR#09`. This is relevant in regards to Operation and Maintenance, as the staging branch helps keep the application healthy and running.
+This branch was created for us to push new changes without impacting Main, thus allows us to see how Main would be impacted, and catch any major errors before they are deployed. There are multiple workflows that run on the staging branch, these include linting and testing steps, this can be found in the [PR#09](https://github.com/KaramTNC/itu-minitwit/pull/9). This is relevant in regards to Operation and Maintenance, as the staging branch helps keep the application healthy and running.
 
 ###  Refactoring user indexing - Madeleine
 We decided to use the project files from the BDSA course as the starting point for this project. This meant that any existing errors in the previous project would be also present here. Thus causing the team to get many errors once the simulator began to run, specifically with the creation of users. 
@@ -179,20 +177,17 @@ We learnt that it is important to have very in-depth testing, to see how well an
 
 
 ### Smoke Deploy issues - Karam
-- Notes: hyperlink the commit
-
-After we had implemented Docker Swarm and its rolling upgrade functionality in commit `#f15cc59`, we encountered inconsistent issues regarding the smoke deploy step in our CICD. Occasionally a smoke deploy would hang on either docker swarm activity check, applying migrations, or rolling upgrade step.
+After we had implemented Docker Swarm and its rolling upgrade functionality in commit [#f15cc59](https://github.com/KaramTNC/itu-minitwit/commit/f15cc59d2411514831a67f3a950fd3263d0a52e3), we encountered inconsistent issues regarding the smoke deploy step in our CICD. Occasionally a smoke deploy would hang on either docker swarm activity check, applying migrations, or rolling upgrade step.
 
 We had made multiple fixes but the issue would keep resurfacing later. It was only after inspecting the staging server that we discovered the issue lied in the limited resources the server provides. Maxed out CPU and RAM made any other operation besides the already running docker containers impossible.
 
-We managed to fix this by implementing a resource guard in commit `0620a6a` to free up the servers resources during a deployment but this solution unfortunately sacrifices the full uptime that we aimed to get via rolling upgrades.
+We managed to fix this by implementing a resource guard in commit [#0620a6a](https://github.com/KaramTNC/itu-minitwit/commit/0620a6a005394570c1a77afe7270262fd392f155) to free up the servers resources during a deployment but this solution unfortunately sacrifices the full uptime that we aimed to get via rolling upgrades.
 
 Overall this entire endeavor showed us the importance of running workflows locally to validate their results instead of constantly committing code to see if it solves the problem. This approach should be aimed towards for the sake of maintainability and operation.
 
 ### Workflow Concurrency issues - Jordan
-- Notes: Hyperlink the commit
 
-We implemented a concurrency guard to solve issues regarding deploys running simultaneously, as this would cause server overload and conflicting migrations. This concurrency guard was implemented differently in production and staging, with the production version using `cancel-in-progress = false` to avoid silently skipping deployments, and `cancel-in-progress = true` for staging, as only the most up-to-date version mattered. This is evident in the commit “`ab30aa6`”.
+We implemented a concurrency guard to solve issues regarding deploys running simultaneously, as this would cause server overload and conflicting migrations. This concurrency guard was implemented differently in production and staging, with the production version using `cancel-in-progress = false` to avoid silently skipping deployments, and `cancel-in-progress = true` for staging, as only the most up-to-date version mattered. This is evident in the commit [#ab30aa6](https://github.com/KaramTNC/itu-minitwit/commit/ab30aa63e6e170180b5eb7d78a0c9fe908924b81).
 
 The key lesson learnt was that even with a CI/CD pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits. 
 
