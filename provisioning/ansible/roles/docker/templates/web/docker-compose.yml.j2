@@ -1,0 +1,35 @@
+networks:
+  {{ app_name }}-network:
+    name: {{ app_name }}-network
+
+# Limit log size per container
+x-logging: &default_logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  grafana-alloy:
+    <<: *default_logging
+    image: grafana/alloy
+    container_name: grafana-alloy
+    ports:
+      - "127.0.0.1:12345:12345"
+    volumes:
+      - ./config/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      - {{ app_name }}-network
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12345/metrics"]
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 3
+    extra_hosts:
+    - "host.docker.internal:host-gateway"

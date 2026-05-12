@@ -1,0 +1,24 @@
+[web]
+%{ for index, ip in web_ips ~}
+${web_names[index]} ansible_host=${ip} private_ip=${web_private_ips[index]}
+%{ endfor ~}
+
+[loadbalancers]
+%{ for index, ip in lb_ip ~}
+${lb_name[index]} ansible_host=${ip} private_ip=${lb_private_ip[index]} keepalived_state=${index == 0 ? "MASTER" : "BACKUP"} keepalived_priority=${250 - (index * 10)}
+%{ endfor ~}
+
+[monitoring]
+${monitoring_name} ansible_host=${monitoring_ip} private_ip=${monitoring_private_ip}
+
+[reserved_ip]
+${reserved_ip}
+
+[all:vars]
+ansible_user=root
+ansible_ssh_private_key_file=${private_key_path}
+ansible_python_interpreter=/usr/bin/python3
+env=${env}
+do_token=${do_token}
+reserved_ip=${reserved_ip}
+keepalived_password=${keepalived_password}
