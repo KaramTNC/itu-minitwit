@@ -50,6 +50,8 @@ A dedicated droplet hosts the monitoring stack, which centralises the collection
 #### Managed Database
 Application data is persisted in a DigitalOcean Managed Database running PostgreSQL. Both Web and API server instances are connected to the shared database.
 
+![System architecture diagram](images/system_architecture.svg)
+
 ### Dependencies - Karam & Oriol 
 
 #### Codebase
