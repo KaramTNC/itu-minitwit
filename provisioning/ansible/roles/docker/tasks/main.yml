@@ -1,0 +1,47 @@
+---
+- name: Install Docker and Docker Compose
+  include_tasks: install.yml
+
+- name: Copy configuration files and deploy templates
+  include_tasks: copy.yml
+
+- name: Create .env file for DB_URL
+  ansible.builtin.copy:
+    dest: /opt/{{ app_name }}/.env
+    content: |
+      DB_URL={{ lookup('env', 'DB_URL') }}
+  when: group_names[0] == "web"
+
+- name: Deploy stack on Swarm manager
+  include_tasks: swarm.yml
+  when: group_names[0] == "web"
+
+- name: Start all application services
+  community.docker.docker_compose_v2:
+    project_src: "/opt/{{ app_name }}"
+    state: present
+    pull: always
+    remove_orphans: true
+
+  environment:
+    IMAGE_TAG: "latest"
+    # Only needed for Grafana on the monitoring server
+    GF_SECURITY_ADMIN_USER: "{{ lookup('env', 'GF_SECURITY_ADMIN_USER') }}"
+    GF_SECURITY_ADMIN_PASSWORD: "{{ lookup('env', 'GF_SECURITY_ADMIN_PASSWORD') }}"
+  register: result
+
+- name: Show result
+  ansible.builtin.debug:
+    var: result
+
+- name: Reload Grafana dashboards # checkov:skip=CKV2_ANSIBLE_1
+  ansible.builtin.uri:
+    url: "http://localhost:{{ (subdomains | selectattr('prefix', 'equalto', 'grafana') | first).port }}/api/admin/provisioning/dashboards/reload"
+    method: POST
+    url_username: "{{ lookup('env', 'GF_SECURITY_ADMIN_USER') }}"
+    url_password: "{{ lookup('env', 'GF_SECURITY_ADMIN_PASSWORD') }}"
+    force_basic_auth: true
+    status_code: 200
+  retries: 10
+  delay: 5
+  when: group_names[0] == "monitoring"
