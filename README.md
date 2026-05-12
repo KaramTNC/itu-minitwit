@@ -125,13 +125,13 @@ To tear down all infrastructure created during deployment, execute the [`destroy
 
 ## Video demonstrations
 ### Monitoring dashboards in action
-![Monitoring dashboards in action](images/monitoring.gif)
+![Monitoring dashboards in action](report/images/monitoring.gif)
 
 ### Logging dashboard in action
-![Logging dashboard in action](images/logging.gif)
+![Logging dashboard in action](report/images/logging.gif)
 
 ### IaC in action
-![IaC in action](images/iac.gif)
+![IaC in action](report/images/iac.gif)
 
 ### CI/CD in action
-![CI/CD in action](images/cicd.gif)
+![CI/CD in action](report/images/cicd.gif)
