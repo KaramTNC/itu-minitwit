@@ -12,7 +12,7 @@ public sealed class Singleton
     static Meter s_meter = new("API", "1.0.0");
 
     //Histogram for request times
-    /*
+
     static Histogram<double> PostFollowhistogram = s_meter.CreateHistogram<double>(
         name: "PostFollow_request_time",
         unit: "s",
@@ -32,7 +32,7 @@ public sealed class Singleton
         name: "PostRegister_request_time",
         unit: "s",
         description: "The time taken to handle an http request for PostRegister"
-    );*/
+    );
     static Histogram<double> RequestDurationHistogram = s_meter.CreateHistogram<double>(
         name: "http_request_duration_seconds",
         unit: "s",
@@ -151,15 +151,10 @@ public sealed class Singleton
     }
 
     //Functions to call to add to request histograms
-    /*
+
     public void PostFollowHistogram(Stopwatch sw)
     {
         PostFollowhistogram.Record(sw.Elapsed.TotalSeconds);
-    }
-
-    public void GetLatestHistogram(Stopwatch sw)
-    {
-        LatestHistogram.Record(sw.Elapsed.TotalSeconds);
     }
 
     public void PostMsgsHistogram(Stopwatch sw)
@@ -170,14 +165,5 @@ public sealed class Singleton
     public void PostRegisterHistogram(Stopwatch sw)
     {
         RegisterHistogram.Record(sw.Elapsed.TotalSeconds);
-    }*/
-    public void RecordRequestDuration(string endpoint, string method, int statusCode, Stopwatch sw)
-    {
-        RequestDurationHistogram.Record(
-            sw.Elapsed.TotalSeconds,
-            new KeyValuePair<string, object?>("endpoint", endpoint),
-            new KeyValuePair<string, object?>("method", method),
-            new KeyValuePair<string, object?>("status_code", statusCode.ToString())
-        );
     }
 }
