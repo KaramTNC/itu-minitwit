@@ -44,7 +44,6 @@ jobs:
             **/obj
           retention-days: 1
 
-  # ADDED: CodeQL static analysis
   # Results appear in the GitHub Security tab as code-scanning alerts.
   codeql:
     name: CodeQL Security Scan
@@ -112,7 +111,6 @@ jobs:
           dotnet ef migrations has-pending-model-changes --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
         env:
           # Uses a throw-away in-memory SQLite DB so EF can reflect the model without a real server.
-          # If your migrations use PostgreSQL-specific features, replace with a real Npgsql connection string.
           ConnectionStrings__DefaultConnection: "Data Source=:memory:"
 
   unit-tests:

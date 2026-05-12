@@ -1,0 +1,40 @@
+---
+- name: Install Docker SDK for Python
+  ansible.builtin.include_role:
+    name: geerlingguy.pip
+  vars:
+    pip_install_packages:
+      - docker
+      - jsondiff
+
+- name: Ensure Swarm manager exists
+  community.docker.docker_swarm:
+    state: present
+    advertise_addr: "{{ hostvars[groups['web'][0]]['private_ip'] }}"
+  run_once: true
+  delegate_to: "{{ groups['web'][0] }}"
+
+- name: Get worker join token
+  command: docker swarm join-token -q worker
+  register: swarm_worker_token
+  run_once: true
+  delegate_to: "{{ groups['web'][0] }}"
+
+- name: Join other web nodes as workers
+  community.docker.docker_swarm:
+    state: join
+    join_token: "{{ swarm_worker_token.stdout }}"
+    remote_addrs: ["{{ hostvars[groups['web'][0]]['private_ip'] }}:2377"]
+  when: inventory_hostname != groups['web'][0]
+
+- name: Deploy stack on Swarm manager
+  community.docker.docker_stack:
+    state: present
+    name: "{{ app_name }}"
+    with_registry_auth: true
+    compose:
+      - "/opt/{{ app_name }}/docker-stack.yml"
+  run_once: true
+  delegate_to: "{{ groups['web'][0] }}"
+  environment:
+    IMAGE_TAG: "{{ lookup('env', 'IMAGE_TAG') | default('latest', true) }}"

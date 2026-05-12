@@ -145,7 +145,6 @@ namespace Org.OpenAPITools.Controllers
             // return StatusCode(200, default);
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default);
-            var sw = Stopwatch.StartNew();
             string exampleJson = null;
             exampleJson = $"{{\n  \"latest\" : {single.latest}\n}}";
             //saved for if we have to make a error message
@@ -159,9 +158,7 @@ namespace Org.OpenAPITools.Controllers
             Console.WriteLine(
                 "GetLatestValue request successfull: statuscode: " + result.StatusCode
             );
-            sw.Stop();
             single.IncrementLatestCounter(result.StatusCode ?? 200);
-            single.GetLatestHistogram(sw);
             return result;
         }
 
@@ -427,7 +424,7 @@ namespace Org.OpenAPITools.Controllers
 
             var statusCode = 204;
             Console.WriteLine(
-                "PostFollow request successful by : " + username + " , statuscode: " + single.latest
+                "PostFollow request successful by : " + username + " , statuscode: " + statusCode
             );
             sw.Stop();
             single.IncrementPostFollowersCounter(statusCode);
