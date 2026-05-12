@@ -10,7 +10,7 @@
 - name: Deploy load balancers
   hosts: loadbalancers
   become: true
-  
+
   pre_tasks:
     - name: Gather subdomains from vars for certbot
       ansible.builtin.set_fact:
@@ -44,7 +44,7 @@
       vars:
         certbot_admin_email: "{{ letsencrypt_email }}"
         certbot_create_if_missing: true
-        certbot_create_standalone_stop_services: 
+        certbot_create_standalone_stop_services:
           - nginx
         certbot_certs:
           - domains: "{{ cert_domains }}"
@@ -117,7 +117,7 @@
   post_tasks:
     - name: Test secure connection to SSL domain
       uri:
-        url: "https://{{ domain_name }}/" 
+        url: "https://{{ domain_name }}/"
         status_code: 200
       delegate_to: localhost
       run_once: true

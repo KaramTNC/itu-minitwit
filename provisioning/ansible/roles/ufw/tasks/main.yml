@@ -17,24 +17,24 @@
 - name: Configure load balancers
   when: "'loadbalancers' in group_names"
   block:
-  - name: Allow HTTP traffic
-    community.general.ufw:
-      rule: allow
-      to_port: "80"
-      proto: tcp
+    - name: Allow HTTP traffic
+      community.general.ufw:
+        rule: allow
+        to_port: "80"
+        proto: tcp
 
-  - name: Allow HTTPS traffic
-    community.general.ufw:
-      rule: allow
-      to_port: "443"
-      proto: tcp
+    - name: Allow HTTPS traffic
+      community.general.ufw:
+        rule: allow
+        to_port: "443"
+        proto: tcp
 
-  - name: Allow VRRP unicast between load balancers
-    community.general.ufw:
-      rule: allow
-      from_ip: "{{ hostvars[item].private_ip }}"
-      proto: vrrp
-    loop: "{{ groups['loadbalancers'] | difference([inventory_hostname]) }}"
+    - name: Allow VRRP unicast between load balancers
+      community.general.ufw:
+        rule: allow
+        from_ip: "{{ hostvars[item].private_ip }}"
+        proto: vrrp
+      loop: "{{ groups['loadbalancers'] | difference([inventory_hostname]) }}"
   rescue:
     - name: Show error configuring load balancer rules
       ansible.builtin.debug:

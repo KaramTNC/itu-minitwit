@@ -11,7 +11,7 @@ choose_deployment_environment "You have currently set the following environment:
 Please enter the desired number for the environment you want to destroy:"
 
 if tofu workspace select "$DEPLOYMENT_ENVIRONMENT"; then
-    tofu destroy
-    tofu workspace select default
-    tofu workspace delete "$DEPLOYMENT_ENVIRONMENT"
+	tofu destroy
+	tofu workspace select default
+	tofu workspace delete "$DEPLOYMENT_ENVIRONMENT"
 fi

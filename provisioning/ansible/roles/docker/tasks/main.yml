@@ -22,7 +22,7 @@
     state: present
     pull: always
     remove_orphans: true
-    
+
   environment:
     IMAGE_TAG: "latest"
     # Only needed for Grafana on the monitoring server

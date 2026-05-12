@@ -9,11 +9,11 @@ get_opts "$@"
 check_and_set_env
 
 if [ "$AUTO_APPROVE" = false ]; then
-    choose_deployment_environment "Enter the number of the deployment environment you'd like to use:"
+	choose_deployment_environment "Enter the number of the deployment environment you'd like to use:"
 fi
 export TF_VAR_environment=$DEPLOYMENT_ENVIRONMENT
 if [ "$DEPLOYMENT_ENVIRONMENT" = "Staging" ]; then
-    export TF_VAR_num_instances='{"web" = 2, "lb" = 1}'
+	export TF_VAR_num_instances='{"web" = 2, "lb" = 1}'
 fi
 
 cd terraform || exit
@@ -43,8 +43,8 @@ printf "\n%sPoint these records to the following DigitalOcean reserved IP addres
 awk '/\[reserved_ip\]/ {getline; print}' inventory.ini
 
 if [ "$AUTO_APPROVE" = "false" ]; then
-    printf "\n%sOnce you've created the records, press Enter to proceed with the software configuration on the servers.%s\n" "$YELLOW" "$RESET"
-    read -rp "Press Enter to continue..."
+	printf "\n%sOnce you've created the records, press Enter to proceed with the software configuration on the servers.%s\n" "$YELLOW" "$RESET"
+	read -rp "Press Enter to continue..."
 fi
 
 ansible-galaxy install -r requirements.yml
