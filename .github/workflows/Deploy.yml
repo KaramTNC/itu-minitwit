@@ -63,6 +63,8 @@ jobs:
 
       - name: Install OpenTofu
         uses: cybergavin/install-opentofu@7feb70bae756d278ffb6673b161edf9dba11a8cf # v1.0.0
+        with:
+          version: 1.11.6
 
       - name: Create .env file for deploy script
         env:
