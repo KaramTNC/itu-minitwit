@@ -54,18 +54,16 @@ Application data is persisted in a DigitalOcean Managed Database running Postgre
 [missing]
 
 ### State of the System
-Notes:
-- Missing pictures
-
-
 
 Our systems remain highly operational and secure and has been guarded against the introduction of weak code and dangerous vulnerabilities via the enforcement of static analysis and quality assessments in our CI/CD pipeline. We make use of CodeQL, SonarQube and Megalinters.
 
 Currently we stand at 94 reported issues by CodeQL, (mainly from the inherited Chirp project) involving poor coding conventions. We had closed a total of 42 other issues that were a mix of critical and mediocre coding issues.
 
-SonarQube reports an A grade over Security, Reliability and Maintainability. The main reported issues within these are regarding a 3% technical debt ratio within Maintainability. While it does not impact the grade, it should not be ignored as technical debt can easily grow out of control.
+SonarQube reports an A grade over Security and Maintainability, C on Reliability. The main reported issues within these are regarding a 3% technical debt ratio within Maintainability. While it does not impact the grade, it should not be ignored as technical debt can easily grow out of control.
 
 There are also a reported 20 reliability issues and 797 maintainability issues, mostly flagged as “Medium” severity involving the usage of proper coding conventions and type safety.
+
+![SonarQube.png](images/SonarQube.png)
 
 Overall the system is safe and could use more improvements but nothing critical that could threaten the liveliness of the system. If any new code were introduced then our tools are set up to block any PRs when highly dangerous issues are detected.
 
@@ -74,7 +72,6 @@ Overall the system is safe and could use more improvements but nothing critical 
 ## **Process' perspective**
 
 ### CI/CD Pipeline, Stages and Tools - Karam
-- Notes: Update graph with the PDF report workflow
 
 Our CI/CD pipeline has grown to become very comprehensive and aims to perform its tasks as quick as possible in order to minimize developer waiting time and ensure code can be delivered properly towards production.
 
@@ -114,10 +111,9 @@ On either a PR to Main, or push to main, a deploy will happen to either the stag
 3. Run Deploy IaC to either Staging or Main
 
 #### Release & Report
+On any push to main, make a release on GitHub.
+
 On any commit where the report.md file has been modified, the file will convert and commit a new PDF report.
-
-(Release write about it)
-
 
 
 ### **How do you monitor your systems and what precisely do you monitor?** - Madeleine
