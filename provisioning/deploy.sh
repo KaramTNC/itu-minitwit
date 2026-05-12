@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 source _functions.sh
 
 AUTO_APPROVE=false
@@ -15,35 +16,35 @@ if [ "$DEPLOYMENT_ENVIRONMENT" = "Staging" ]; then
     export TF_VAR_num_instances='{"web" = 2, "lb" = 1}'
 fi
 
-cd terraform
+cd terraform || exit
 
-cd remote_state
+cd remote_state || exit
 tofu init
 tofu apply --auto-approve || true # Ignore 409 HTTP error when the bucket already exists
 
 cd ..
 
 tofu init
-tofu workspace select -or-create $DEPLOYMENT_ENVIRONMENT
+tofu workspace select -or-create "$DEPLOYMENT_ENVIRONMENT"
 tofu apply --auto-approve
 
-cd ../ansible
+cd ../ansible || exit
 
 printf '\n%.0s' {1,8}
 
-printf "${YELLOW}ATTENTION: Cloud infrastructure has been successfully acquired.
+printf "%sATTENTION: Cloud infrastructure has been successfully acquired.
 However, before installing and configuring software, you must access your
 domain registrar's portal and create DNS A records for the root domain
-and the (sub)domain(s) specified in group_vars/all.yml, listed below:${RESET}\n"
+and the (sub)domain(s) specified in group_vars/all.yml, listed below:%s\n" "$YELLOW" "$RESET"
 
 grep 'prefix:' group_vars/all.yml | cut -d'"' -f2
 
-printf "\n${YELLOW}Point these records to the following DigitalOcean reserved IP address: ${RESET}\n"
+printf "\n%sPoint these records to the following DigitalOcean reserved IP address: %s\n" "$YELLOW" "$RESET"
 awk '/\[reserved_ip\]/ {getline; print}' inventory.ini
 
 if [ "$AUTO_APPROVE" = "false" ]; then
-    printf "\n${YELLOW}Once you've created the records, press Enter to proceed with the software configuration on the servers.${RESET}\n"
-    read -p "Press Enter to continue..."
+    printf "\n%sOnce you've created the records, press Enter to proceed with the software configuration on the servers.%s\n" "$YELLOW" "$RESET"
+    read -rp "Press Enter to continue..."
 fi
 
 ansible-galaxy install -r requirements.yml

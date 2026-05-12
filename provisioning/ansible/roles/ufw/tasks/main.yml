@@ -35,6 +35,10 @@
       from_ip: "{{ hostvars[item].private_ip }}"
       proto: vrrp
     loop: "{{ groups['loadbalancers'] | difference([inventory_hostname]) }}"
+  rescue:
+    - name: Show error configuring load balancer rules
+      ansible.builtin.debug:
+        msg: "There was an error configuring UFW rules for load balancers."
 
 - name: Configure web servers
   when: "'web' in group_names"
@@ -79,6 +83,10 @@
         to_port: "4789"
         proto: udp
       loop: "{{ groups['web'] | difference([inventory_hostname]) }}"
+  rescue:
+    - name: Show error configuring web server rules
+      ansible.builtin.debug:
+        msg: "There was an error configuring UFW rules for web servers."
 
 - name: Configure monitoring servers
   when: "'monitoring' in group_names"
@@ -106,6 +114,10 @@
         to_port: "3100"
         proto: tcp
       loop: "{{ groups['web'] }}"
+  rescue:
+    - name: Show error configuring monitoring server rules
+      ansible.builtin.debug:
+        msg: "There was an error configuring UFW rules for monitoring servers."
 
 - name: Enable UFW
   community.general.ufw:

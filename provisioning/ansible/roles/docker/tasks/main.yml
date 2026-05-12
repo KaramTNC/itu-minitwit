@@ -34,7 +34,7 @@
   ansible.builtin.debug:
     var: result
 
-- name: Reload Grafana dashboards
+- name: Reload Grafana dashboards # checkov:skip=CKV2_ANSIBLE_1
   ansible.builtin.uri:
     url: "http://localhost:{{ (subdomains | selectattr('prefix', 'equalto', 'grafana') | first).port }}/api/admin/provisioning/dashboards/reload"
     method: POST

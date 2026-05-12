@@ -10,13 +10,6 @@ on:
         required: true
         type: string
   workflow_dispatch:
-    inputs:
-      image_tag:
-        required: true
-        type: string
-      environment:
-        required: true
-        type: string
   push:
     branches: [main]
 

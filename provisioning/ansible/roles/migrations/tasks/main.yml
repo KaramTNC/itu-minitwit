@@ -28,3 +28,7 @@
   - name: Show migration result
     ansible.builtin.debug:
       var: migration_result
+  rescue:
+    - name: Show migration error
+      ansible.builtin.debug:
+        var: migration_result

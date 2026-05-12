@@ -1,13 +1,18 @@
+#!/usr/bin/env bash
+
 YELLOW='\033[1;33m'
 RED='\033[1;31m'
 RESET='\033[0m'
 
 set_env() {
     set -a
+    # shellcheck disable=SC1091
     . .env
     set +a
     
+    # shellcheck disable=SC2154
     export AWS_ACCESS_KEY_ID=$TF_VAR_spaces_access_id
+    # shellcheck disable=SC2154
     export AWS_SECRET_ACCESS_KEY=$TF_VAR_spaces_secret_key
 }
 
@@ -33,9 +38,9 @@ choose_deployment_environment() {
     local VALID_CHOICE=false
     
     until [[ "$VALID_CHOICE" == true ]]; do
-        printf "${YELLOW}$prompt\n1. Production\n2. Staging${RESET}\n"
+        printf "%s$prompt\n1. Production\n2. Staging%s\n" "$YELLOW" "$RESET"
         
-        read -p "Enter your number of choice: " deployment_environment_input
+        read -rp "Enter your number of choice: " deployment_environment_input
         
         if [ "$deployment_environment_input" = "1" ]; then
             DEPLOYMENT_ENVIRONMENT="Production"
@@ -44,7 +49,7 @@ choose_deployment_environment() {
             DEPLOYMENT_ENVIRONMENT="Staging"
             VALID_CHOICE=true
         else
-            printf "${RED}Please enter a valid number (1 or 2).${RESET}\n\n"
+            printf "%sPlease enter a valid number (1 or 2).%s\n\n" "$RED" "$RESET"
         fi
     done
 }
