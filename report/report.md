@@ -70,7 +70,7 @@ Overall the system is safe and could use more improvements but nothing critical 
 ### CI/CD Pipeline, Stages and Tools
 Our CI/CD pipeline has grown to become very comprehensive and aims to perform its tasks as quick as possible in order to minimize developer wait time and ensure code can be delivered properly towards production.
 
-![DevOps CICD.png](DevOps%20CICD.png)
+![DevOps CICD.png](images/DevOps%20CICD.png)
 
 The system comprises of the following major stages:
 
@@ -102,7 +102,7 @@ The system comprises of the following major stages:
 #### Smoke Deploy & Deploy
 On either a PR to Main, or push to main, a deploy will happen to either the staging server or production server
 1. Build migration bundle 
-2. Install Ansible & Tofu 
+2. Install Ansible & Tofu
 3. Run Deploy IaC
 
 
