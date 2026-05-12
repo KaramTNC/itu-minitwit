@@ -4,12 +4,12 @@
   "metadata": {
     "name": "adfx2wq",
     "namespace": "default",
-    "uid": "d1eed2e8-d846-4b64-baf5-7860dee1ce35",
-    "resourceVersion": "1778577090562015",
-    "generation": 6,
-    "creationTimestamp": "2026-05-08T14:47:30Z",
+    "uid": "88bd2e3c-0a0f-43c1-8e2b-9d57b0d5c080",
+    "resourceVersion": "1778583840806995",
+    "generation": 3,
+    "creationTimestamp": "2026-05-12T10:48:26Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "3624492391313408"
+      "grafana.app/deprecatedInternalID": "510281029554176"
     },
     "annotations": {
       "grafana.app/createdBy": "access-policy:service",
@@ -17,13 +17,12 @@
       "grafana.app/managedBy": "classic-file-provisioning",
       "grafana.app/managerAllowsEdits": "true",
       "grafana.app/managerId": "default",
-      "grafana.app/message": "POstRegister request time",
-      "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-      "grafana.app/sourceChecksum": "d14b7560172128dd97ca2c1f4285b8a2",
+      "grafana.app/saved-from-ui": "Grafana v13.0.1+security-01 (9bbe672d)",
+      "grafana.app/sourceChecksum": "7825279e0fbba2b7d461303085940f81",
       "grafana.app/sourcePath": "/etc/grafana/provisioning/dashboards/api-requests.json",
-      "grafana.app/sourceTimestamp": "1778425010000",
-      "grafana.app/updatedBy": "user:cflgbi3qltlogf",
-      "grafana.app/updatedTimestamp": "2026-05-12T09:11:30Z"
+      "grafana.app/sourceTimestamp": "1778582266000",
+      "grafana.app/updatedBy": "user:dfltzzwo1f9q8e",
+      "grafana.app/updatedTimestamp": "2026-05-12T11:04:00Z"
     }
   },
   "spec": {
@@ -93,7 +92,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "histogram",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "bucketCount": 25,
@@ -112,7 +111,7 @@
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "µs",
+                  "unit": "ms",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -190,7 +189,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "annotations": {
@@ -308,7 +307,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "annotations": {
@@ -426,7 +425,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "annotations": {
@@ -544,7 +543,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "annotations": {
@@ -662,7 +661,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "histogram",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "bucketCount": 25,
@@ -763,7 +762,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "histogram",
-            "version": "13.0.1",
+            "version": "13.0.1+security-01",
             "spec": {
               "options": {
                 "bucketCount": 25,
@@ -782,7 +781,7 @@
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "µs",
+                  "unit": "ms",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
