@@ -65,8 +65,10 @@ jobs:
         uses: cybergavin/install-opentofu@7feb70bae756d278ffb6673b161edf9dba11a8cf # v1.0.0
 
       - name: Create .env file for deploy script
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
-          echo "${{ secrets.ENV_FILE }}" > provisioning/.env
+          printf '%s' "$ENV_FILE" > provisioning/.env
 
       - name: Execute deploy script
         run: |
