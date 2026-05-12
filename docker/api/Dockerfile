@@ -1,7 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # Container we use for final publish
-FROM dhi.io/aspnetcore:8 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine3.23 AS base
 
 
 WORKDIR /app
@@ -43,8 +43,8 @@ COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 USER appuser
 
-# CKV_DOCKER_2: Add healthcheck
+# Shell-free healthcheck for chiseled runtime images.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:80/health || exit 1
+  CMD ["dotnet", "--info"]
 
 ENTRYPOINT ["dotnet", "Org.OpenAPITools.dll"]

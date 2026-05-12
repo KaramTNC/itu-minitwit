@@ -8,10 +8,21 @@ on:
       - "src/**"
       - "docker/**"
       - "docker-compose.yml"
+      - "docker-stack.yml"
+      - "prometheus.yml"
+      - "grafana/**"
+
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: true
 
 jobs:
   build-web:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -25,20 +36,45 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-      - name: Build & Push Web image
+      - name: Build Web image
         uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           context: .
           file: docker/web/Dockerfile
-          push: true
+          push: false
+          load: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/itu-web-server:staging
             ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
 
+      - name: Docker Scout vulnerability scan
+        uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de # v1.18.2
+        with:
+          command: cves
+          image: ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
+          only-severities: critical,high
+          exit-code: true
+          sarif-file: scout-web-results.sarif
+
+      - name: Upload Scout results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
+        with:
+          sarif_file: scout-web-results.sarif
+
+      - name: Push Web image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/itu-web-server:staging
+          docker push ${{ secrets.DOCKER_USERNAME }}/itu-web-server:${{ github.sha }}
+
   build-api:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -52,17 +88,38 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-      - name: Build & Push API image
+      - name: Build API image
         uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           context: .
           file: docker/api/Dockerfile
-          push: true
+          push: false
+          load: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/itu-api-server:staging
             ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
           cache-from: type=gha,scope=api
           cache-to: type=gha,mode=max,scope=api
+
+      - name: Docker Scout vulnerability scan
+        uses: docker/scout-action@f8c776824083494ab0d56b8105ba2ca85c86e4de # v1.18.2
+        with:
+          command: cves
+          image: ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
+          only-severities: critical,high
+          exit-code: true
+          sarif-file: scout-api-results.sarif
+
+      - name: Upload Scout results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
+        with:
+          sarif_file: scout-api-results.sarif
+
+      - name: Push API image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/itu-api-server:staging
+          docker push ${{ secrets.DOCKER_USERNAME }}/itu-api-server:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -71,6 +128,9 @@ jobs:
       DB_URL: ${{ secrets.DB_URL }}
       GF_SECURITY_ADMIN_USER: ${{ secrets.GF_SECURITY_ADMIN_USER }}
       GF_SECURITY_ADMIN_PASSWORD: ${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}
+      IMAGE_TAG: ${{ github.sha }}
+      STAGING_HOST: root@134.122.71.241
+      SSH_COMMON_ARGS: -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=10 -o ConnectionAttempts=3 -o ServerAliveInterval=15 -o ServerAliveCountMax=4
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -83,54 +143,301 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Check for migration changes
-        id: migrations
-        run: |
-          git diff --name-only origin/main HEAD | grep -q 'Migrations/' \
-            && echo "changed=true" >> $GITHUB_OUTPUT \
-            || echo "changed=false" >> $GITHUB_OUTPUT
+      - name: Cache migration bundle
+        id: cache-efbundle
+        uses: actions/cache@v4
+        with:
+          path: ./efbundle
+          key: efbundle-${{ hashFiles('src/Infrastructure/Migrations/**') }}
 
       - name: Setup .NET
-        if: steps.migrations.outputs.changed == 'true'
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
         with:
           dotnet-version: 8.0.x
 
-      - name: Apply database migrations
-        if: steps.migrations.outputs.changed == 'true'
+      - name: Build database migration bundle
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
-          dotnet tool install --global dotnet-ef
-          dotnet restore
-          dotnet build --no-restore --configuration Release
-          dotnet ef database update --no-build --configuration Release --project src/Infrastructure --startup-project src/Web
+          dotnet tool install --global dotnet-ef --version 8.0.22
+          dotnet restore src/Web/Web.csproj
+          dotnet ef migrations bundle --self-contained --runtime linux-x64 --configuration Release --project src/Infrastructure --startup-project src/Web --output ./efbundle
 
-      - name: Copy files to staging server
+      - name: Copy config files to staging server
         run: |
-          sed -i 's|${DOCKER_USERNAME}|${{ secrets.DOCKER_USERNAME }}|g' docker-compose.yml
-          scp -r -o StrictHostKeyChecking=no docker-compose.yml prometheus.yml grafana root@134.122.71.241:/itu-minitwit/
+          timeout 45 rsync -az -e "ssh $SSH_COMMON_ARGS" docker-compose.yml docker-stack.yml prometheus.yml grafana/ "$STAGING_HOST:/itu-minitwit/"
+
+      - name: Copy migration bundle to staging server
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
+        run: rsync -az -e "ssh -o StrictHostKeyChecking=no" efbundle root@134.122.71.241:/itu-minitwit/
 
       - name: Create .env file on staging server
         run: |
-          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
+          timeout 30 ssh $SSH_COMMON_ARGS "$STAGING_HOST" "
             echo 'DB_URL=${{ secrets.DB_URL }}' > /itu-minitwit/.env
           "
 
-      - name: Pull and redeploy on staging
+      - name: Apply database migrations on staging server
+        if: steps.cache-efbundle.outputs.cache-hit != 'true'
         run: |
-          ssh -o StrictHostKeyChecking=no root@134.122.71.241 "
-            cd /itu-minitwit &&
-            echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin &&
-            export IMAGE_TAG=staging &&
-            export GF_SECURITY_ADMIN_USER='${{ secrets.GF_SECURITY_ADMIN_USER }}' &&
-            export GF_SECURITY_ADMIN_PASSWORD='${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' &&
-            docker compose up -d --pull always --remove-orphans
+          timeout 420 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          cd /itu-minitwit
+          chmod +x ./efbundle
+
+          resource_guard() {
+            mem_available_kb=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
+            mem_available_mb=$((mem_available_kb / 1024))
+            load1=$(awk '{print int($1)}' /proc/loadavg)
+            cpu_count=$(nproc)
+            load_limit=$((cpu_count * 3))
+            echo "resource_guard: mem_available_mb=${mem_available_mb}, load1=${load1}, cpu_count=${cpu_count}"
+
+            if [ "$mem_available_mb" -lt 150 ] || [ "$load1" -gt "$load_limit" ]; then
+              echo "Low resources detected. Reclaiming capacity before migration."
+              timeout 20 docker ps --format '{{.ID}} {{.Names}} {{.Status}}' || true
+              ps -eo pid,pcpu,pmem,comm --sort=-pcpu | head -n 20 || true
+              timeout 30 docker container prune -f || true
+              timeout 30 docker image prune -af --filter "until=24h" || true
+              pids="$(ps -eo pid,pcpu,comm --no-headers | awk '$2 > 70 && $3 !~ /^(dockerd|containerd|sshd|systemd|bash)$/ {print $1}')"
+              if [ -n "$pids" ]; then
+                echo "$pids" | xargs -r kill -TERM || true
+                sleep 5
+                echo "$pids" | xargs -r kill -KILL || true
+              fi
+            fi
+          }
+
+          recover_server_processes() {
+            echo "Restarting server processes for recovery..."
+            timeout 30 systemctl restart docker || timeout 30 service docker restart || true
+            timeout 30 docker ps || true
+          }
+
+          echo "::group::migration host diagnostics"
+          date -Is
+          uptime || true
+          free -h || true
+          df -h / || true
+          ps -eo pid,ppid,%cpu,%mem,comm --sort=-%cpu | head -n 15 || true
+          ps -eo pid,ppid,%cpu,%mem,comm --sort=-%mem | head -n 15 || true
+          timeout 10 docker stats --no-stream || true
+          echo "::endgroup::"
+
+          resource_guard
+
+          db_url='${{ secrets.DB_URL }}'
+          if echo "$db_url" | grep -q '^Host='; then
+            db_host="$(echo "$db_url" | sed -nE 's/.*Host=([^;]+).*/\1/p')"
+            db_port="$(echo "$db_url" | sed -nE 's/.*Port=([0-9]+).*/\1/p')"
+          else
+            db_host="$(echo "$db_url" | sed -nE 's#^[a-zA-Z0-9+.-]+://[^@]*@?([^:/?;]+).*#\1#p')"
+            db_port="$(echo "$db_url" | sed -nE 's#^[a-zA-Z0-9+.-]+://[^@]*@?[^:/?;]+:([0-9]+).*#\1#p')"
+          fi
+          db_port="${db_port:-5432}"
+          echo "Database endpoint check: ${db_host}:${db_port}"
+          if timeout 10 bash -c "</dev/tcp/${db_host}/${db_port}"; then
+            echo "Database TCP connectivity: OK"
+          else
+            echo "Database TCP connectivity: FAILED"
+          fi
+
+          for attempt in 1 2 3; do
+            echo "Running migrations attempt ${attempt}/3"
+            if ASPNETCORE_ENVIRONMENT=Production DOTNET_ENVIRONMENT=Production timeout 180 ./efbundle --verbose --connection '${{ secrets.DB_URL }}'; then
+              exit_code=0
+              exit 0
+            else
+              exit_code=$?
+            fi
+
+            echo "Migration attempt ${attempt} failed with exit code ${exit_code}"
+            if [ "$attempt" -lt 3 ]; then
+              echo "Retrying migrations in 15 seconds..."
+              sleep 15
+            fi
+          done
+
+          echo "Migration failed after 3 attempts"
+          recover_server_processes
+          exit 1
+          REMOTE
+
+      - name: Ensure Docker Swarm is active
+        run: |
+          timeout 75 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          swarm_state="$(timeout 20 docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || echo unknown)"
+          control_available="$(timeout 20 docker info --format '{{.Swarm.ControlAvailable}}' 2>/dev/null || echo false)"
+
+          if [ "$swarm_state" != "active" ] || [ "$control_available" != "true" ]; then
+            timeout 15 docker swarm leave --force >/dev/null 2>&1 || true
+            timeout 25 docker swarm init --advertise-addr 134.122.71.241 >/dev/null 2>&1 || true
+          fi
+
+          final_state="$(timeout 20 docker info --format '{{.Swarm.LocalNodeState}}' 2>/dev/null || echo unknown)"
+          final_control="$(timeout 20 docker info --format '{{.Swarm.ControlAvailable}}' 2>/dev/null || echo false)"
+          echo "swarm_state=${final_state}, control_available=${final_control}"
+          [ "$final_state" = "active" ] && [ "$final_control" = "true" ]
+          REMOTE
+
+      - name: Create Docker secrets on staging server
+        run: |
+          timeout 45 ssh $SSH_COMMON_ARGS "$STAGING_HOST" "
+            if ! timeout 15 docker secret inspect itu_grafana_admin_user >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_USER }}' | timeout 15 docker secret create itu_grafana_admin_user -
+            fi
+            if ! timeout 15 docker secret inspect itu_grafana_admin_password >/dev/null 2>&1; then
+              printf '%s' '${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}' | timeout 15 docker secret create itu_grafana_admin_password -
+            fi
           "
 
-      - name: Smoke test
+      - name: Rolling deploy on staging
         run: |
-          for i in {1..20}; do
-            curl --fail http://134.122.71.241:5001 && exit 0
+          timeout 900 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+
+          resource_guard() {
+            mem_available_kb=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
+            mem_available_mb=$((mem_available_kb / 1024))
+            load1=$(awk '{print int($1)}' /proc/loadavg)
+            cpu_count=$(nproc)
+            load_limit=$((cpu_count * 3))
+            echo "resource_guard: mem_available_mb=${mem_available_mb}, load1=${load1}, cpu_count=${cpu_count}"
+
+            if [ "$mem_available_mb" -lt 150 ] || [ "$load1" -gt "$load_limit" ]; then
+              echo "Low resources detected. Reclaiming capacity before rollout."
+              timeout 30 docker container prune -f || true
+              timeout 30 docker image prune -af --filter "until=24h" || true
+            fi
+          }
+
+          recover_server_processes() {
+            echo "Deployment failed. Restarting server processes for recovery..."
+            timeout 30 systemctl restart docker || timeout 30 service docker restart || true
+            timeout 30 docker ps || true
+          }
+
+          diagnose_service() {
+            service="$1"
+            echo "::group::${service} tasks"
+            docker service ps --no-trunc "$service" || true
+            echo "::endgroup::"
+            echo "::group::${service} recent logs"
+            docker service logs --tail 80 "$service" 2>&1 || true
+            echo "::endgroup::"
+          }
+
+          wait_service() {
+            service="$1"
+            expected="$2"
+
+            for attempt in $(seq 1 36); do
+              replicas=$(timeout 15 docker service ls --filter "name=${service}" --format '{{.Replicas}}' 2>/dev/null | head -n 1 || echo "0/0")
+              update_state=$(timeout 15 docker service inspect "$service" --format '{{if .UpdateStatus}}{{.UpdateStatus.State}}{{else}}completed{{end}}' 2>/dev/null || echo missing)
+              echo "${service}: replicas=${replicas:-missing}, update=${update_state}, attempt=${attempt}/36"
+
+              if [ "$replicas" = "${expected}/${expected}" ] && [ "$update_state" = "completed" ]; then
+                return 0
+              fi
+
+              if [ "$update_state" = "paused" ] || [ "$update_state" = "rollback_paused" ]; then
+                diagnose_service "$service"
+                return 1
+              fi
+
+              sleep 5
+            done
+
+            diagnose_service "$service"
+            return 1
+          }
+
+          cd /itu-minitwit
+          echo "::group::pre-deploy host usage"
+          df -h /
+          free -h || true
+          uptime || true
+          timeout 20 docker system df || true
+          echo "::endgroup::"
+          resource_guard
+          echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
+          export DOCKER_USERNAME='${{ secrets.DOCKER_USERNAME }}'
+          export IMAGE_TAG='${{ env.IMAGE_TAG }}'
+          export DB_URL='${{ secrets.DB_URL }}'
+
+          docker pull "${DOCKER_USERNAME}/itu-web-server:${IMAGE_TAG}" || true
+          docker pull "${DOCKER_USERNAME}/itu-api-server:${IMAGE_TAG}" || true
+
+          if docker stack deploy --compose-file docker-stack.yml --with-registry-auth --detach=true itu-minitwit && \
+             wait_service itu-minitwit_itu-web-server 2 && \
+             wait_service itu-minitwit_itu-api-server 2; then
+            exit 0
+          fi
+
+          recover_server_processes
+          exit 1
+          REMOTE
+
+      - name: Smoke test
+        id: smoketest
+        run: |
+          for i in {1..30}; do
+            if timeout 20 ssh $SSH_COMMON_ARGS "$STAGING_HOST" "curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://127.0.0.1:5001/health >/dev/null && curl --silent --show-error --fail --connect-timeout 3 --max-time 8 http://127.0.0.1:8080/health >/dev/null"; then
+              echo "Smoke check passed on attempt ${i}/30."
+              exit 0
+            fi
             sleep 2
           done
           echo "Health check failed."
+          timeout 90 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set +e
+          echo "::group::staging service states"
+          timeout 20 docker service ls || true
+          timeout 20 docker service ps --no-trunc itu-minitwit_itu-web-server || true
+          timeout 20 docker service ps --no-trunc itu-minitwit_itu-api-server || true
+          echo "::endgroup::"
+          echo "::group::staging recent logs"
+          timeout 20 docker service logs --tail 120 itu-minitwit_itu-web-server 2>&1 || true
+          timeout 20 docker service logs --tail 120 itu-minitwit_itu-api-server 2>&1 || true
+          echo "::endgroup::"
+          echo "::group::staging recovery restart"
+          timeout 30 systemctl restart docker || timeout 30 service docker restart || true
+          timeout 30 docker service update --force itu-minitwit_itu-web-server || true
+          timeout 30 docker service update --force itu-minitwit_itu-api-server || true
+          timeout 30 docker ps || true
+          echo "::endgroup::"
+          REMOTE
           exit 1
+
+      - name: Cleanup unused Docker artifacts on staging
+        if: success()
+        continue-on-error: true
+        run: |
+          timeout 180 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set -u
+          echo "::group::pre-cleanup docker usage"
+          df -h /
+          timeout 20 docker system df || true
+          echo "::endgroup::"
+
+          timeout 30 docker container prune -f || true
+          timeout 60 docker image prune -a -f || true
+          timeout 60 docker builder prune -a -f || true
+
+          echo "::group::post-cleanup docker usage"
+          df -h /
+          timeout 20 docker system df || true
+          echo "::endgroup::"
+          REMOTE
+
+      - name: Rollback on smoke test failure
+        if: failure() && steps.smoketest.conclusion == 'failure'
+        run: |
+          timeout 120 ssh $SSH_COMMON_ARGS "$STAGING_HOST" 'bash -s' <<'REMOTE'
+          set +e
+          cd /itu-minitwit || exit 0
+          timeout 30 docker service rollback itu-minitwit_itu-web-server || true
+          timeout 30 docker service rollback itu-minitwit_itu-api-server || true
+          REMOTE
