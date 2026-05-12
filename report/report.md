@@ -51,7 +51,55 @@ A dedicated droplet hosts the monitoring stack, which centralises the collection
 Application data is persisted in a DigitalOcean Managed Database running PostgreSQL. Both Web and API server instances are connected to the shared database.
 
 ### Dependencies
-[missing]
+
+#### Codebase
+Our codebase has a significant number of package dependencies that it relies on. These are the most relevant ones:
+
+* Microsoft.Playwright 
+  * Xunit 
+  * NUnit
+* Npsql.EntityFrameworkCore.PostgreSQL
+* EFCore
+* OpenTelemetry.Exporter
+  * OpenTelemetryProtocol
+  * Prometheus.HttpListener
+* Swashbuckle.AspNetCore 
+  * Annotations
+  Newtonsoft
+  SwaggerUI
+* Xunit 
+* NUnit
+
+
+#### CI/CD
+The CI/CD pipeline makes use of a wide arrange of tools:
+
+* Infrastructure as code
+  - OpenTofu: creates the cloud resources 
+  - Ansible: installs and configures software on the cloud resources acquired by OpenTofu.
+* Workflows 
+  * GitHub Actions: runs a set of workflows that define the CI/CD pipeline to deploy and test the project. 
+    * CodeQL, Codacy, Docker Scout, MegaLinter, Playwright
+* Containerization
+  * Docker
+
+
+#### Observability
+
+* Monitoring and logging
+  * Grafana Alloy 
+  * Grafana Loki 
+  * Prometheus 
+  * OpenTelemetry
+
+#### Cloud Infrastructure
+* DigitalOcean
+  * Droplets
+  * Managed DB (PostgreSQL)
+  * Reserved IP
+  * Space (bucket)
+
+
 
 ### State of the System
 
