@@ -22,9 +22,9 @@
 [End of Index]:#
 
 
-## **System's perspective** [CHECKMARK]
+## **System's perspective**
 
-### Design and Architecture
+### Design and Architecture - Anton & Oriol
 Our system consists of the following.
 
 | Component        | Count | Technologies                             |
@@ -50,7 +50,7 @@ A dedicated droplet hosts the monitoring stack, which centralises the collection
 #### Managed Database
 Application data is persisted in a DigitalOcean Managed Database running PostgreSQL. Both Web and API server instances are connected to the shared database.
 
-### Dependencies
+### Dependencies - Karam & Oriol 
 
 #### Codebase
 Our codebase has a significant number of package dependencies that it relies on. These are the most relevant ones:
@@ -101,7 +101,7 @@ The CI/CD pipeline makes use of a wide arrange of tools:
 
 
 
-### State of the System
+### State of the System - Karam
 
 Our systems remain highly operational and secure and has been guarded against the introduction of weak code and dangerous vulnerabilities via the enforcement of static analysis and quality assessments in our CI/CD pipeline. We make use of CodeQL, SonarQube and Megalinters.
 
@@ -164,7 +164,7 @@ On any push to main, make a release on GitHub.
 On any commit where the report.md file has been modified, the file will convert and commit a new PDF report.
 
 
-### **How do you monitor your systems and what precisely do you monitor?** - Madeleine
+### System Monitoring - Madeleine
 
 The team has used a combination of Prometheus and Grafana to monitor the project:
 - Prometheus is used to collect metrics
@@ -173,17 +173,17 @@ The team has used a combination of Prometheus and Grafana to monitor the project
 We currently monitor the number of requests that certain API endpoints get, such as the `/msgs/{username}` endpoint  for messages. The Prometheus and Grafana systems were added with [PR#26](https://github.com/KaramTNC/itu-minitwit/pull/26).  In addition to this, we monitor the amount of time each API request takes using histograms, [PR#38](https://github.com/KaramTNC/itu-minitwit/pull/38).
 
 
-### **What do you log in your systems and how do you aggregate logs?** - Madeleine
+### System Logging and Aggregation - Madeleine
 
 We logs any errors that occur when processing API requests, as well as when an API request is successful. Logs often contain variables such as status codes, usernames, the type of API request and other relevant details. We also log all requests for the project's frontend web application. All logs can be found on the projects Grafana log page, with the logs being collected with Grafana Loki.
 
 
-### **Brief description of how your security hardened your systems** - Tim and Oriol
+### System Security Hardening - Tim & Oriol
 
 The System has been hardened with a firewall and a proxy server so all traffic coming to the web/api app goes through a proxy server. All communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to ensure we are not introducing new security vulnerabilities, CodeQL and Docker Scout was put in place in the CI pipeline to detect any of them. For local development and to prevent leakage, we store our secrets on .env files. 
 
 
-### **How do you handle availability and scaling in your systems?** - Jordan
+### System Availability & Scaling - Jordan
 
 #### **Staging**
 A staging branch was created to validate new changes before deployment, where there is no risk of affecting the production environment. The testing of these changes in a separate environment reduces the chance of needing to rollback on the main branch regarding integration issues.
@@ -205,7 +205,7 @@ By using infrastructure as code, we can provision new instances and add them to 
 
 ## **Reflection' perspective**
 
-### Creating staging - Madeleine
+### Staging Branch - Madeleine
 
 We wanted to prevent downtime in our application if a push were to break something in production. The staging branch was made to mirror our Main branch closely in order to avoid those downtimes, it is also connected to a staging droplet inside DigitalOcean. 
 
@@ -235,7 +235,7 @@ We implemented a concurrency guard to solve issues regarding deploys running sim
 
 The key lesson learnt was that even with a CI/CD pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits. 
 
-### **Reflect and describe what was the "DevOps" style of your work.** - Tim
+### Reflection on the teams "DevOps" style - Tim
 
 Overall the project introduced some unique challenges and new ways of working that we had not been used to perform. Here we had to build a system that continuously live and healthy all the time throughout the project instead of aiming to deliver a system that just worked at the time of handing it in.
 
