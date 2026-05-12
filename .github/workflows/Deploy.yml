@@ -72,6 +72,13 @@ jobs:
         run: |
           printf '%s' "$ENV_FILE" > provisioning/.env
 
+      - name: Create private SSH key file for Ansible
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          printf '%s' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Execute deploy script
         run: |
           cd provisioning
