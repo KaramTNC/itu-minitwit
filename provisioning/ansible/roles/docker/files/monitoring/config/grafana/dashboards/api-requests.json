@@ -4,12 +4,12 @@
   "metadata": {
     "name": "adfx2wq",
     "namespace": "default",
-    "uid": "fc8c9e74-a0b0-4ca8-b701-bb6c55cc09e6",
-    "resourceVersion": "1778249648631017",
-    "generation": 4,
-    "creationTimestamp": "2026-05-08T13:41:25Z",
+    "uid": "d1eed2e8-d846-4b64-baf5-7860dee1ce35",
+    "resourceVersion": "1778577090562015",
+    "generation": 6,
+    "creationTimestamp": "2026-05-08T14:47:30Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "3607858937782272"
+      "grafana.app/deprecatedInternalID": "3624492391313408"
     },
     "annotations": {
       "grafana.app/createdBy": "access-policy:service",
@@ -17,13 +17,13 @@
       "grafana.app/managedBy": "classic-file-provisioning",
       "grafana.app/managerAllowsEdits": "true",
       "grafana.app/managerId": "default",
-      "grafana.app/message": "changes",
+      "grafana.app/message": "POstRegister request time",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-      "grafana.app/sourceChecksum": "07cd8ade5ba1f5a4822971815e81425e",
+      "grafana.app/sourceChecksum": "d14b7560172128dd97ca2c1f4285b8a2",
       "grafana.app/sourcePath": "/etc/grafana/provisioning/dashboards/api-requests.json",
-      "grafana.app/sourceTimestamp": "1778247620000",
-      "grafana.app/updatedBy": "user:fflg5lysy0934c",
-      "grafana.app/updatedTimestamp": "2026-05-08T14:14:08Z"
+      "grafana.app/sourceTimestamp": "1778425010000",
+      "grafana.app/updatedBy": "user:cflgbi3qltlogf",
+      "grafana.app/updatedTimestamp": "2026-05-12T09:11:30Z"
     }
   },
   "spec": {
@@ -51,6 +51,105 @@
     "cursorSync": "Off",
     "editable": true,
     "elements": {
+      "panel-10": {
+        "kind": "Panel",
+        "spec": {
+          "id": 10,
+          "title": "PostRegister request time",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "PBFA97CFB590B2093"
+                      },
+                      "spec": {
+                        "editorMode": "builder",
+                        "expr": "PostRegister_request_time_seconds_bucket",
+                        "format": "time_series",
+                        "instant": false,
+                        "legendFormat": "__auto",
+                        "range": true
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "histogram",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "bucketCount": 25,
+                "combine": true,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "µs",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
       "panel-2": {
         "kind": "Panel",
         "spec": {
@@ -582,7 +681,7 @@
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "ms",
+                  "unit": "µs",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -683,7 +782,7 @@
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "ms",
+                  "unit": "µs",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -801,6 +900,19 @@
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-9"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 24,
+              "width": 12,
+              "height": 8,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-10"
               }
             }
           }
