@@ -24,6 +24,7 @@ jobs:
           pandoc report.md \
             --pdf-engine=weasyprint \
             --standalone \
+            -t html \
             --resource-path=. \
             -o build/BSc_group_d.pdf
 
