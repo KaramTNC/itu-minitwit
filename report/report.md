@@ -1,4 +1,3 @@
-[Frontpage layout]: #
 ---
 title: "BsC Devops"
 subtitle: "Group D"
@@ -11,16 +10,6 @@ author:
   - "Tim Vogensen Hounsgaard - thou@itu.dk"
 ---
 
-[END frontpage layout]: #
-
-
-[Index]: #
-
-<div>
-
-</div>
-
-[End of Index]:#
 
 
 ## **System's perspective**
