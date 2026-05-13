@@ -12,17 +12,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Pandoc + LaTeX
+      - name: Install Pandoc + WeasyPrint
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc texlive-xetex texlive-fonts-recommended texlive-plain-generic
+          sudo apt-get install -y pandoc weasyprint
 
       - name: Build PDF
         working-directory: report
         run: |
           mkdir -p build
           pandoc report.md \
-            --pdf-engine=xelatex \
+            --pdf-engine=weasyprint \
             --resource-path=. \
             -o build/BSc_group_d.pdf
 
