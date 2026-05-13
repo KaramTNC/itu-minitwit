@@ -23,7 +23,7 @@ jobs:
           mkdir -p build
           pandoc report.md \
             --pdf-engine=weasyprint \
-            --from markdown+markdown_in_html_blocks \
+            --standalone \
             --resource-path=. \
             -o build/BSc_group_d.pdf
 
