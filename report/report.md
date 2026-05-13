@@ -1,14 +1,15 @@
 [Frontpage layout]: #
-<div style="text-align: center; line-height: 1;">
-    <h1>BsC Devops</h1>
-    <h2>Group D</h2>
-    <p>Oriol Grau Moragues - s25137@itu.dk</p>
-    <p>Mohamed Karam Haybout - mhay@itu.dk</p>
-    <p>Anton Thejsen - antt@itu.dk</p>
-    <p>Jordan Cherry - s25121@itu.dk</p>
-    <p>Madeleine Jakobsen - majak@itu.dk</p>
-    <p>Tim Vogensen Hounsgaard - thou@itu.dk</p>
-</div>
+---
+title: "BsC Devops"
+subtitle: "Group D"
+author:
+  - "Oriol Grau Moragues - s25137@itu.dk"
+  - "Mohamed Karam Haybout - mhay@itu.dk"
+  - "Anton Thejsen - antt@itu.dk"
+  - "Jordan Cherry - s25121@itu.dk"
+  - "Madeleine Jakobsen - majak@itu.dk"
+  - "Tim Vogensen Hounsgaard - thou@itu.dk"
+---
 
 [END frontpage layout]: #
 
