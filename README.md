@@ -8,47 +8,103 @@ A DevOps project made by Group D, composed of:
 * Oriol Grau Moragues <s25137@itu.dk>
 * Jordan Carter Cherry <s25121@itu.dk>
 
+Minitwit is a miniblogging site built using `ASP.NET` where users can post short messages and follow one another.
+
+## Contributing
+
+All contributions need to be made on a new branch. Once ready, a pull request should be opened to merge the new branch into the `staging` branch. Once the CI/CD checks are successful, a pull request can be opened from `staging` to `main`. This will deploy the changes to a staging environment where they can be validated. After ensuring that everything is correct, the pull request can be merged and the changes will be automatically deployed to production.
+
 ## Deployment
 
 ### Pre-requisites
 
-* You must either [create an **SSH key**](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-22-04) or use an existing on your local machine. Afterwards, you must add it to your DigitalOcean Team to allow access to the VPS ([official documentation page](https://docs.digitalocean.com/platform/teams/how-to/upload-ssh-keys/)).
-  * The key must be created using RSA and named `id_rsa`, as the script will read the private key's contents from `~/.ssh/id_rsa`
+* You must either [create an **SSH key**](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-22-04) or use an existing one on your local machine. Afterwards, you must add it to your DigitalOcean Team to allow access to the VPS ([official documentation page](https://docs.digitalocean.com/platform/teams/how-to/upload-ssh-keys/)).
 * You must either create or have access to an existing personal access **token** to control your DigitalOcean resources ([official documentation page](https://docs.digitalocean.com/reference/api/create-personal-access-token/)).
+* You must either [create](https://cloud.digitalocean.com/spaces/access_keys) or have access to an existing full **access key for DigitalOcean Spaces**.
+* You need to install the following tools:
+  * [Ansible](https://docs.ansible.com/projects/ansible/latest/installation_guide/intro_installation.html)
+  * [Terraform](https://developer.hashicorp.com/terraform/install)
+* You need a registered **domain name** with a registrar of your choice and access to its configuration.
 
 ### Deploying the infrastructure
 
 Before deploying, review the following files to adjust the configuration to your needs:
 
-* [**`resources.tf`**](provisioning/terraform/resources.tf): adjust the number of instances to be created for each component and their naming pattern.
+* [**`variables.yml`**](provisioning/terraform/variables.tf):
+  * Adjust the number of instances to be created for each component.
 
-  ```hcp
-  default = {
-    "web" = 2,
-    "lb" = 2
-  }
-  ```
+    ```hcp
+    default = {
+      "web" = 2,
+      "lb" = 2
+    }
+    ```
 
-  ```hcp
-  variable "instance_prefix" {
-    description = "Prefix for Droplet names"
-    default = "itu-minitwit"
-  } 
-  ```
+  * Specify the naming pattern.
 
-* [**`provider.yml`**](provisioning/terraform/provider.yml): Specify the server region.
+    ```hcp
+    variable "instance_prefix" {
+      description = "Prefix for Droplet names"
+      default = "itu-minitwit"
+    } 
+    ```
 
-  ```hcp
-  variable "region" {
-    description = "DigitalOcean server region"
-    default = "fra1"
-  }
-  ```
+  * Specify the server region.
 
-* [**`env.template`**](provisioning/env.template): Make a copy of this file called `.env` with the adequate value for each variable.
+    ```hcp
+    variable "region" {
+      description = "DigitalOcean server region"
+      default = "fra1"
+    }
+    ```
 
-Infrastructure can be deployed by just executing the [`deploy.sh`](provisioning/deploy.sh) script, which will create the necessary resources on DigitalOcean and configure them using Ansible. The creation of DNS A records requires manual intervention. The script will output which subdomains need DNS A records and to which address they must point. Upon setting up your (sub)domain(s) on your chosen registrar, confirm your action and the provisioning process will continue.
+  * Specify the server image.
 
+    ```hcp
+    variable "image" {
+      description = "OS image to use for the Droplets"
+      default = "ubuntu-22-04-x64"
+    }
+    ```
+
+* [**`env.template`**](provisioning/env.template): Prior to running the [`deploy.sh`](provisioning/deploy.sh) script (described in the paragraph below), you'll need to specify the values of the variables in [`env.template`](provisioning/env.template). On the first run, the script will make a copy for you of the template in a file named `.env` where you will need to fill in the values.
+* [**`ansible/group_vars/all.yml`**](provisioning/ansible/group_vars/all.yml):
+  * Specify the **domain name** that you have registered for this project. Be sure to specify which subdomain should be used when deploying to a staging environment.
+
+    ```yaml
+    domain_name: "{{ 'iac-test11.bettertwitter.ninja' if env == 'Staging' else 'bettertwitter.ninja' }}"
+    ```
+
+  * Specify which **email address** should be tied to the **HTTPS certificates** generated by Let's Encrypt. Note that this email address will be publicly accessible.
+
+    ```yaml
+    letsencrypt_email: 24841687+usern132@users.noreply.github.com
+    ```
+
+  * Specify the **app name** that should be used for the configuration. This does not affect any functionality and is only used for naming different parts of the system as well as the cloud resources.
+
+    ```yaml
+    app_name: "itu-minitwit"
+    ```
+
+  * Should you modify the services that make up the project, be sure to update their **ports and subdomains** accordingly. These ports are read by Ansible and are used during the configuration process.
+  
+    ```yaml
+    subdomains:
+    - prefix: "www"
+      port: 5001
+      include_root: true
+    - prefix: "api"
+      port: 8080
+    - prefix: "grafana"
+      port: 3000
+    ```
+
+#### Deployment script
+
+Infrastructure can be deployed by executing the [`deploy.sh`](provisioning/deploy.sh) script, which will create the necessary resources on DigitalOcean using OpenTofu and configure them using Ansible. The creation of DNS A records requires manual intervention on your behalf. The script will output which subdomains need DNS A records and to which address they must point. Upon setting up your (sub)domain(s) on your chosen registrar, confirm your action and the provisioning process will continue.
+
+OpenTofu's state is stored on a bucket (DigitalOcean Spaces), which allows the deployment scripts to be executed on any machine, including CI/CD runners without losing state synchronization. OpenTofu will always fetch the state data from the bucket.
 #### Note on database migrations
 
 Database migrations must stay compatible with rolling upgrades.
@@ -65,3 +121,17 @@ safety, mark the migration with:
 
 To tear down all infrastructure created during deployment, execute the [`destroy.sh`](provisioning/destroy.sh) script.
 > ⚠️ **Warning**: this action is irreversible and all data stored on the VMs will be lost.
+*OpenTofu will ask for confirmation before proceeding with the deletion.*
+
+## Video demonstrations
+### Monitoring dashboards in action
+![Monitoring dashboards in action](report/images/monitoring.gif)
+
+### Logging dashboard in action
+![Logging dashboard in action](report/images/logging.gif)
+
+### IaC in action
+![IaC in action](report/images/iac.gif)
+
+### CI/CD in action
+![CI/CD in action](report/images/cicd.gif)

@@ -1,0 +1,36 @@
+name: Upload Document as PDF
+
+on: [push]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish PDF
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc + WeasyPrint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc weasyprint
+
+      - name: Build PDF
+        working-directory: report
+        run: |
+          mkdir -p build
+          pandoc report.md \
+            --pdf-engine=weasyprint \
+            --standalone \
+            -t html \
+            --resource-path=. \
+            -o build/BSc_group_d.pdf
+
+      - name: Commit and Push PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f report/build/BSc_group_d.pdf
+          git diff --cached --quiet || (git commit -m "chore: update generated PDF" && git pull --rebase && git push)
