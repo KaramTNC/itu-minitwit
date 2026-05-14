@@ -62,7 +62,7 @@ Our codebase has a significant number of package dependencies that it relies on.
 * Xunit 
 * NUnit
 
-Additional dependencies can be found in the [dependencies.md ](dependencies.md) file.
+Additional dependencies can be found in the [dependencies.md ](https://github.com/KaramTNC/itu-minitwit/blob/main/report/dependencies.md) file.
 
 
 #### CI/CD
