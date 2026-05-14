@@ -68,7 +68,7 @@ Before deploying, review the following files to adjust the configuration to your
     ```
 
 * [**`env.template`**](provisioning/env.template): Prior to running the [`deploy.sh`](provisioning/deploy.sh) script (described in the paragraph below), you'll need to specify the values of the variables in [`env.template`](provisioning/env.template). On the first run, the script will make a copy for you of the template in a file named `.env` where you will need to fill in the values.
-* [**`ansible/group_vars/all.yml`**](provisioning/ansible/group_vars/all.yml): 
+* [**`ansible/group_vars/all.yml`**](provisioning/ansible/group_vars/all.yml):
   * Specify the **domain name** that you have registered for this project. Be sure to specify which subdomain should be used when deploying to a staging environment.
 
     ```yaml

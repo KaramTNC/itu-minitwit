@@ -42,37 +42,37 @@ Application data is persisted in a DigitalOcean Managed Database running Postgre
 
 ![System architecture diagram](images/system_architecture.png)
 
-### Dependencies - Karam & Oriol 
+### Dependencies - Karam & Oriol
 
 #### Codebase
 Our codebase has a significant number of package dependencies that it relies on. These are the most relevant ones:
 
-* Microsoft.Playwright 
-  * Xunit 
+* Microsoft.Playwright
+  * Xunit
   * NUnit
 * Npsql.EntityFrameworkCore.PostgreSQL
 * EFCore
 * OpenTelemetry.Exporter
   * OpenTelemetryProtocol
   * Prometheus.HttpListener
-* Swashbuckle.AspNetCore 
+* Swashbuckle.AspNetCore
   * Annotations
   Newtonsoft
   SwaggerUI
-* Xunit 
+* Xunit
 * NUnit
 
-Additional dependencies can be found in the [dependencies.md ](https://github.com/KaramTNC/itu-minitwit/blob/main/report/dependencies.md) file.
+Additional dependencies can be found in the [dependencies.md](https://github.com/KaramTNC/itu-minitwit/blob/main/report/dependencies.md) file.
 
 
 #### CI/CD
 The CI/CD pipeline makes use of a wide arrange of tools:
 
 * Infrastructure as code
-  - OpenTofu: creates the cloud resources 
+  - OpenTofu: creates the cloud resources
   - Ansible: installs and configures software on the cloud resources acquired by OpenTofu.
-* Workflows 
-  * GitHub Actions: runs a set of workflows that define the CI/CD pipeline to deploy and test the project. 
+* Workflows
+  * GitHub Actions: runs a set of workflows that define the CI/CD pipeline to deploy and test the project.
     * CodeQL, Codacy, Docker Scout, MegaLinter, Playwright
 * Containerization
   * Docker
@@ -81,9 +81,9 @@ The CI/CD pipeline makes use of a wide arrange of tools:
 #### Observability
 
 * Monitoring and logging
-  * Grafana Alloy 
-  * Grafana Loki 
-  * Prometheus 
+  * Grafana Alloy
+  * Grafana Loki
+  * Prometheus
   * OpenTelemetry
 
 #### Cloud Infrastructure
@@ -128,7 +128,7 @@ The system comprises of the following major stages:
      * In hindsight, it is possible to move this job into a “Code Quality” workflow alongside the MegaLinter stage and make it dependent on the uploaded build artifacts for better architectural readability
    * Check Migrations
      * Ensures the developer doesn't forget to create a new migration if they have made changes to the entity model
-   * Test Suite 
+   * Test Suite
      * Unit, Integration and End2End are all run in parallel for quickest job time
 
 #### MegaLinter
@@ -142,13 +142,13 @@ The system comprises of the following major stages:
 
 #### Docker Build & Publish
 1. Build and Publish web and api images in parallel:
-   * Build Image 
-   * Run Docker Scout vulnerability scan 
+   * Build Image
+   * Run Docker Scout vulnerability scan
    * Publish image to Docker Hub
 
 #### Smoke Deploy & Deploy
 On either a PR to Main, or push to main, a deploy will happen to either the staging server or production server
-1. Build migration bundle 
+1. Build migration bundle
 2. Install Ansible & Tofu
 3. Run Deploy IaC to either Staging or Main
 
@@ -162,7 +162,7 @@ On any commit where the report.md file has been modified, the file will convert 
 
 The team has used a combination of Prometheus and Grafana to monitor the project:
 - Prometheus is used to collect metrics
-- Grafana is used to visualize the data into something that can easily be understood. 
+- Grafana is used to visualize the data into something that can easily be understood.
 
 We currently monitor the number of requests that certain API endpoints get, such as the `/msgs/{username}` endpoint  for messages. The Prometheus and Grafana systems were added with [PR#26](https://github.com/KaramTNC/itu-minitwit/pull/26).  In addition to this, we monitor the amount of time each API request takes using histograms, [PR#38](https://github.com/KaramTNC/itu-minitwit/pull/38).
 
@@ -174,7 +174,7 @@ We logs any errors that occur when processing API requests, as well as when an A
 
 ### System Security Hardening - Tim & Oriol
 
-The System has been hardened with a firewall and a proxy server so all traffic coming to the web/api app goes through a proxy server. All communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to ensure we are not introducing new security vulnerabilities, CodeQL and Docker Scout was put in place in the CI pipeline to detect any of them. For local development and to prevent leakage, we store our secrets on .env files. 
+The System has been hardened with a firewall and a proxy server so all traffic coming to the web/api app goes through a proxy server. All communication between user and proxy, and proxy and apps are delivered through HTTPS using TLS encryption. We updated the docker images to use a hardened image for security, and to ensure we are not introducing new security vulnerabilities, CodeQL and Docker Scout was put in place in the CI pipeline to detect any of them. For local development and to prevent leakage, we store our secrets on .env files.
 
 
 ### System Availability & Scaling - Jordan
@@ -201,15 +201,15 @@ By using infrastructure as code, we can provision new instances and add them to 
 
 ### Staging Branch - Madeleine
 
-We wanted to prevent downtime in our application if a push were to break something in production. The staging branch was made to mirror our Main branch closely in order to avoid those downtimes, it is also connected to a staging droplet inside DigitalOcean. 
+We wanted to prevent downtime in our application if a push were to break something in production. The staging branch was made to mirror our Main branch closely in order to avoid those downtimes, it is also connected to a staging droplet inside DigitalOcean.
 
 This branch was created for us to push new changes without impacting Main, thus allows us to see how Main would be impacted, and catch any major errors before they are deployed. There are multiple workflows that run on the staging branch, these include linting and testing steps, this can be found in the [PR#09](https://github.com/KaramTNC/itu-minitwit/pull/9). This is relevant in regards to Operation and Maintenance, as the staging branch helps keep the application healthy and running.
 
-###  Refactoring user indexing - Madeleine
-We decided to use the project files from the BDSA course as the starting point for this project. This meant that any existing errors in the previous project would be also present here. Thus causing the team to get many errors once the simulator began to run, specifically with the creation of users. 
+### Refactoring user indexing - Madeleine
+We decided to use the project files from the BDSA course as the starting point for this project. This meant that any existing errors in the previous project would be also present here. Thus causing the team to get many errors once the simulator began to run, specifically with the creation of users.
 
 The project we used indexed users in a very inefficient way which caused the system to not be able to handle asynchronous tasks. If two users were concurrently created, they could both share the same index, thus causing one of the users to be overwritten in the database.
-We fixed the issue by refactoring the way the user indexing worked, letting the database automatically assign indexes instead of doing it manually. 
+We fixed the issue by refactoring the way the user indexing worked, letting the database automatically assign indexes instead of doing it manually.
 
 We learnt that it is important to have very in-depth testing, to see how well an application handles multiple requests and tasks at once. Stress testing can also be a good way to find failures in the system.
 
@@ -227,7 +227,7 @@ Overall this entire endeavor showed us the importance of running workflows local
 
 We implemented a concurrency guard to solve issues regarding deploys running simultaneously, as this would cause server overload and conflicting migrations. This concurrency guard was implemented differently in production and staging, with the production version using `cancel-in-progress = false` to avoid silently skipping deployments, and `cancel-in-progress = true` for staging, as only the most up-to-date version mattered. This is evident in the commit [#ab30aa6](https://github.com/KaramTNC/itu-minitwit/commit/ab30aa63e6e170180b5eb7d78a0c9fe908924b81).
 
-The key lesson learnt was that even with a CI/CD pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits. 
+The key lesson learnt was that even with a CI/CD pipeline that can work in processing a deployment, additional guardrails are still necessary for problems with multiple users or commits.
 
 ### Reflection on the teams "DevOps" style - Tim
 
@@ -239,7 +239,7 @@ We introduced a lot of new ways of working to accommodate this criteria. We crea
 
 ## **Use of Generative AI** -Tim
 
-Generative AI has been used throughout the project to help us complete the weekly tasks. AI has been used as a debugging tool or sparring partner when a person was stuck. AI has also been used to generate a starting point for task with new technologies. 
+Generative AI has been used throughout the project to help us complete the weekly tasks. AI has been used as a debugging tool or sparring partner when a person was stuck. AI has also been used to generate a starting point for task with new technologies.
 
-The group has their own preferences in AIs so Gemini, ChatGPT, Claude and Copilot have been used during the project. All have been marked as co-author when used. We are aware of the benefits and drawbacks within the use of AI. For our purpose it has been a great tool that has saved us countless hours searching on the web, however this "easy" way could also be a hindrance in the sense it might hallucinate a solution to our problem that does not work, and us taking the "easy" way made it harder to catch. All in all it can be good, but we have found limiting the amount of usage and remaining critical of it has been beneficial. 
+The group has their own preferences in AIs so Gemini, ChatGPT, Claude and Copilot have been used during the project. All have been marked as co-author when used. We are aware of the benefits and drawbacks within the use of AI. For our purpose it has been a great tool that has saved us countless hours searching on the web, however this "easy" way could also be a hindrance in the sense it might hallucinate a solution to our problem that does not work, and us taking the "easy" way made it harder to catch. All in all it can be good, but we have found limiting the amount of usage and remaining critical of it has been beneficial.
   
