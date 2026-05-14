@@ -62,6 +62,8 @@ Our codebase has a significant number of package dependencies that it relies on.
 * Xunit 
 * NUnit
 
+Additional dependencies can be found in the [dependencies.md ](dependencies.md) file.
+
 
 #### CI/CD
 The CI/CD pipeline makes use of a wide arrange of tools:
